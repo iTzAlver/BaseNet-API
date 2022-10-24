@@ -1,0 +1,92 @@
+compiler:
+  name: "base_model"
+  input_shape:
+    - 8
+    - 8
+    - 1
+  output_shape: 8
+
+  compile_options:
+    loss: "mean_squared_error"
+    optimizer: "adam"
+    metrics: "loss"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Idle"
+    - gpu:
+        name: "/device:GPU:0"
+        state: "Train"
+    - gpu:
+        name: "/device:GPU:1"
+        state: "Idle"
+    - gpu:
+        name: "/device:GPU:2"
+        state: "Idle"
+    - gpu:
+        name: "/device:GPU:3"
+        state: "Idle"
+
+  layers:
+    - layer:
+        name: "Flatten"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 128
+        options:
+          - option:
+              name: "activation"
+              value: "relu"
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 64
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 32
+        options:
+          - option:
+              name: "activation"
+              value: "sigmoid"
+
+    - layer:
+        name: "open_pipeline"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 32
+        options:
+          - option:
+              name: "activation"
+              value: "sigmoid"
+
+    - layer:
+        name: "open_pipeline"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 32
+        options:
+          - option:
+              name: "activation"
+              value: "sigmoid"
+
+    - layer:
+        name: "close_pipeline"
+        shape:
+        options:

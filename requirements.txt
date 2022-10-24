@@ -1,7 +1,5 @@
-appmap>=1.1.0.dev0
 tensorflow~=2.10.0
 tensorflow-gpu==2.10.*
-keras == 2.10.0
 graphviz >= 0.20.1
 matplotlib==3.6.1
 future~=0.18.2
@@ -9,6 +7,9 @@ Pillow~=9.2.0
 numpy==1.23.4
 ttkwidgets~=0.12.1
 pydot~=1.4.2
+keras~=2.9.0
+setuptools~=60.2.0
+PyYAML~=6.0
 # Graphviz.
 # CUDA.
 # CuDNN.
