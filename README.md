@@ -1,7 +1,7 @@
 # BaseNet: A simpler way to build AI models.
 
 <p align="center">
-    <img src="./multimedia/basenet_logo.png">
+    <img src="./doc/multimedia/basenet_logo.png">
 
 # Basenet Api Package - 0.1.0
 
@@ -10,10 +10,14 @@ framework flexibility. BaseNet API tries to implement almost everything from a f
 
 ## About ##
 
-Author: A.Palomo-Alonso (a.palomo@uah.es)\
-Universidad de Alcalá.\
-Escuela Politécnica Superior.\
-Departamento de Teoría De la Señal y Comunicaciones (TDSC).\
+Author: A.Palomo-Alonso (a.palomo@uah.es)
+
+Universidad de Alcalá.
+
+Escuela Politécnica Superior.
+
+Departamento de Teoría De la Señal y Comunicaciones (TDSC).
+
 ISDEFE Chair of Research.
 
 ## Features
@@ -51,11 +55,10 @@ ISDEFE Chair of Research.
 
 ### Cite as
 
-~~~
-@misc{cornetapi,
-  title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
-  author={A.Palomo-Alonso, S.Jiménez-Fernández, S.Salcedo-Sanz},
-  booktitle={PhD in Telecommunication Engeneering},
-  year={2022}
-}
-~~~
+
+    @misc{cornetapi,
+      title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
+      author={A.Palomo-Alonso, S.Jiménez-Fernández, S.Salcedo-Sanz},
+      booktitle={PhD in Telecommunication Engeneering},
+      year={2022}
+    }

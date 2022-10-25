@@ -5,6 +5,9 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
+"""
+.. include:: ../../README.md
+"""
 import json
 import os
 from .__special__ import __config_path__
