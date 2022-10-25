@@ -4,6 +4,9 @@
 # Universidad de Alcalá - Escuela Politécnica Superior      #
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+"""
+The model.py file includes the BaseNetModel class and the BaseNetResults class.
+"""
 # Import statements:
 import pickle
 import os
@@ -18,18 +21,45 @@ from tensorboard import program
 from tensorflow import keras
 from keras.utils.vis_utils import plot_model
 
-from .utils import StdoutLogger
-from .algorithms import Subkeras
-from .loss_functions import Sublosses
+from ._utils import StdoutLogger
+from ._algorithms import Subkeras
+from ._loss_functions import Sublosses
 
 from ._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
 from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__
 
-from ._database import BaseNetDatabase
+from .database import BaseNetDatabase
 
 
 # -----------------------------------------------------------
 class BaseNetModel:
+    """
+    The BaseNetModel class provides a wrapper for the tf.keras.model API with easier use. When initialized,
+    it initializes a breech of databases in its attribute 'breech'. If we provide a compiler, the model will be
+    built from the compiler; however, if we provide a tf.keras.model, the compiler is ignored and the model is built
+    from the provided tf.keras.model.
+
+    To add a database to the model, we can use the method .add_database() that takes a BaseNetDatabase as input.
+
+    The class contains load and save methods to store the compilers (.cpl files) and models (.h5 files) in the same
+    directory.
+
+    We also provide a .fit() method that can create a separate process for training. The original framework does not
+    include this feature:
+        *   The .fit() method takes as input the index of the loaded database via .add_database() method and takes the
+        train and validation subsets to fit the model.
+        *   If the training process should not block the main process, the parameters 'avoid_lock' must be set to True,
+        in that case, another process will take over the fitting tf.keras.model.fit() method and the information will
+        be updated in the return class: BaseNetResults.
+        *   In case we avoid the main process to be locked with the 'avoid_lock' feature, we will need to recover the
+        tf.keras.model with the .recover() method once the training is finished (check BaseNetResults.is_training).
+
+    We can also evaluate the performance of the database with the .evaluate() method, that makes use of the test subset.
+
+    We can also predict the output of a certain input with the .predict() method.
+
+    We can also visualize the model with the .print() method in a PNG image.
+    """
     def __init__(self, compiler=None, model: keras.Model = None, name: str = '', verbose: bool = False):
         """
         The BaseNetModel implements an API that makes use of keras and tensorflow to build Deep Learning Models.
@@ -81,7 +111,7 @@ class BaseNetModel:
         :param epochs: Number of epochs to train.
         :param tensorboard: Activates or deactivates the Tensorboard.
         :param avoid_lock: Avoids the training process to lock the parent process.
-        :return: History of the fitting process.
+        :return: BaseNetResults of the fitting process.
         """
         if tensorboard:
             self._flush()
@@ -111,7 +141,7 @@ class BaseNetModel:
                 p = Process(target=self._fit_in_other_process, args=((xtrain, ytrain), (xval, yval),
                                                                      epochs, db.batch_size, self.name, queue, db.dtype))
                 p.start()
-                __history__ = BaseNetTrainingResults(queue=queue, parent=p)
+                __history__ = BaseNetResults(queue=queue, parent=p)
             else:
 
                 # Auto shard options. Avoid console-vomiting in TF 2.0.
@@ -135,7 +165,7 @@ class BaseNetModel:
                                              tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}'
                                                                                          f'{self.name}.h5')
                                          ])
-                __history__ = BaseNetTrainingResults(history.history['loss'], history.history['val_loss'])
+                __history__ = BaseNetResults(history.history['loss'], history.history['val_loss'])
 
         except Exception as ex:
             if self._verbose:
@@ -287,6 +317,39 @@ class BaseNetModel:
         finally:
             return self
 
+    def recover(self):
+        """
+        This functions recovers the model from a training when the option 'avoid_lock == True'.
+        :return: True if there was a recover. False if there was not a recover or an exception raised.
+        """
+        try:
+            if self.model is None:
+                if os.path.exists(__bypass_path__):
+                    self.model = keras.models.load_model(__bypass_path__)
+                    os.remove(__bypass_path__)
+                    return True
+                else:
+                    print(f'BaseNetModel: The bypass path is empty.')
+                    return False
+            else:
+                return False
+        except Exception as ex:
+            print(f'BaseNetModel: An exception when recovering the model raised: {ex}')
+            return False
+
+    def _get_summary(self):
+        log = StdoutLogger()
+        log.start()
+        self.model.summary()
+        __msg = log.messages
+        _msg = ''
+        for msg in __msg:
+            _msg = f'{_msg}{msg}'
+        summary = _msg
+        log.stop()
+        log.flush()
+        return summary
+
     # Private methods:
     def _build(self) -> keras.Model:
         _scope = self._get_scope(self.compiler.devices)
@@ -338,39 +401,6 @@ class BaseNetModel:
             model = keras.Model(_inp, out, name=self.name)
             model.compile(**_compile)
         return model
-
-    def recover(self):
-        """
-        This functions recovers the model from a training when the option avoid_lock == True.
-        :return: True if there was a recover. False if there was not a recover or an exception raised.
-        """
-        try:
-            if self.model is None:
-                if os.path.exists(__bypass_path__):
-                    self.model = keras.models.load_model(__bypass_path__)
-                    os.remove(__bypass_path__)
-                    return True
-                else:
-                    print(f'BaseNetModel: The bypass path is empty.')
-                    return False
-            else:
-                return False
-        except Exception as ex:
-            print(f'BaseNetModel: An exception when recovering the model raised: {ex}')
-            return False
-
-    def _get_summary(self):
-        log = StdoutLogger()
-        log.start()
-        self.model.summary()
-        __msg = log.messages
-        _msg = ''
-        for msg in __msg:
-            _msg = f'{_msg}{msg}'
-        summary = _msg
-        log.stop()
-        log.flush()
-        return summary
 
     @staticmethod
     def _get_scope(devices):
@@ -477,8 +507,28 @@ class _FitCallback(keras.callbacks.Callback):
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 
 
-class BaseNetTrainingResults:
+class BaseNetResults:
+    """
+    The class BaseNetResults is a data collector of a training process. Using the get() method you update the
+    .is_training attribute and collect the information of the training process. If you are training in a separate
+    process, consider using this structure in your code:
+
+    results = my_basenet_model.fit(*args, **kwargs)
+    while results.is_training:
+        do_my_main_task()
+        results_in_a_dictionary = results.get()
+    my_basenet_model.recover()
+
+    keep_doing_my_main_task()
+    """
     def __init__(self, loss=None, val_loss=None, queue: Queue = None, parent: Process = None):
+        """
+        The BaseNetResults constructor should not be used by the default user.
+        :param loss: __inner parameter__
+        :param val_loss: __inner parameter__
+        :param queue: __inner parameter__
+        :param parent: __inner parameter__
+        """
         self.is_training = True
         if loss:
             self._loss = loss
@@ -492,6 +542,10 @@ class BaseNetTrainingResults:
         self._parent = parent
 
     def get(self):
+        """
+        The get() method obtains the results from the training process.
+        :return: A dictionary with the training and validation losses. {'loss': [], 'val_loss': []}
+        """
         if self._queue:
             while not self._queue.empty():
                 recover = self._queue.get()

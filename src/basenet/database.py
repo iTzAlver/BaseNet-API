@@ -4,6 +4,9 @@
 # Universidad de Alcalá - Escuela Politécnica Superior      #
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+"""
+The database.py file contains the BaseNetDatabase class.
+"""
 # Import statements:
 import random
 import numpy as np
@@ -12,6 +15,19 @@ import pickle
 
 # -----------------------------------------------------------
 class BaseNetDatabase:
+    """
+    The BaseNetDatabase class converts a set of inputs (x) and solutions (y) into the API wrapper database.
+    The BaseNetDatabase will create a new set of attributes from the database randomly:
+
+        *   xtrain: A subset of (x) with the train inputs of the network.
+        *   ytrain: A subset of (y) with the train solutions of the network.
+        *   xval: A subset of (x) with the training validation inputs of the network.
+        *   yval: A subset of (y) with the training validation solutions of the network.
+        *   xtest: A subset of (x) with excluded inputs of the network; for future testing.
+        *   ytest: A subset of (y) with excluded solutions of the network; for future testing.
+
+    The BaseNetDatabase can be loaded and saved with its own methods.
+    """
     def __init__(self, x, y, distribution: dict = None, name='unnamed_database', batch_size: int = None,
                  rescale: float = 1.0, dtype: str = 'float', bits: int = 32):
         """
@@ -21,7 +37,7 @@ class BaseNetDatabase:
         :param distribution: The distribution of the datasets, default: {'train': 70, 'val': 20, 'test': 10}
         :param name: The database name.
         :param batch_size: Custom batch size for training.
-        :param rescale: Rescale factor, all the values in x are divided by this factor.
+        :param rescale: Rescale factor, all the values in x are divided by this factor, in case a rescale is needed.
         :param dtype: Data type of the dataset.
         :param bits: Bits used for the data type.
         """

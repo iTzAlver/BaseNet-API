@@ -4,25 +4,149 @@
 # Universidad de Alcalá - Escuela Politécnica Superior      #
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+"""
+The compiler.py file contains the BaseNetCompiler class.
+"""
 # Import statements:
 import pickle
 import yaml
 from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS, \
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
-from ._model import BaseNetModel
+from .model import BaseNetModel
 from tensorflow.python.client import device_lib
 from .__special__ import __base_compiler__
 
 
 # -----------------------------------------------------------
 class BaseNetCompiler:
+    """
+    The BaseNetCompiler is a custom compiler that takes the information about the network and compiles it with the given
+    parameters.
+
+    The BaseNetCompiler also allows the user to use a .yaml file to build the network with the following format:
+
+    compiler:
+      name: <name of the model>
+      input_shape:
+        - <input shape of the model (I)>
+        - <input shape of the model (II)>
+        - <...>
+      output_shape: <output shape of the model>
+
+      compile_options:
+        loss: <tf.keras loss function name>
+        optimizer: <tf.keras optimizer name>
+        metrics:
+          - <tf.keras loss function name provided as a loss function>
+          - <'accuracy' is always a good metric to analyze>
+
+      devices:
+        - <your device type>:
+            name: <the name of your device in BaseNetCompiler.show_devs()>
+            state: <'Idle' for nothing, 'Train' for training>
+
+        <some device examples:>
+        - cpu:
+            name: "/device:CPU:0"
+            state: "Idle"
+        - gpu:
+            name: "/device:GPU:0"
+            state: "Train"
+        - gpu:
+            name: "/device:GPU:1"
+            state: "Idle"
+        - gpu:
+            name: "/device:GPU:2"
+            state: "Idle"
+
+      layers:
+        - layer:
+            name: <layer name in tf.keras.layers>
+            shape:
+                - <layer shape (I)>
+                - <layer shape (II)>
+                - <...>
+            options:
+                - option:
+                    name: <the name of the option in tf.keras.layers.<your layer name> or "{open}/{close}_pipeline">
+                    value: <the value of the option in tf.keras.layers.<your layer name>>
+
+        <some layer examples:>
+        - layer:
+            name: "Flatten"
+            shape:
+            options:
+
+        - layer:
+            name: "Dense"
+            shape:
+              - 128
+            options:
+              - option:
+                  name: "activation"
+                  value: "relu"
+
+        - layer:
+            name: "Dense"
+            shape:
+              - 64
+            options:
+
+        - layer:
+            name: "Dense"
+            shape:
+              - 32
+            options:
+              - option:
+                  name: "activation"
+                  value: "sigmoid"
+
+        - layer:
+            name: "open_pipeline"
+            shape:
+            options:
+
+        - layer:
+            name: "Dense"
+            shape:
+              - 32
+            options:
+              - option:
+                  name: "activation"
+                  value: "sigmoid"
+
+        - layer:
+            name: "open_pipeline"
+            shape:
+            options:
+
+        - layer:
+            name: "Dense"
+            shape:
+              - 32
+            options:
+              - option:
+                  name: "activation"
+                  value: "sigmoid"
+
+        - layer:
+            name: "close_pipeline"
+            shape:
+            options:
+
+    When open_pipeline is provided, the model creates a separate pipeline for the incoming layers. If more than one
+    open_pipeline is provided, more pipelines will be added. When close_pipeline is provided, a
+    tf.keras.layers.Concatenate layer is added into the model to close all the previous models into the main pipeline.
+
+    This compiler implements some TensorFlow functions to list the GPU devices.
+    """
     def __init__(self, io_shape: tuple, compile_options: dict, devices: dict, layers: list[dict] = None,
                  name: str = 'current_model', verbose: bool = False):
         """
         Build the BaseNetCompiler class.
         :param io_shape: Input-output shape [(input,), output].
         :param compile_options: Dictionary of compiling options {loss: , optimizer: , metrics: }.
-        :param devices: {device: role}. Consider calling: BaseNetCompiler.devices().
+        :param devices: {device: role}. Consider calling: BaseNetCompiler.show_devs().
         :param layers: List of layers: {name: ( (shape,) , {'args': args} )}.
         :param name: Name of the model.
         :param verbose: Print state and errors in the BaseNetCompiler.
@@ -47,6 +171,7 @@ class BaseNetCompiler:
         """
         This function builds the BaseNetCompiler from a formatted .yaml file.
         :param path: Path of the .yaml file with the compiler directives.
+        :param verbose: Enables print debugging.
         :return: The compiler object of the class BaseNetCompiler.
         """
         with open(path, 'r', encoding='utf-8') as file:

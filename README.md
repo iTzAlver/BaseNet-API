@@ -1,5 +1,7 @@
 # BaseNet: A simpler way to build AI models.
 
+<p align="center">
+    <img src="./multimedia/basenet_logo.png">
 
 # Basenet Api Package - 0.1.0
 
@@ -21,8 +23,11 @@ ISDEFE Chair of Research.
 * Feature 3:
 
 ## Usage
+### BaseNetDataset
 
-### Creating a BaseNetDataset.
+*
+
+### Example of building a BaseNetDataset.
 
     import basenet
 
