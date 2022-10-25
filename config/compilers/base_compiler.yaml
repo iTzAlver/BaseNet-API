@@ -9,7 +9,9 @@ compiler:
   compile_options:
     loss: "mean_squared_error"
     optimizer: "adam"
-    metrics: "loss"
+    metrics:
+      - 'mean_squared_error'
+      - 'accuracy'
 
   devices:
     - cpu:

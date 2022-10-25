@@ -43,7 +43,7 @@ class BaseNetCompiler:
         self._check()
 
     @staticmethod
-    def build_from_yaml(path: str = __base_compiler__):
+    def build_from_yaml(path: str = __base_compiler__, verbose: bool = False):
         """
         This function builds the BaseNetCompiler from a formatted .yaml file.
         :param path: Path of the .yaml file with the compiler directives.
@@ -80,10 +80,11 @@ class BaseNetCompiler:
 
                     layers.append({_layer['name']: (_layer['shape'], _layer['options'])})
 
-        self = BaseNetCompiler(io_shape=io_shape, compile_options=options, devices=devices, layers=layers, name=name)
+        self = BaseNetCompiler(io_shape=io_shape, compile_options=options, devices=devices, layers=layers, name=name,
+                               verbose=verbose)
         return self
 
-    def compile(self, name: str = None) -> tuple:
+    def compile(self, name: str = None) -> object:
         """
         This method of the BaseNetCompiler generates a BaseNetModel from a valid BaseNetCompiler.
         :param name: Name of the model. This variable overrides the name parameter of the BaseNetCompiler
@@ -97,14 +98,14 @@ class BaseNetCompiler:
                 else:
                     model = BaseNetModel(self, name=self.name, verbose=self._verbose)
                 self.is_compiled = True
-                return self, model
+                return model
             except Exception as ex:
                 print(f'BaseNetCompiler: An exception occurred while building the model: {ex}')
-                return self, None
+                return None
         else:
             if self._verbose:
                 print('BaseNetCompiler: The model is not valid for compiling.')
-            return self, None
+            return None
 
     @staticmethod
     def show_devs():

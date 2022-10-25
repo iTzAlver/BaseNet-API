@@ -36,17 +36,14 @@ def test3():
 
 
 def test4():
-    comp, model = BaseNetCompiler.build_from_yaml().compile()
+    model = BaseNetCompiler.build_from_yaml().compile()
     model.print()
-    comp.compile()
-    assert comp.is_compiled
+    assert model.is_compiled
 
 
 def test5():
-    comp, model = BaseNetCompiler.build_from_yaml().compile()
-    comp.compile()
-    assert comp.is_compiled
-
+    model = BaseNetCompiler.build_from_yaml().compile()
+    assert model.is_compiled
 
 
 if __name__ == '__main__':

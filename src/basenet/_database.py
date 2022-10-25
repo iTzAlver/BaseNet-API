@@ -13,7 +13,7 @@ import pickle
 # -----------------------------------------------------------
 class BaseNetDatabase:
     def __init__(self, x, y, distribution: dict = None, name='unnamed_database', batch_size: int = None,
-                 rescale: float = 1.0):
+                 rescale: float = 1.0, dtype: str = 'float', bits: int = 32):
         """
         This class builds a BaseNetDatabase, compatible with the NetBase API.
         :param x: Inputs of the dataset.
@@ -22,6 +22,8 @@ class BaseNetDatabase:
         :param name: The database name.
         :param batch_size: Custom batch size for training.
         :param rescale: Rescale factor, all the values in x are divided by this factor.
+        :param dtype: Data type of the dataset.
+        :param bits: Bits used for the data type.
         """
         if distribution is None:
             _distribution = (70, 20, 10)
@@ -31,15 +33,16 @@ class BaseNetDatabase:
         self.name: str = name
         self.distribution: distribution
 
-        (xtrain, ytrain), (xtest, ytest), (xval, yval) = self._splitdb(tuple(zip(self._rescale(x, rescale), y)),
+        (xtrain, ytrain), (xtest, ytest), (xval, yval) = self._splitdb((self._rescale(x, rescale), y),
                                                                        _distribution)
 
-        self.xtrain = xtrain
-        self.ytrain = ytrain
-        self.xval = xval
-        self.yval = yval
-        self.xtest = xtest
-        self.ytest = ytest
+        self.dtype = f'{dtype}{bits}'
+        self.xtrain = np.array(xtrain, dtype=self.dtype)
+        self.ytrain = np.array(ytrain, dtype=self.dtype)
+        self.xval = np.array(xval, dtype=self.dtype)
+        self.yval = np.array(yval, dtype=self.dtype)
+        self.xtest = np.array(xtest, dtype=self.dtype)
+        self.ytest = np.array(ytest, dtype=self.dtype)
 
         if batch_size is None:
             self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
@@ -76,6 +79,7 @@ class BaseNetDatabase:
                     pickle.dump(self, file)
                 return True
             else:
+                print(f'BaseNetDatabase: Failed to save {path}: the path does not exist.')
                 return False
         except Exception as ex:
             print(f'BaseNetDatabase: Failed to save {path}: {ex}')
@@ -110,7 +114,7 @@ class BaseNetDatabase:
 
     @staticmethod
     def _rescale(x, scale):
-        return np.array(x) / scale
+        return list(np.array(x) / scale)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

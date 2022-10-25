@@ -1,2 +1,3 @@
-include ./multimedia/*.png
-include ./multimedia/*.jpg
+include ./temp/*
+include ./config/*
+include ./multimedia/*

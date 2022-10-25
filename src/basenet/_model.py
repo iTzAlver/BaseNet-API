@@ -8,16 +8,24 @@
 import pickle
 import os
 import copy
+import shutil
+import webbrowser
 import numpy as np
 import tensorflow as tf
+
+from multiprocessing import Process, Queue
+from tensorboard import program
 from tensorflow import keras
 from keras.utils.vis_utils import plot_model
-from ._database import BaseNetDatabase
+
 from .utils import StdoutLogger
 from .algorithms import Subkeras
 from .loss_functions import Sublosses
+
 from ._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
-from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__
+from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__
+
+from ._database import BaseNetDatabase
 
 
 # -----------------------------------------------------------
@@ -35,7 +43,6 @@ class BaseNetModel:
         self.is_trained = False
         self.name = name
         self.breech = []
-        self.metrics = {'train': [], 'val': []}
 
         try:
             if model is not None:
@@ -67,41 +74,74 @@ class BaseNetModel:
             self.summary = ex
             print(f'BaseNetModel: The model is empty. Raised the following exception: {ex}.')
 
-    def fit(self, ndb, epochs):
+    def fit(self, ndb, epochs, tensorboard: bool = True, avoid_lock: bool = False):
         """
         This function fits the BaseNetModel with the selected database.
         :param ndb: Index of the database already loaded.
         :param epochs: Number of epochs to train.
+        :param tensorboard: Activates or deactivates the Tensorboard.
+        :param avoid_lock: Avoids the training process to lock the parent process.
         :return: History of the fitting process.
         """
+        if tensorboard:
+            self._flush()
+            tb = program.TensorBoard()
+            tb.configure(argv=[None, '--logdir', f'{__tensorboard_logs__}/{self.name}'])
+            url = tb.launch()
+            webbrowser.open(url, new=2)
+
         if ndb < len(self.breech):
             db = self.breech[ndb]
         else:
             if self._verbose:
                 print('BaseNetModel: Cannot load the BaseNetDatabase to fit, the index of the database does not exist.')
             return None
+
         xtrain = db.xtrain
         ytrain = db.ytrain
         xval = db.xval
         yval = db.yval
-        history = None
+
+        __history__ = None
+        fit_callback = _FitCallback()
         try:
-            history = self.model.fit(xtrain, ytrain, batch_size=db.batch_size, epochs=epochs,
-                                     validation_data=(xval, yval),
-                                     callbacks=[
-                                         self._FitCallback(self),  # TODO
-                                         tf.keras.callbacks.TensorBoard(log_dir=__tensorboard_logs__),
-                                         tf.keras.callbacks.EarlyStopping(patience=6),
-                                         tf.keras.callbacks.ModelCheckpoint(filepath=__keras_checkpoint__)
-                                     ])
-            self.metrics['val'].extend(history.history['val_loss'])
-            self.metrics['train'].extend(history.history['loss'])
+            if avoid_lock:
+                keras.models.save_model(self.model, __bypass_path__)
+                queue = Queue()
+                p = Process(target=self._fit_in_other_process, args=((xtrain, ytrain), (xval, yval),
+                                                                     epochs, db.batch_size, self.name, queue))
+                p.start()
+                __history__ = BaseNetTrainingResults(queue=queue, parent=p)
+            else:
+
+                # Auto shard options. Avoid console-vomiting in TF 2.0.
+                options = tf.data.Options()
+                options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
+                # Re-formatting the database.
+                _xtrain = tf.convert_to_tensor(xtrain)
+                _ytrain = tf.convert_to_tensor(ytrain)
+                _xval = tf.convert_to_tensor(xval)
+                _yval = tf.convert_to_tensor(yval)
+                trai = tf.data.Dataset.from_tensor_slices((_xtrain, _ytrain)).batch(db.batch_size).with_options(options)
+                val = tf.data.Dataset.from_tensor_slices((_xval, _yval)).batch(db.batch_size).with_options(options)
+
+                history = self.model.fit(trai, batch_size=db.batch_size, epochs=epochs,
+                                         validation_data=val,
+                                         callbacks=[
+                                             fit_callback,
+                                             tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/'
+                                                                                    f'{self.name}'),
+                                             tf.keras.callbacks.EarlyStopping(patience=10),
+                                             tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}'
+                                                                                         f'{self.name}.h5')
+                                         ])
+                __history__ = BaseNetTrainingResults(history.history['loss'], history.history['val_loss'])
 
         except Exception as ex:
             if self._verbose:
                 print(f'BaseNetModel: Cannot train the model, it raised an exception: {ex}.')
         finally:
-            return history
+            return __history__
 
     def predict(self, x, scale: float = 1.0, th: (None, float) = 0.5, expand_dims: bool = False) -> tf.Tensor:
         """
@@ -141,8 +181,8 @@ class BaseNetModel:
                 print('BaseNetModel: Cannot load the BaseNetDatabase to evaluate, '
                       'the index of the database does not exist.')
             return None
-        xtest = db.xtest
-        ytest = db.ytest
+        xtest = tf.convert_to_tensor(db.xtest)
+        ytest = tf.convert_to_tensor(db.ytest)
         _output_ = self.predict(xtest, th=th, scale=1.0)
         result = metric(_output_, ytest)
         return result
@@ -158,7 +198,7 @@ class BaseNetModel:
             if db is not None:
                 self.breech.append(db)
             elif db_path:
-                self.breech = BaseNetDatabase.load(db_path)
+                self.breech.append(BaseNetDatabase.load(db_path))
             else:
                 if self._verbose:
                     print('BaseNetModel: Cannot load the BaseNetDatabase: there is no path or model provided.')
@@ -299,6 +339,26 @@ class BaseNetModel:
             model.compile(**_compile)
         return model
 
+    def recover(self):
+        """
+        This functions recovers the model from a training when the option avoid_lock == True.
+        :return: True if there was a recover. False if there was not a recover or an exception raised.
+        """
+        try:
+            if self.model is None:
+                if os.path.exists(__bypass_path__):
+                    self.model = keras.models.load_model(__bypass_path__)
+                    os.remove(__bypass_path__)
+                    return True
+                else:
+                    print(f'BaseNetModel: The bypass path is empty.')
+                    return False
+            else:
+                return False
+        except Exception as ex:
+            print(f'BaseNetModel: An exception when recovering the model raised: {ex}')
+            return False
+
     def _get_summary(self):
         log = StdoutLogger()
         log.start()
@@ -326,21 +386,6 @@ class BaseNetModel:
             raise ValueError('There are no training devices...')
         return scope
 
-    class _FitCallback(keras.callbacks.Callback):
-        # TODO
-        def __init__(self, master):
-            self.master = master
-            super().__init__()
-
-        def on_epoch_begin(self, epoch, logs=None):
-            keys = list(logs.keys())
-            print(f"Start epoch {epoch} of training; got log keys: {keys}")
-
-        def on_epoch_end(self, epoch, logs=None):
-            keys = list(logs.keys())
-            print(f"End epoch {epoch} of training; got log keys: {keys}")
-        pass
-
     @staticmethod
     def _threshold(y, th):
         __y__ = []
@@ -350,6 +395,40 @@ class BaseNetModel:
             else:
                 __y__.append(0)
         return tf.convert_to_tensor(__y__)
+
+    def _flush(self):
+        flush_checkpoints = f'{__keras_checkpoint__}{self.name}.h5'
+        flush_logs = f'{__tensorboard_logs__}/{self.name}/'
+        if os.path.exists(flush_logs):
+            shutil.rmtree(flush_logs)
+        if os.path.exists(flush_checkpoints):
+            os.remove(flush_checkpoints)
+
+    @staticmethod
+    def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue):
+        print('Joined...')
+        model = keras.models.load_model(__bypass_path__)
+        # Auto shard options. Avoid console-vomiting in TF 2.0.
+        _xtrain = tf.convert_to_tensor(train[0])
+        _ytrain = tf.convert_to_tensor(train[1])
+        _xval = tf.convert_to_tensor(val[0])
+        _yval = tf.convert_to_tensor(val[1])
+        options = tf.data.Options()
+        options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
+        # Re-formatting the database.
+        train = tf.data.Dataset.from_tensor_slices((_xtrain, _ytrain)).batch(batch_size).with_options(options)
+        val = tf.data.Dataset.from_tensor_slices((_xval, _yval)).batch(batch_size).with_options(options)
+
+        fit_callback = _FitCallback(queue=queue)
+        model.fit(train, batch_size=batch_size, epochs=epochs,
+                  validation_data=val,
+                  callbacks=[
+                     fit_callback,
+                     tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/{name}'),
+                     tf.keras.callbacks.EarlyStopping(patience=10),
+                     tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}{name}.h5')
+                  ])
+        keras.models.save_model(model, __bypass_path__)
 
     # Build functions:
     def __repr__(self):
@@ -363,6 +442,69 @@ class BaseNetModel:
 
     def __eq__(self, other):
         return self.compiler.layers == other.compiler.layers
+# - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+#                        END OF SUPERCLASS                  #
+# - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+
+
+class _FitCallback(keras.callbacks.Callback):
+    def __init__(self, queue: Queue = None):
+        super().__init__()
+        self.loss = []
+        self.val_loss = []
+        self.is_training = True
+        self.queue = queue
+
+    def on_train_begin(self, logs=None):
+        self.loss = []
+        self.val_loss = []
+        self.is_training = True
+
+    def on_batch_end(self, batch, logs=None):
+        loss = logs.get('loss')
+        val_loss = logs.get('loss')
+        self.loss.append(loss)
+        self.val_loss.append(val_loss)
+        if self.queue:
+            self.queue.put((loss, val_loss))
+
+    def on_train_end(self, logs=None):
+        self.is_training = False
+        if self.queue:
+            self.queue.put('END')
+# - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+#                        END OF SUPERCLASS                  #
+# - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
+
+
+class BaseNetTrainingResults:
+    def __init__(self, loss=None, val_loss=None, queue: Queue = None, parent: Process = None):
+        self.is_training = True
+        if loss:
+            self._loss = loss
+        else:
+            self._loss = []
+        if val_loss:
+            self._val_loss = val_loss
+        else:
+            self._val_loss = []
+        self._queue = queue
+        self._parent = parent
+
+    def get(self):
+        if self._queue:
+            while not self._queue.empty():
+                recover = self._queue.get()
+                if isinstance(recover, str):
+                    if recover == 'END':
+                        self.is_training = False
+                        self._parent.join()
+                else:
+                    self._loss.append(recover[0])
+                    self._val_loss.append(recover[1])
+        else:
+            self.is_training = False
+        return {'loss': self._loss, 'val_loss': self._val_loss}
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

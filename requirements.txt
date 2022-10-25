@@ -10,7 +10,4 @@ pydot~=1.4.2
 keras~=2.9.0
 setuptools~=60.2.0
 PyYAML~=6.0
-# Graphviz.
-# CUDA.
-# CuDNN.
-# pdflatex.
+tensorboard~=2.9.1

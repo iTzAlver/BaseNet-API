@@ -6,9 +6,15 @@
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily. It implements a GUI
 that allows us to research in the Correlation Clustering problem.
 
+## Features
+
+* Feature 1:
+* Feature 2:
+* Feature 3:
+
 ## About ##
 
-Author: A.Palomo-Alonso (alberto.palomo@uah.es)\
+Author: A.Palomo-Alonso (a.palomo@uah.es)\
 Universidad de Alcalá.\
 Escuela Politécnica Superior.\
 Departamento de Teoría De la Señal y Comunicaciones (TDSC).\
@@ -17,13 +23,13 @@ ISDEFE Chair of Research.
 ## What's new?
 
 ### < 0.1.0
-1. All included:
-   * Model GUI: All not mentioned in future sections was included.
-   * Database GUI: HtGenerator included, such as logfile.
-   * Model: Multiprocessing-bypass, fit, building, save-load and multi GPU.
-   * Database: Multiprocessing, save-load, HtGenerator, Generator, Dataset.
-   * LaTeX Reports.
-   * Adaptation with Keras.
+1. BaseNetModel included.
+2. BaseNetDatabase included.
+3. BaseNetCompiler included.
+4. Inheritance from CorNetAPI project.
+5. Multi-processing fitting.
+6. Tensorboard launching.
+7. 
 
 
 ### Cite as

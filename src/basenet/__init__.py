@@ -14,7 +14,10 @@ with open(__config_path__, 'r', encoding='utf-8') as file:
 
 from ._names import PREBUILT_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LAYERS, KERAS_LOSSES, \
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
+
 from ._compiler import BaseNetCompiler
+from ._database import BaseNetDatabase
+from ._model import BaseNetModel
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
