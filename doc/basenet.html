@@ -104,11 +104,10 @@ ISDEFE Chair of Research.
 <li><strong>Feature 3:</strong> Real multiprocessing training process.</li>
 <li><strong>Feature 4:</strong> Automatic and custom GPU usage.</li>
 <li><strong>Feature 5:</strong> Easy-to-use classes.</li>
-<li><strong>Feature 6:</strong> </li>
-<li><strong>Feature 7:</strong> </li>
-<li><strong>Feature 8:</strong> </li>
-<li><strong>Feature x:</strong> API documentation.</li>
-<li><strong>Feature x:</strong> Python Packaging and PyPi indexing.</li>
+<li><strong>Feature 6:</strong> Model merging.</li>
+<li><strong>Feature 7:</strong> Multiple model inputs.</li>
+<li><strong>Feature 8:</strong> API documentation.</li>
+<li><strong>Feature 9:</strong> Python Packaging and PyPi indexing.</li>
 </ul>
 
 <h2 id="basic-and-fast-usage">Basic and fast usage</h2>
@@ -132,7 +131,7 @@ print(my_data_x)
 #    &gt; array([[255., 0., 255., ..., dtype=float32)
 
 distribution = {'train': 60, 'test': 5, 'val': 35}
-mydb = BaseNetDatabase(x, y, 
+mydb = BaseNetDatabase(my_data_x, my_data_y, 
                        distribution=distribution)
 
 print(mydb)
@@ -157,9 +156,9 @@ print(mydb)
 #    &gt; BaseNetDatabase with 32000 instances.
 
 layers = [
-    {'Dense': (255, {})},
-    {'Dense': (64, {'activation': 'relu'})},
-    {'Dropout': (0.5, {})}
+    {'Dense': ((255,), {})},
+    {'Dense': ((64,), {'activation': 'relu'})},
+    {'Dropout': ((0.5,), {})}
 ]
 
 my_devs = BaseNetCompiler.show_devs()
@@ -176,7 +175,7 @@ my_first_model = BaseNetCompiler(
     name='my_first_model'
 ).compile()
 
-my_fitst_model.add_database(mydb)
+my_first_model.add_database(mydb)
 </code></pre>
 
 <p>You can also use the BaseNetModel.add() method to add layers.</p>
@@ -213,8 +212,8 @@ print(mydb)
 
 yaml_path = './my_model.yaml'
 
-my_first_model = BaseNetCompiler().build_from_yaml(yaml_path).compile()
-my_fitst_model.add_database(mydb)
+my_first_model = BaseNetCompiler.build_from_yaml(yaml_path).compile()
+my_first_model.add_database(mydb)
 </code></pre>
 
 <p>An example of <code>.yaml</code> to replicate the same model as in the section 
@@ -266,6 +265,110 @@ my_fitst_model.add_database(mydb)
 
 <h3 id="example-of-usage-of-the-basenetmodel">Example of usage of the BaseNetModel.</h3>
 
+<p>Once you build and compile a <code>BaseNetModel</code> with a <code>BaseNetCompiler.compile()</code> method, you can make use of all the
+methods that the BaseNetModel provides:</p>
+
+<ul>
+<li><code>BaseNetModel.load()</code>: This method loads a tf.keras.model and the compiler from the given path.</li>
+<li><code>BaseNetModel.save()</code>: This method saves a tf.keras.model and the compiler into the given path.</li>
+<li><code>BaseNetModel.print()</code>: This method renders a <code>.png</code> image of the model into the given path.</li>
+<li><code>BaseNetModel.add_database()</code>: The <code>BaseNetModel</code> contains a breech of databases. It is a list with all the loaded
+databases previously. This method adds a database from a path or from a <code>BaseNetDatabase</code> object.</li>
+<li><code>BaseNetModel.predict()</code>: Performs a prediction given an input.</li>
+<li><code>BaseNetModel.evaluate()</code>: Evaluates the model with the pointed database test subset.</li>
+<li><code>BaseNetModel.fit()</code>: Trains the model with the pointed database.</li>
+<li><code>BaseNetModel.call()</code>: Merges two models into one. It can be used as a function.</li>
+</ul>
+
+<h4 id="printing-and-fitting-a-model">Printing and fitting a model.</h4>
+
+<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+
+mydb = BaseNetDatabase.load('./mydb.db')
+my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
+my_first_model.add_database(mydb)
+
+# Select database with index 0.
+my_first_model.fit(0, epochs=6, tensorboard=False)
+
+#    &gt;   Tensorflow fitting info vomiting.
+
+# Print the model.
+my_first_model.print('./my_model.png')
+</code></pre>
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model.png">
+</p>
+
+<h4 id="fitting-a-model-in-other-process">Fitting a model in other process.</h4>
+
+<p><strong>Important:</strong> Debugging is not working properly when fitting a new process.</p>
+
+<p>Imagine working on a GUI. The training process of your model implemented on your
+GUI will block the parent process. The API implements a solution. Just activate
+<code>avoid_lock=True</code> in the <code>BaseNetModel.fit()</code> method and check the results whenever you want.</p>
+
+<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+
+mydb = BaseNetDatabase.load('./mydb.db')
+my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
+my_first_model.add_database(mydb)
+
+# Select database with index 0.
+my_results = my_first_model.fit(0, epochs=6, tensorboard=False, avoid_lock=True)
+
+while my_results.is_training:
+    do_my_main_activity(update_gui, collect_data, run_server, or_whatever)
+    current_loss_curve = my_results.get()
+my_first_model.recover()
+
+keep_doing_my_main_activity(update_gui, collect_data, run_server, or_whatever)
+</code></pre>
+
+<p>Nota that if you don't make use of the method <code>BaseNetModel.recover()</code> the model will be empty as
+the trained model is bypassed by the child process until the parent process is able to recover the trained model.</p>
+
+<h4 id="using-tensorboard">Using Tensorboard.</h4>
+
+<p>The API also implements Tensorboard automatic opening and initialization. You can see the training process and keras
+app in real time while training.</p>
+
+<pre><code>my_first_model.fit(0, epochs=6, tensorboard=True)
+</code></pre>
+
+<h4 id="merging-two-models-into-one-with-several-inputs">Merging two models into one with several inputs.</h4>
+
+<p>You can merge two BaseNetModels by calling the object as a function:</p>
+
+<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+mydb = BaseNetDatabase.load('./mydb.db')
+my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml', verbose=True).compile()
+my_second_model = BaseNetCompiler.build_from_yaml('./my_model_2.yaml', verbose=True).compile()
+my_first_model.add_database(mydb)
+
+my_first_model(my_second_model, parallel=True, name='merged_model')
+my_first_model.print('./')
+</code></pre>
+
+<p>It will merge the two models into one single with two outputs if <code>parallel=True</code>, else it will be added at the bottom.</p>
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model2.png">
+</p>
+
+<h4 id="obtaining-training-results-from-the-fitting-process">Obtaining training results from the fitting process.</h4>
+
+<p>Once you train the model, you can get a <code>BaseNetResults</code> object with the training results. You can obtain the values from:</p>
+
+<pre><code>my_results = my_first_model.fit(0, epochs=6)
+losses = my_results.get()
+print(losses)
+
+#    &gt; {'loss': [1., 0.7, 0.6, 0.5, 0.4, 0.3], 
+#       'val_loss': [1., 0.8, 0.7, 0.6, 0.5, 0.4]}
+</code></pre>
+
 <h2 id="whats-new">What's new?</h2>
 
 <h3 id="010">&lt; 0.1.0</h3>
@@ -288,15 +391,20 @@ my_fitst_model.add_database(mydb)
 <li>Project documentation.</li>
 </ol>
 
+<h3 id="todo">TODO:</h3>
+
+<ul>
+<li><p>Extract loss results from the multiprocessing fitness function.</p>
+
 <h3 id="cite-as">Cite as</h3>
 
-<pre><code>@misc{cornetapi,
+<p>@misc{cornetapi,
   title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
   author={A. Palomo-Alonso},
   booktitle={PhD in Telecommunication Engeneering},
   year={2022}
-}
-</code></pre>
+}</p></li>
+</ul>
 </div>
 
                         <input id="mod-basenet-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
