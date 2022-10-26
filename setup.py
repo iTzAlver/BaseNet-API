@@ -19,7 +19,8 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/iTzAlver/cnet.git',
     project_urls={
-        'Documentation': 'https://github.com/iTzAlver/cnet/blob/master/README.md',
+        'Documentation': 'https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/'
+                         'main/doc/basenet.html',
         'Bug Reports': 'https://github.com/iTzAlver/cnet/issues',
         'Source Code': 'https://github.com/iTzAlver/cnet.git',
         # 'Funding': '',

@@ -153,10 +153,10 @@ class BaseNetModel:
                 options = tf.data.Options()
                 options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
                 # Re-formatting the database.
-                _xtrain = tf.convert_to_tensor(xtrain, dtype=getattr(tf, db.dtype))
-                _ytrain = tf.convert_to_tensor(ytrain, dtype=getattr(tf, db.dtype))
-                _xval = tf.convert_to_tensor(xval, dtype=getattr(tf, db.dtype))
-                _yval = tf.convert_to_tensor(yval, dtype=getattr(tf, db.dtype))
+                _xtrain = tf.convert_to_tensor(xtrain, dtype=getattr(tf, db.dtype[0]))
+                _ytrain = tf.convert_to_tensor(ytrain, dtype=getattr(tf, db.dtype[1]))
+                _xval = tf.convert_to_tensor(xval, dtype=getattr(tf, db.dtype[0]))
+                _yval = tf.convert_to_tensor(yval, dtype=getattr(tf, db.dtype[1]))
                 trai = tf.data.Dataset.from_tensor_slices((_xtrain, _ytrain)).batch(db.batch_size).with_options(options)
                 val = tf.data.Dataset.from_tensor_slices((_xval, _yval)).batch(db.batch_size).with_options(options)
 
@@ -216,8 +216,8 @@ class BaseNetModel:
                 logging.warning('BaseNetModel: Cannot load the BaseNetDatabase to evaluate, '
                                 'the index of the database does not exist.')
             return None
-        xtest = tf.convert_to_tensor(db.xtest, dtype=getattr(tf, db.dtype))
-        ytest = tf.convert_to_tensor(db.ytest, dtype=getattr(tf, db.dtype))
+        xtest = tf.convert_to_tensor(db.xtest, dtype=getattr(tf, db.dtype[0]))
+        ytest = tf.convert_to_tensor(db.ytest, dtype=getattr(tf, db.dtype[1]))
         _output_ = self.predict(xtest, th=th, scale=1.0)
         result = metric(_output_, ytest)
         return result
@@ -511,14 +511,15 @@ class BaseNetModel:
             os.remove(flush_checkpoints)
 
     @staticmethod
-    def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue, dtype: str):
+    def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue,
+                              dtype: tuple[str, str]):
         logging.info('Joined other process for training.')
         model = keras.models.load_model(__bypass_path__)
         # Auto shard options. Avoid console-vomiting in TF 2.0.
-        _xtrain = tf.convert_to_tensor(train[0], dtype=getattr(tf, dtype))
-        _ytrain = tf.convert_to_tensor(train[1], dtype=getattr(tf, dtype))
-        _xval = tf.convert_to_tensor(val[0], dtype=getattr(tf, dtype))
-        _yval = tf.convert_to_tensor(val[1], dtype=getattr(tf, dtype))
+        _xtrain = tf.convert_to_tensor(train[0], dtype=getattr(tf, dtype[0]))
+        _ytrain = tf.convert_to_tensor(train[1], dtype=getattr(tf, dtype[1]))
+        _xval = tf.convert_to_tensor(val[0], dtype=getattr(tf, dtype[0]))
+        _yval = tf.convert_to_tensor(val[1], dtype=getattr(tf, dtype[1]))
         options = tf.data.Options()
         options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
         # Re-formatting the database.

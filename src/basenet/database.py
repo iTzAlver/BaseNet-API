@@ -27,10 +27,15 @@ class BaseNetDatabase:
         *   xtest: A subset of (x) with excluded inputs of the network; for future testing.
         *   ytest: A subset of (y) with excluded solutions of the network; for future testing.
 
+        *   dtype: Data type of the input data (x) and output data (y) in a tuple of strings (x_dtype, y_dtype).
+        *   name: Name of the database.
+        *   distribution: Train, validation and test distribution of the input database.
+        *   batch_size: Current batch size of the database.
+
     The BaseNetDatabase can be loaded and saved with its own methods.
     """
     def __init__(self, x, y, distribution: dict = None, name='unnamed_database', batch_size: int = None,
-                 rescale: float = 1.0, dtype: str = 'float', bits: int = 32):
+                 rescale: float = 1.0, dtype: tuple[str, str] = ('float', 'float'), bits: tuple[int, int] = (32, 32)):
         """
         This class builds a BaseNetDatabase, compatible with the NetBase API.
         :param x: Inputs of the dataset.
@@ -38,36 +43,61 @@ class BaseNetDatabase:
         :param distribution: The distribution of the datasets, default: {'train': 70, 'val': 20, 'test': 10}
         :param name: The database name.
         :param batch_size: Custom batch size for training.
-        :param rescale: Rescale factor, all the values in x are divided by this factor, in case a rescale is needed.
-        :param dtype: Data type of the dataset.
-        :param bits: Bits used for the data type.
+        :param rescale: Rescale factor, all the values in x are divided by this factor, in case rescale is needed.
+        :param dtype: Data type of the dataset. ('input', 'output') (x, y)
+        :param bits: Bits used for the data type. ('input', 'output') (x, y)
         """
-        if distribution is None:
-            _distribution = (70, 20, 10)
-        else:
-            _distribution = (distribution['train'], distribution['val'], distribution['test'])
+        try:
+            if distribution is None:
+                _distribution = (70, 20, 10)
+            else:
+                _distribution = (distribution['train'], distribution['val'], distribution['test'])
 
-        self.name: str = name
-        self.distribution: distribution
+            self.name: str = name
+            self.distribution: distribution
 
-        (xtrain, ytrain), (xtest, ytest), (xval, yval) = self._splitdb((self._rescale(x, rescale), y),
-                                                                       _distribution)
+            if isinstance(y, np.ndarray):
+                _y = y.tolist()
+            else:
+                _y = y
 
-        self.dtype = f'{dtype}{bits}'
-        self.xtrain = np.array(xtrain, dtype=self.dtype)
-        self.ytrain = np.array(ytrain, dtype=self.dtype)
-        self.xval = np.array(xval, dtype=self.dtype)
-        self.yval = np.array(yval, dtype=self.dtype)
-        self.xtest = np.array(xtest, dtype=self.dtype)
-        self.ytest = np.array(ytest, dtype=self.dtype)
+            _x = self._rescale(x, rescale)
 
-        if batch_size is None:
-            self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
-        else:
-            self.batch_size = batch_size
+            if len(_x) != len(_y):
+                logging.error('BaseNetDatabase: Error while building the database, the number of instances of '
+                              f'x and y must be the same. Found x: {len(_x)} != y: {len(y)}.')
+                self.is_valid = False
+                return
+
+            (xtrain, ytrain), (xtest, ytest), (xval, yval) = self._splitdb((_x, _y), _distribution)
+
+            self.dtype = (f'{dtype[0]}{bits[0]}', f'{dtype[1]}{bits[1]}')
+            self.xtrain = np.array(xtrain, dtype=self.dtype[0])
+            self.ytrain = np.array(ytrain, dtype=self.dtype[1])
+            self.xval = np.array(xval, dtype=self.dtype[0])
+            self.yval = np.array(yval, dtype=self.dtype[1])
+            self.xtest = np.array(xtest, dtype=self.dtype[0])
+            self.ytest = np.array(ytest, dtype=self.dtype[1])
+
+            if batch_size is None:
+                self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
+                if self.batch_size < 1:
+                    self.batch_size = 1
+            else:
+                self.batch_size = batch_size
+
+            if sum(_distribution) == 100:
+                self.is_valid = True
+            else:
+                logging.warning('BaseNetDatabase: The sum of the distributions for train, validation and test does not '
+                                'add up to 100%')
+                self.is_valid = False
+        except Exception as ex:
+            self.is_valid = False
+            logging.error(f'BaseNetDatabase: Error while building the database, raised the following exception: {ex}')
 
     @staticmethod
-    def load(path):
+    def load(path: str):
         """
         This function loads the BaseNetDatabase from any path.
         :param path: Path where the BaseNetDatabase is being saved in the file system.
@@ -132,6 +162,12 @@ class BaseNetDatabase:
     @staticmethod
     def _rescale(x, scale):
         return list(np.array(x) / scale)
+
+    def __bool__(self):
+        return self.is_valid
+
+    def __repr__(self):
+        return f'BaseNetDatabase with {len(self.xtrain) + len(self.xval) + len(self.xtest)} instances.'
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

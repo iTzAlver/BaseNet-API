@@ -41,17 +41,11 @@ def test4():
     assert model.is_compiled
 
 
-def test5():
-    model = BaseNetCompiler.build_from_yaml().compile()
-    assert model.is_compiled
-
-
 if __name__ == '__main__':
-    # test()
-    # test2()
-    # test3()
-    # test4()
-    test5()
+    test()
+    test2()
+    test3()
+    test4()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
