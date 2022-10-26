@@ -712,13 +712,13 @@
 </span><span id="L-608"><a href="#L-608"><span class="linenos">608</span></a><span class="sd">    .is_training attribute and collect the information of the training process. If you are training in a separate</span>
 </span><span id="L-609"><a href="#L-609"><span class="linenos">609</span></a><span class="sd">    process, consider using this structure in your code:</span>
 </span><span id="L-610"><a href="#L-610"><span class="linenos">610</span></a>
-</span><span id="L-611"><a href="#L-611"><span class="linenos">611</span></a><span class="sd">    results = my_basenet_model.fit(*args, **kwargs)</span>
-</span><span id="L-612"><a href="#L-612"><span class="linenos">612</span></a><span class="sd">    while results.is_training:</span>
-</span><span id="L-613"><a href="#L-613"><span class="linenos">613</span></a><span class="sd">        do_my_main_task()</span>
-</span><span id="L-614"><a href="#L-614"><span class="linenos">614</span></a><span class="sd">        results_in_a_dictionary = results.get()</span>
-</span><span id="L-615"><a href="#L-615"><span class="linenos">615</span></a><span class="sd">    my_basenet_model.recover()</span>
+</span><span id="L-611"><a href="#L-611"><span class="linenos">611</span></a><span class="sd">        results = my_basenet_model.fit(*args, **kwargs)</span>
+</span><span id="L-612"><a href="#L-612"><span class="linenos">612</span></a><span class="sd">        while results.is_training:</span>
+</span><span id="L-613"><a href="#L-613"><span class="linenos">613</span></a><span class="sd">            do_my_main_task()</span>
+</span><span id="L-614"><a href="#L-614"><span class="linenos">614</span></a><span class="sd">            results_in_a_dictionary = results.get()</span>
+</span><span id="L-615"><a href="#L-615"><span class="linenos">615</span></a><span class="sd">        my_basenet_model.recover()</span>
 </span><span id="L-616"><a href="#L-616"><span class="linenos">616</span></a>
-</span><span id="L-617"><a href="#L-617"><span class="linenos">617</span></a><span class="sd">    keep_doing_my_main_task()</span>
+</span><span id="L-617"><a href="#L-617"><span class="linenos">617</span></a><span class="sd">        keep_doing_my_main_task()</span>
 </span><span id="L-618"><a href="#L-618"><span class="linenos">618</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-619"><a href="#L-619"><span class="linenos">619</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">Queue</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Process</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 </span><span id="L-620"><a href="#L-620"><span class="linenos">620</span></a>        <span class="sd">&quot;&quot;&quot;</span>
@@ -2018,13 +2018,13 @@ model2 into the model1. By default, all the model parameters and options are inh
 </span><span id="BaseNetResults-609"><a href="#BaseNetResults-609"><span class="linenos">609</span></a><span class="sd">    .is_training attribute and collect the information of the training process. If you are training in a separate</span>
 </span><span id="BaseNetResults-610"><a href="#BaseNetResults-610"><span class="linenos">610</span></a><span class="sd">    process, consider using this structure in your code:</span>
 </span><span id="BaseNetResults-611"><a href="#BaseNetResults-611"><span class="linenos">611</span></a>
-</span><span id="BaseNetResults-612"><a href="#BaseNetResults-612"><span class="linenos">612</span></a><span class="sd">    results = my_basenet_model.fit(*args, **kwargs)</span>
-</span><span id="BaseNetResults-613"><a href="#BaseNetResults-613"><span class="linenos">613</span></a><span class="sd">    while results.is_training:</span>
-</span><span id="BaseNetResults-614"><a href="#BaseNetResults-614"><span class="linenos">614</span></a><span class="sd">        do_my_main_task()</span>
-</span><span id="BaseNetResults-615"><a href="#BaseNetResults-615"><span class="linenos">615</span></a><span class="sd">        results_in_a_dictionary = results.get()</span>
-</span><span id="BaseNetResults-616"><a href="#BaseNetResults-616"><span class="linenos">616</span></a><span class="sd">    my_basenet_model.recover()</span>
+</span><span id="BaseNetResults-612"><a href="#BaseNetResults-612"><span class="linenos">612</span></a><span class="sd">        results = my_basenet_model.fit(*args, **kwargs)</span>
+</span><span id="BaseNetResults-613"><a href="#BaseNetResults-613"><span class="linenos">613</span></a><span class="sd">        while results.is_training:</span>
+</span><span id="BaseNetResults-614"><a href="#BaseNetResults-614"><span class="linenos">614</span></a><span class="sd">            do_my_main_task()</span>
+</span><span id="BaseNetResults-615"><a href="#BaseNetResults-615"><span class="linenos">615</span></a><span class="sd">            results_in_a_dictionary = results.get()</span>
+</span><span id="BaseNetResults-616"><a href="#BaseNetResults-616"><span class="linenos">616</span></a><span class="sd">        my_basenet_model.recover()</span>
 </span><span id="BaseNetResults-617"><a href="#BaseNetResults-617"><span class="linenos">617</span></a>
-</span><span id="BaseNetResults-618"><a href="#BaseNetResults-618"><span class="linenos">618</span></a><span class="sd">    keep_doing_my_main_task()</span>
+</span><span id="BaseNetResults-618"><a href="#BaseNetResults-618"><span class="linenos">618</span></a><span class="sd">        keep_doing_my_main_task()</span>
 </span><span id="BaseNetResults-619"><a href="#BaseNetResults-619"><span class="linenos">619</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="BaseNetResults-620"><a href="#BaseNetResults-620"><span class="linenos">620</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">Queue</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Process</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 </span><span id="BaseNetResults-621"><a href="#BaseNetResults-621"><span class="linenos">621</span></a>        <span class="sd">&quot;&quot;&quot;</span>
@@ -2071,13 +2071,14 @@ model2 into the model1. By default, all the model parameters and options are inh
 .is_training attribute and collect the information of the training process. If you are training in a separate
 process, consider using this structure in your code:</p>
 
-<p>results = my_basenet_model.fit(<em>args, *</em>kwargs)
+<pre><code>results = my_basenet_model.fit(*args, **kwargs)
 while results.is_training:
     do_my_main_task()
     results_in_a_dictionary = results.get()
-my_basenet_model.recover()</p>
+my_basenet_model.recover()
 
-<p>keep_doing_my_main_task()</p>
+keep_doing_my_main_task()
+</code></pre>
 </div>
 
 
@@ -2085,7 +2086,7 @@ my_basenet_model.recover()</p>
                                         <input id="BaseNetResults.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
-        <span class="name">BaseNetResults</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">loss</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">val_loss</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">Queue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x00000280C7E8EE30</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">parent</span><span class="p">:</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">Process</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
+        <span class="name">BaseNetResults</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">loss</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">val_loss</span><span class="o">=</span><span class="kc">None</span>,</span><span class="param">	<span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">Queue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x0000013504F92E30</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">parent</span><span class="p">:</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">Process</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
 
                 <label class="view-source-button" for="BaseNetResults.__init__-view-source"><span>View Source</span></label>
 

@@ -608,13 +608,13 @@ class BaseNetResults:
     .is_training attribute and collect the information of the training process. If you are training in a separate
     process, consider using this structure in your code:
 
-    results = my_basenet_model.fit(*args, **kwargs)
-    while results.is_training:
-        do_my_main_task()
-        results_in_a_dictionary = results.get()
-    my_basenet_model.recover()
+        results = my_basenet_model.fit(*args, **kwargs)
+        while results.is_training:
+            do_my_main_task()
+            results_in_a_dictionary = results.get()
+        my_basenet_model.recover()
 
-    keep_doing_my_main_task()
+        keep_doing_my_main_task()
     """
     def __init__(self, loss=None, val_loss=None, queue: Queue = None, parent: Process = None):
         """
