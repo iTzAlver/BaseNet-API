@@ -62,8 +62,8 @@ def test3():
 
 
 if __name__ == '__main__':
-    # test()
-    # test1()
+    test()
+    test1()
     test2()
     test3()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

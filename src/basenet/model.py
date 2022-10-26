@@ -513,7 +513,7 @@ class BaseNetModel:
     @staticmethod
     def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue,
                               dtype: tuple[str, str]):
-        logging.info('Joined other process for training.')
+        print('Joined other process for training.')
         model = keras.models.load_model(__bypass_path__)
         # Auto shard options. Avoid console-vomiting in TF 2.0.
         _xtrain = tf.convert_to_tensor(train[0], dtype=getattr(tf, dtype[0]))

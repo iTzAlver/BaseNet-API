@@ -29,7 +29,7 @@
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#basic-and-fast-usage">Basic and fast usage</a></li>
     <li><a href="#whats-new">What's new?</a></li>
   </ul></li>
 </ul>
@@ -58,8 +58,29 @@ basenet    </h1>
 
                         <div class="docstring"><h1 id="basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</h1>
 
-<p><p align="center">
-    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png"></p>
+<p align="center">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png">
+</p>
+
+<p align="center">
+    <a href="https://github.com/iTzAlver/basenet_api/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/iTzAlver/basenet_api?color=purple&style=plastic" /></a>
+    <a href="https://github.com/iTzAlver/basenet_api/tree/main/test">
+        <img src="https://img.shields.io/badge/tests-passed-green?color=green&style=plastic" /></a>
+    <a href="https://github.com/iTzAlver/basenet_api/blob/main/requirements.txt">
+        <img src="https://img.shields.io/badge/requirements-pypi-red?color=red&style=plastic" /></a>
+    <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
+        <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
+    <a href="https://github.com/iTzAlver/basenet_api.git">
+        <img src="https://img.shields.io/badge/release-0.2.0-white?color=white&style=plastic" /></a>
+</p>
+
+<p align="center">
+    <a href="https://www.tensorflow.org/">
+        <img src="https://img.shields.io/badge/dependencies-tensorflow-red?color=orange&style=for-the-badge" /></a>
+    <a href="https://keras.io/">
+        <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
+</p>
 
 <h1 id="basenet-api-package-020">Basenet API Package - 0.2.0</h1>
 
@@ -78,26 +99,172 @@ ISDEFE Chair of Research.
 <h2 id="features">Features</h2>
 
 <ul>
-<li>Feature 1:</li>
-<li>Feature 2:</li>
-<li>Feature 3:</li>
+<li><strong>Feature 1:</strong> Real-time logging.</li>
+<li><strong>Feature 2:</strong> Database train, validation and test automatic and random segmentation.</li>
+<li><strong>Feature 3:</strong> Real multiprocessing training process.</li>
+<li><strong>Feature 4:</strong> Automatic and custom GPU usage.</li>
+<li><strong>Feature 5:</strong> Easy-to-use classes.</li>
+<li><strong>Feature 6:</strong> </li>
+<li><strong>Feature 7:</strong> </li>
+<li><strong>Feature 8:</strong> </li>
+<li><strong>Feature x:</strong> API documentation.</li>
+<li><strong>Feature x:</strong> Python Packaging and PyPi indexing.</li>
 </ul>
 
-<h2 id="usage">Usage</h2>
+<h2 id="basic-and-fast-usage">Basic and fast usage</h2>
 
 <h3 id="basenetdataset">BaseNetDataset</h3>
 
-<p>*</p>
+<p>BaseNetDatabase is an easy-to-use database wrapper for the API. You can build your 
+database with the BaseNetDatabase class.</p>
 
 <h3 id="example-of-building-a-basenetdataset">Example of building a BaseNetDataset.</h3>
 
-<pre><code>import basenet
+<pre><code>from basenet import BaseNetDatabase
 
 my_data_x, my_data_y = load_my_data()
 print(my_data_y)
 
-    &gt; array([0., 1., ...], dtype=float32)
+#    &gt; array([[0.], [1.], ...], dtype=float32)
+
+print(my_data_x)
+
+#    &gt; array([[255., 0., 255., ..., dtype=float32)
+
+distribution = {'train': 60, 'test': 5, 'val': 35}
+mydb = BaseNetDatabase(x, y, 
+                       distribution=distribution)
+
+print(mydb)
+
+#    &gt; BaseNetDatabase with 32000 instances.
+
+mydb.save('./mydb.db')
 </code></pre>
+
+<h3 id="basenetcompiler">BaseNetCompiler</h3>
+
+<p>BaseNetCompiler takes the model architecture and builds a BaseNetModel with the given
+parameters. You can build your BaseNetCompiler from Python code only or a .yaml file.</p>
+
+<h3 id="example-of-building-a-basenetcompiler-from-python-code-only">Example of building a BaseNetCompiler from Python code only.</h3>
+
+<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+
+mydb = BaseNetDatabase.load('./mydb.db')
+print(mydb)
+
+#    &gt; BaseNetDatabase with 32000 instances.
+
+layers = [
+    {'Dense': (255, {})},
+    {'Dense': (64, {'activation': 'relu'})},
+    {'Dropout': (0.5, {})}
+]
+
+my_devs = BaseNetCompiler.show_devs()
+print(my_devs)
+
+#    &gt; {'/device:CPU:0': 'Idle', 
+#       '/device:GPU:0': 'Train'}
+
+my_first_model = BaseNetCompiler(
+    io_shape=((8,), 8), 
+    compile_options={'loss': 'mean_squared_error', 'optimizer': 'adam'}, 
+    devices=my_devs, 
+    layers=layers,
+    name='my_first_model'
+).compile()
+
+my_fitst_model.add_database(mydb)
+</code></pre>
+
+<p>You can also use the BaseNetModel.add() method to add layers.</p>
+
+<pre><code>my_first_compiler = BaseNetCompiler(
+    io_shape=((8,), 8), 
+    compile_options={'loss': 'mean_squared_error', 'optimizer': 'adam'}, 
+    devices=my_devs,
+    name='my_first_model'
+)
+for layer in layers:
+    my_first_compiler.add(layer)
+
+my_first_model = my_first_compiler.compile()
+</code></pre>
+
+<p>You can also load the database from the path.</p>
+
+<pre><code>my_fitst_model.add_database('./mydb.db')
+</code></pre>
+
+<h3 id="example-of-building-a-basenetcompiler-from-yaml-file">Example of building a BaseNetCompiler from .yaml file.</h3>
+
+<p>Suppose you have a <code>.yaml</code> file in the <code>./my_model.yaml</code> location with
+the proper format you can load your compiler with the method <code>BaseNetCompiler().build_from_yaml(yaml_path)</code>
+and omit the process of loading the parameters into the compiler manually.</p>
+
+<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+
+mydb = BaseNetDatabase.load('./mydb.db')
+print(mydb)
+
+#    &gt; BaseNetDatabase with 32000 instances.
+
+yaml_path = './my_model.yaml'
+
+my_first_model = BaseNetCompiler().build_from_yaml(yaml_path).compile()
+my_fitst_model.add_database(mydb)
+</code></pre>
+
+<p>An example of <code>.yaml</code> to replicate the same model as in the section 
+<code>Building a BaseNetCompiler from Python code only.</code>, the <code>.yaml</code> file will be the following:</p>
+
+<pre><code>compiler:
+  name: "my_first_model"
+  input_shape:
+    - 8
+  output_shape: 8
+
+  compile_options:
+    loss: "mean_squared_error"
+    optimizer: "adam"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Idle"
+    - gpu:
+        name: "/device:GPU:0"
+        state: "Train"
+
+  layers:
+    - layer:
+        name: "Dense"
+        shape:
+          - 128
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 128
+        options:
+          - option:
+              name: "activation"
+              value: "relu"
+
+    - layer:
+        name: "Dropout"
+        shape:
+          - 0.5
+        options:
+</code></pre>
+
+<p>If you want to learn more about building a model from a <code>.yaml</code> file, please, check the API 
+<a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">documentation</a>.</p>
+
+<h3 id="example-of-usage-of-the-basenetmodel">Example of usage of the BaseNetModel.</h3>
 
 <h2 id="whats-new">What's new?</h2>
 
@@ -118,6 +285,7 @@ print(my_data_y)
 <li>BaseNetResults included (working).</li>
 <li>Now the model is callable.</li>
 <li>Switched print to logging.</li>
+<li>Project documentation.</li>
 </ol>
 
 <h3 id="cite-as">Cite as</h3>
