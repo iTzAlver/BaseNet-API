@@ -314,6 +314,7 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 
 ### TODO:
 * Extract loss results from the multiprocessing fitness function.
+
 ### Cite as
 
     @misc{cornetapi,
