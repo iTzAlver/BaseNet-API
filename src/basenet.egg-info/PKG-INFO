@@ -1,3 +1,25 @@
+Metadata-Version: 2.1
+Name: basenet
+Version: 1.0.0
+Summary: Basenet API: A simpler way to build ML models.
+Home-page: https://github.com/iTzAlver/cnet.git
+Author: Palomo-Alonso, Alberto
+Author-email: a.palomo@edu.uah
+Project-URL: Documentation, https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html
+Project-URL: Bug Reports, https://github.com/iTzAlver/cnet/issues
+Project-URL: Source Code, https://github.com/iTzAlver/cnet.git
+Keywords: deeplearning,ml,api
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: Apache License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
 # BaseNet: A simpler way to build AI models.
 
 <p align="center">

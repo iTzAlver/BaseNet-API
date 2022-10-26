@@ -1,3 +1,2 @@
 include ./temp/*
 include ./config/*
-include ./multimedia/*
