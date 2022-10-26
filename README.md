@@ -331,7 +331,7 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 Please, cite this library as:
 
 
-    @misc{cornetapi,
+    @misc{basenetapi,
       title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
       author={A. Palomo-Alonso},
       booktitle={PhD in Telecommunication Engeneering},
