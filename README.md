@@ -14,7 +14,7 @@
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.0.1-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.0.2-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.0.1
+# Basenet API Package - 1.0.2
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.

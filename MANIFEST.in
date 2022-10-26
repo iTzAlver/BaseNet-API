@@ -1,3 +1,4 @@
 include ./temp/*
 include ./config/*
-include ./src/*
+include ./src/basenet/.config
+include ./src/basenet/.temp
