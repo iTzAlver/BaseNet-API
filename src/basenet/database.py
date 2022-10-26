@@ -8,6 +8,7 @@
 The database.py file contains the BaseNetDatabase class.
 """
 # Import statements:
+import logging
 import random
 import numpy as np
 import pickle
@@ -80,7 +81,7 @@ class BaseNetDatabase:
             else:
                 return None
         except Exception as ex:
-            print(f'BaseNetDatabase: Failed to load {path}: {ex}')
+            logging.error(f'BaseNetDatabase: Failed to load {path}: {ex}')
             return None
 
     def save(self, path: str):
@@ -95,10 +96,10 @@ class BaseNetDatabase:
                     pickle.dump(self, file)
                 return True
             else:
-                print(f'BaseNetDatabase: Failed to save {path}: the path does not exist.')
+                logging.warning(f'BaseNetDatabase: Failed to save {path}: the path does not exist.')
                 return False
         except Exception as ex:
-            print(f'BaseNetDatabase: Failed to save {path}: {ex}')
+            logging.error(f'BaseNetDatabase: Failed to save {path}: {ex}')
             return False
 
     # Private methods:

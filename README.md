@@ -1,24 +1,20 @@
 # BaseNet: A simpler way to build AI models.
 
 <p align="center">
-    <img src="./doc/multimedia/basenet_logo.png">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png">
 
-# Basenet Api Package - 0.1.0
+# Basenet API Package - 0.2.0
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
 
 ## About ##
 
-Author: A.Palomo-Alonso (a.palomo@uah.es)
-
-Universidad de Alcalá.
-
-Escuela Politécnica Superior.
-
-Departamento de Teoría De la Señal y Comunicaciones (TDSC).
-
-ISDEFE Chair of Research.
+    Author: A.Palomo-Alonso (a.palomo@uah.es)
+    Universidad de Alcalá.
+    Escuela Politécnica Superior.
+    Departamento de Teoría De la Señal y Comunicaciones (TDSC).
+    ISDEFE Chair of Research.
 
 ## Features
 
@@ -51,6 +47,11 @@ ISDEFE Chair of Research.
 4. Inheritance from CorNetAPI project.
 5. Multi-processing fitting.
 6. Tensorboard launching.
+
+### 0.2.0
+1. BaseNetResults included (working).
+2. Now the model is callable.
+3. Switched print to logging.
 
 
 ### Cite as

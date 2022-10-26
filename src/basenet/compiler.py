@@ -6,8 +6,24 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 """
 The compiler.py file contains the BaseNetCompiler class.
+
+Available layers:
+
+    *   KERAS_LIST_LAYERS
+    *   PREBUILT_LAYERS
+
+Available loss functions:
+
+    *   KERAS_LOSSES
+    *   PREBUILT_LOSSES
+
+Available optimizers:
+
+    *   KERAS_OPTIMIZERS
+    *   PREBUILT_OPTIMIZERS
 """
 # Import statements:
+import logging
 import pickle
 import yaml
 from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS, \
@@ -25,114 +41,115 @@ class BaseNetCompiler:
 
     The BaseNetCompiler also allows the user to use a .yaml file to build the network with the following format:
 
-    compiler:
-      name: <name of the model>
-      input_shape:
-        - <input shape of the model (I)>
-        - <input shape of the model (II)>
-        - <...>
-      output_shape: <output shape of the model>
+        compiler:
+          name: <name of the model>
+          input_shape:
+            - <input shape of the model (I)>
+            - <input shape of the model (II)>
+            - <...>
+          output_shape: <output shape of the model>
 
-      compile_options:
-        loss: <tf.keras loss function name>
-        optimizer: <tf.keras optimizer name>
-        metrics:
-          - <tf.keras loss function name provided as a loss function>
-          - <'accuracy' is always a good metric to analyze>
+          compile_options:
+            loss: <tf.keras loss function name>
+            optimizer: <tf.keras optimizer name>
+            metrics:
+              - <tf.keras loss function name provided as a loss function>
+              - <'accuracy' is always a good metric to analyze>
 
-      devices:
-        - <your device type>:
-            name: <the name of your device in BaseNetCompiler.show_devs()>
-            state: <'Idle' for nothing, 'Train' for training>
+          devices:
+            - <your device type>:
+                name: <the name of your device in BaseNetCompiler.show_devs()>
+                state: <'Idle' for nothing, 'Train' for training>
 
-        <some device examples:>
-        - cpu:
-            name: "/device:CPU:0"
-            state: "Idle"
-        - gpu:
-            name: "/device:GPU:0"
-            state: "Train"
-        - gpu:
-            name: "/device:GPU:1"
-            state: "Idle"
-        - gpu:
-            name: "/device:GPU:2"
-            state: "Idle"
+            <some device examples:>
+            - cpu:
+                name: "/device:CPU:0"
+                state: "Idle"
+            - gpu:
+                name: "/device:GPU:0"
+                state: "Train"
+            - gpu:
+                name: "/device:GPU:1"
+                state: "Idle"
+            - gpu:
+                name: "/device:GPU:2"
+                state: "Idle"
 
-      layers:
-        - layer:
-            name: <layer name in tf.keras.layers>
-            shape:
-                - <layer shape (I)>
-                - <layer shape (II)>
-                - <...>
-            options:
-                - option:
-                    name: <the name of the option in tf.keras.layers.<your layer name> or "{open}/{close}_pipeline">
-                    value: <the value of the option in tf.keras.layers.<your layer name>>
+          layers:
+            - layer:
+                name: <layer name in tf.keras.layers>
+                shape:
+                    - <layer shape (I)>
+                    - <layer shape (II)>
+                    - <...>
+                options:
+                    - option:
+                        name: <the name of the option in tf.keras.layers.<your layer name> or
+                               "{open}/{close}_pipeline">
+                        value: <the value of the option in tf.keras.layers.<your layer name>>
 
-        <some layer examples:>
-        - layer:
-            name: "Flatten"
-            shape:
-            options:
+            <some layer examples:>
+            - layer:
+                name: "Flatten"
+                shape:
+                options:
 
-        - layer:
-            name: "Dense"
-            shape:
-              - 128
-            options:
-              - option:
-                  name: "activation"
-                  value: "relu"
+            - layer:
+                name: "Dense"
+                shape:
+                  - 128
+                options:
+                  - option:
+                      name: "activation"
+                      value: "relu"
 
-        - layer:
-            name: "Dense"
-            shape:
-              - 64
-            options:
+            - layer:
+                name: "Dense"
+                shape:
+                  - 64
+                options:
 
-        - layer:
-            name: "Dense"
-            shape:
-              - 32
-            options:
-              - option:
-                  name: "activation"
-                  value: "sigmoid"
+            - layer:
+                name: "Dense"
+                shape:
+                  - 32
+                options:
+                  - option:
+                      name: "activation"
+                      value: "sigmoid"
 
-        - layer:
-            name: "open_pipeline"
-            shape:
-            options:
+            - layer:
+                name: "open_pipeline"
+                shape:
+                options:
 
-        - layer:
-            name: "Dense"
-            shape:
-              - 32
-            options:
-              - option:
-                  name: "activation"
-                  value: "sigmoid"
+            - layer:
+                name: "Dense"
+                shape:
+                  - 32
+                options:
+                  - option:
+                      name: "activation"
+                      value: "sigmoid"
 
-        - layer:
-            name: "open_pipeline"
-            shape:
-            options:
+            - layer:
+                name: "open_pipeline"
+                shape:
+                options:
 
-        - layer:
-            name: "Dense"
-            shape:
-              - 32
-            options:
-              - option:
-                  name: "activation"
-                  value: "sigmoid"
+            - layer:
+                name: "Dense"
+                shape:
+                  - 32
+                options:
+                  - option:
+                      name: "activation"
+                      value: "sigmoid"
 
-        - layer:
-            name: "close_pipeline"
-            shape:
-            options:
+            - layer:
+                name: "close_pipeline"
+                shape:
+                options:
 
     When open_pipeline is provided, the model creates a separate pipeline for the incoming layers. If more than one
     open_pipeline is provided, more pipelines will be added. When close_pipeline is provided, a
@@ -225,11 +242,11 @@ class BaseNetCompiler:
                 self.is_compiled = True
                 return model
             except Exception as ex:
-                print(f'BaseNetCompiler: An exception occurred while building the model: {ex}')
+                logging.error(f'BaseNetCompiler: An exception occurred while building the model: {ex}')
                 return None
         else:
             if self._verbose:
-                print('BaseNetCompiler: The model is not valid for compiling.')
+                logging.warning('BaseNetCompiler: The model is not valid for compiling.')
             return None
 
     @staticmethod
@@ -356,7 +373,7 @@ class BaseNetCompiler:
     def _check_compiler_options(self):
         if 'loss' not in self.compile_options or 'optimizer' not in self.compile_options:
             if self._verbose:
-                print(f'BaseNetCompiler: The compiler options "loss" and "optimizer" are mandatory.')
+                logging.error(f'BaseNetCompiler: The compiler options "loss" and "optimizer" are mandatory.')
             self.is_valid = False
             return False
         else:
@@ -364,12 +381,12 @@ class BaseNetCompiler:
             optifunc = self.compile_options['optimizer']
             if lossfunc not in PREBUILT_LOSSES and lossfunc not in KERAS_LOSSES:
                 if self._verbose:
-                    print(f'BaseNetCompiler: The loss function {lossfunc} is not in the API.')
+                    logging.error(f'BaseNetCompiler: The loss function {lossfunc} is not in the API.')
                 self.is_valid = False
                 return False
             if optifunc not in KERAS_OPTIMIZERS and optifunc not in PREBUILT_OPTIMIZERS:
                 if self._verbose:
-                    print(f'BaseNetCompiler: The optimizer {optifunc} is not in the API.')
+                    logging.error(f'BaseNetCompiler: The optimizer {optifunc} is not in the API.')
                 self.is_valid = False
                 return False
             return True
@@ -380,7 +397,8 @@ class BaseNetCompiler:
             if dev not in current_devs:
                 if self.devices[dev] != 'Idle':
                     if self._verbose:
-                        print(f'BaseNetCompiler: The device {dev} is not available in this machine right now.')
+                        logging.warning(f'BaseNetCompiler: The device {dev} is not available in this machine '
+                                        f'right now.')
                     self.is_valid = False
                     return False
         return True
@@ -395,13 +413,13 @@ class BaseNetCompiler:
                 if key not in KERAS_LIST_LAYERS and key not in PREBUILT_LAYERS:
                     self.is_valid = False
                     if self._verbose:
-                        print(f'BaseNetCompiler: layer {key} not found.')
+                        logging.warning(f'BaseNetCompiler: layer {key} not found.')
                     return self.is_valid
                 else:
                     if not isinstance(item, tuple):
                         self.is_valid = False
                         if self._verbose:
-                            print(f'BaseNetCompiler: layer {key} does not contain a tuple.')
+                            logging.warning(f'BaseNetCompiler: layer {key} does not contain a tuple.')
                         return self.is_valid
                     else:
                         if isinstance(item[0], tuple):
@@ -410,13 +428,14 @@ class BaseNetCompiler:
                             else:
                                 self.is_valid = False
                                 if self._verbose:
-                                    print(
+                                    logging.warning(
                                         f'BaseNetCompiler: layer {key}: {item[1]} does not contain a dict.')
                                 return self.is_valid
                         else:
                             self.is_valid = False
                             if self._verbose:
-                                print(f'BaseNetCompiler: layer {key}: {item[0]} does not contain a tuple: (shapes,).')
+                                logging.warning(f'BaseNetCompiler: layer {key}: {item[0]} does not contain a '
+                                                f'tuple: (shapes,).')
                             return self.is_valid
 
     # Build methods:

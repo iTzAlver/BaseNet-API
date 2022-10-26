@@ -13,6 +13,7 @@ import os
 import copy
 import shutil
 import webbrowser
+import logging
 import numpy as np
 import tensorflow as tf
 
@@ -39,26 +40,29 @@ class BaseNetModel:
     built from the compiler; however, if we provide a tf.keras.model, the compiler is ignored and the model is built
     from the provided tf.keras.model.
 
-    To add a database to the model, we can use the method .add_database() that takes a BaseNetDatabase as input.
+    To add a database to the model, we can use the method BaseNetModel.add_database() that takes a BaseNetDatabase as
+    input.
 
     The class contains load and save methods to store the compilers (.cpl files) and models (.h5 files) in the same
     directory.
 
-    We also provide a .fit() method that can create a separate process for training. The original framework does not
-    include this feature:
-        *   The .fit() method takes as input the index of the loaded database via .add_database() method and takes the
-        train and validation subsets to fit the model.
+    We also provide a BaseNetModel.fit() method that can create a separate process for training. The original framework
+    does not include this feature:
+        *   The BaseNetModel.fit() method takes as input the index of the loaded database via
+        BaseNetModel.add_database() method and takes the train and validation subsets to fit the model.
         *   If the training process should not block the main process, the parameters 'avoid_lock' must be set to True,
         in that case, another process will take over the fitting tf.keras.model.fit() method and the information will
         be updated in the return class: BaseNetResults.
         *   In case we avoid the main process to be locked with the 'avoid_lock' feature, we will need to recover the
-        tf.keras.model with the .recover() method once the training is finished (check BaseNetResults.is_training).
+        tf.keras.model with the BaseNetModel.recover() method once the training is finished (check
+        BaseNetResults.is_training).
 
-    We can also evaluate the performance of the database with the .evaluate() method, that makes use of the test subset.
+    We can also evaluate the performance of the database with the BaseNetModel.evaluate() method, that makes use of the
+    test subset.
 
-    We can also predict the output of a certain input with the .predict() method.
+    We can also predict the output of a certain input with the BaseNetModel.predict() method.
 
-    We can also visualize the model with the .print() method in a PNG image.
+    We can also visualize the model with the BaseNetModel.print() method in a PNG image.
     """
     def __init__(self, compiler=None, model: keras.Model = None, name: str = '', verbose: bool = False):
         """
@@ -102,7 +106,7 @@ class BaseNetModel:
             self.model = None
             self.is_compiled = False
             self.summary = ex
-            print(f'BaseNetModel: The model is empty. Raised the following exception: {ex}.')
+            logging.error(f'BaseNetModel: The model is empty. Raised the following exception: {ex}.')
 
     def fit(self, ndb, epochs, tensorboard: bool = True, avoid_lock: bool = False):
         """
@@ -124,7 +128,8 @@ class BaseNetModel:
             db = self.breech[ndb]
         else:
             if self._verbose:
-                print('BaseNetModel: Cannot load the BaseNetDatabase to fit, the index of the database does not exist.')
+                logging.warning('BaseNetModel: Cannot load the BaseNetDatabase to fit, the index of the '
+                                'database does not exist.')
             return None
 
         xtrain = db.xtrain
@@ -169,7 +174,7 @@ class BaseNetModel:
 
         except Exception as ex:
             if self._verbose:
-                print(f'BaseNetModel: Cannot train the model, it raised an exception: {ex}.')
+                logging.error(f'BaseNetModel: Cannot train the model, it raised an exception: {ex}.')
         finally:
             return __history__
 
@@ -208,8 +213,8 @@ class BaseNetModel:
             db = self.breech[ndb]
         else:
             if self._verbose:
-                print('BaseNetModel: Cannot load the BaseNetDatabase to evaluate, '
-                      'the index of the database does not exist.')
+                logging.warning('BaseNetModel: Cannot load the BaseNetDatabase to evaluate, '
+                                'the index of the database does not exist.')
             return None
         xtest = tf.convert_to_tensor(db.xtest, dtype=getattr(tf, db.dtype))
         ytest = tf.convert_to_tensor(db.ytest, dtype=getattr(tf, db.dtype))
@@ -231,9 +236,10 @@ class BaseNetModel:
                 self.breech.append(BaseNetDatabase.load(db_path))
             else:
                 if self._verbose:
-                    print('BaseNetModel: Cannot load the BaseNetDatabase: there is no path or model provided.')
+                    logging.warning('BaseNetModel: Cannot load the BaseNetDatabase: there is no path or model '
+                                    'provided.')
         except Exception as ex:
-            print(f'BaseNetModel: Cannot load the BaseNetDatabase, an exception raised: {ex}.')
+            logging.error(f'BaseNetModel: Cannot load the BaseNetDatabase, an exception raised: {ex}.')
         finally:
             return self
 
@@ -250,7 +256,7 @@ class BaseNetModel:
                 self.model.save(model_path)
             else:
                 if self._verbose:
-                    print('BaseNetModel: Cannot save the model because it is not compiled yet.')
+                    logging.warning('BaseNetModel: Cannot save the model because it is not compiled yet.')
                 return False
 
             if self.compiler:
@@ -265,7 +271,7 @@ class BaseNetModel:
 
         except Exception as ex:
             if self._verbose:
-                print(f'BaseNetModel: Cannot save the model because a exception was raised: {ex}.')
+                logging.error(f'BaseNetModel: Cannot save the model because a exception was raised: {ex}.')
             return False
 
     @staticmethod
@@ -287,13 +293,13 @@ class BaseNetModel:
             with open(_compiler_path, 'rb') as file:
                 compiler = pickle.load(file)
         else:
-            print('BaseNetModel: The compiler path is empty, the current model has no compiler.')
+            logging.warning('BaseNetModel: The compiler path is empty, the current model has no compiler.')
             compiler = None
 
         try:
             model = keras.models.load_model(model_path)
         except Exception as ex:
-            print(f'BaseNetModel: The model raised an exception: {ex}.')
+            logging.error(f'BaseNetModel: The model raised an exception: {ex}.')
             model = None
 
         name = model_path.split('/')[-1].replace('.h5', '')
@@ -310,10 +316,11 @@ class BaseNetModel:
                 plot_model(self.model, to_file=f'{print_path}/{self.name}.png', show_shapes=True)
             else:
                 if self._verbose:
-                    print('BaseNetModel: Cannot print the model, the model is empty.')
+                    logging.warning('BaseNetModel: Cannot print the model, the model is empty.')
         except Exception as ex:
             if self._verbose:
-                print(f'BaseNetModel: The compiler path is empty, the model raised the following exception: {ex}.')
+                logging.error(f'BaseNetModel: The compiler path is empty, the model raised the following '
+                              f'exception: {ex}.')
         finally:
             return self
 
@@ -329,14 +336,84 @@ class BaseNetModel:
                     os.remove(__bypass_path__)
                     return True
                 else:
-                    print(f'BaseNetModel: The bypass path is empty.')
+                    logging.error(f'BaseNetModel: The bypass path is empty.')
                     return False
             else:
                 return False
         except Exception as ex:
-            print(f'BaseNetModel: An exception when recovering the model raised: {ex}')
+            logging.error(f'BaseNetModel: An exception when recovering the model raised: {ex}')
             return False
 
+    def call(self, *args, **kwargs):
+        """
+        When calling the class BaseNetModel, you can merge two different models. So the model1(model2) will merge the
+        model2 into the model1. By default, all the model parameters and options are inherited from the model1.
+
+        :param args: Incoming model; BaseNetModel or tf.keras.model.
+        :param kwargs: {'name': the model name; inherits the model1 name by default,
+        'parallel': True for separate inputs, False to be sequential; False by default,
+        'options': compile options; inherits the model1 compile options by default}
+        :return: A bypass of the current object.
+        """
+        if len(args) != 1:
+            if self._verbose:
+                logging.warning('BaseNetModel: The number of arguments to the callable class must be 1.')
+            return self
+
+        input_model = args[0]
+        if not isinstance(input_model, (keras.models.Model, BaseNetModel)):
+            if self._verbose:
+                logging.warning(f'BaseNetModel: The input model must be a BaseNetModel or a tf.keras.model not a '
+                                f'{type(input_model)}.')
+            return self
+        else:
+            if isinstance(input_model, BaseNetModel):
+                keras_model = input_model.model
+            else:
+                keras_model = input_model
+
+        the_model_is_parallel = False
+        the_model_is_under_the_current_model = True
+        name = self.name
+        options = self.compiler.compile_options
+        for key, item in kwargs.items():
+            if key == 'parallel':
+                the_model_is_parallel = item
+            elif key == 'top':
+                the_model_is_under_the_current_model = item
+            elif key == 'name':
+                name = item
+            elif key == 'options':
+                options = item
+
+        if not the_model_is_parallel:
+            if the_model_is_under_the_current_model:
+                result_model_layers = []
+                result_model_layers.extend(self.model.layers)
+                result_model_layers.extend(keras_model.layers[1:])
+            else:
+                result_model_layers = []
+                result_model_layers.extend(keras_model.layers)
+                result_model_layers.extend(self.model.layers[1:])
+
+            _in = result_model_layers[0]
+            mids = _in
+            for layer in result_model_layers:
+                mids = layer(mids)
+            _out = mids
+            result_model = keras.models.Model(inputs=[_in], outputs=[_out], name=name)
+
+        else:
+            _in0 = keras.Input(shape=self.model.input_shape)
+            _in1 = keras.Input(shape=keras_model.input_shape)
+            _out = keras.layers.concatenate([_in0, _in1])
+            result_model = keras.models.Model(inputs=[(_in0, _in1)], outputs=[_out], name=name)
+
+        result_model.compile(options)
+        self.model = result_model
+        return self
+
+    # Private methods:
     def _get_summary(self):
         log = StdoutLogger()
         log.start()
@@ -350,7 +427,6 @@ class BaseNetModel:
         log.flush()
         return summary
 
-    # Private methods:
     def _build(self) -> keras.Model:
         _scope = self._get_scope(self.compiler.devices)
 
@@ -436,7 +512,7 @@ class BaseNetModel:
 
     @staticmethod
     def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue, dtype: str):
-        print('Joined...')
+        logging.info('Joined other process for training.')
         model = keras.models.load_model(__bypass_path__)
         # Auto shard options. Avoid console-vomiting in TF 2.0.
         _xtrain = tf.convert_to_tensor(train[0], dtype=getattr(tf, dtype))
@@ -472,6 +548,25 @@ class BaseNetModel:
 
     def __eq__(self, other):
         return self.compiler.layers == other.compiler.layers
+
+    def __call__(self, *args, **kwargs):
+        """
+        When calling the class BaseNetModel, you can merge two different models. So the model1(model2) will merge the
+        model2 into the model1. By default, all the model parameters and options are inherited from the model1.
+
+        :param args: Incoming model: BaseNetModel or tf.keras.model.
+        :param kwargs: {'name': the model name: inherits the model1 name by default,
+        'parallel': True for separate inputs, False to be sequential: False by default,
+        'options': compile options: inherits the model1 compile options by default}
+        :return: A bypass of the current object, even if an exception occurs.
+        """
+        try:
+            return self.call(*args, **kwargs)
+        except Exception as ex:
+            if self._verbose:
+                logging.error(f'BaseNetModel: Exception raised while evaluating the function BaseNetModelObject(): '
+                              f'{ex}')
+            return self
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF SUPERCLASS                  #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
