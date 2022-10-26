@@ -27,7 +27,7 @@ from ._algorithms import Subkeras
 from ._loss_functions import Sublosses
 
 from ._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
-from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__
+from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__, __version__
 
 from .database import BaseNetDatabase
 
@@ -48,14 +48,15 @@ class BaseNetModel:
 
     We also provide a BaseNetModel.fit() method that can create a separate process for training. The original framework
     does not include this feature:
-        *   The BaseNetModel.fit() method takes as input the index of the loaded database via
-        BaseNetModel.add_database() method and takes the train and validation subsets to fit the model.
-        *   If the training process should not block the main process, the parameters 'avoid_lock' must be set to True,
-        in that case, another process will take over the fitting tf.keras.model.fit() method and the information will
-        be updated in the return class: BaseNetResults.
-        *   In case we avoid the main process to be locked with the 'avoid_lock' feature, we will need to recover the
-        tf.keras.model with the BaseNetModel.recover() method once the training is finished (check
-        BaseNetResults.is_training).
+
+    *   The BaseNetModel.fit() method takes as input the index of the loaded database via
+    BaseNetModel.add_database() method and takes the train and validation subsets to fit the model.
+    *   If the training process should not block the main process, the parameters 'avoid_lock' must be set to True,
+    in that case, another process will take over the fitting tf.keras.model.fit() method and the information will
+    be updated in the return class: BaseNetResults.
+    *   In case we avoid the main process to be locked with the 'avoid_lock' feature, we will need to recover the
+    tf.keras.model with the BaseNetModel.recover() method once the training is finished (check
+    BaseNetResults.is_training).
 
     We can also evaluate the performance of the database with the BaseNetModel.evaluate() method, that makes use of the
     test subset.
@@ -63,6 +64,16 @@ class BaseNetModel:
     We can also predict the output of a certain input with the BaseNetModel.predict() method.
 
     We can also visualize the model with the BaseNetModel.print() method in a PNG image.
+
+    The following attributes can be found in a regular ``BaseNetModel``:
+
+    * :compiler:: It is the given compiler (BaseNetCompiler).
+    * :is_valid:: Tells if a model is valid or not (bool).
+    * :is_compiled:: Tells if a model is compiled or not (bool).
+    * :name:: The name of the model (str).
+    * :breech:: The list of the loaded databases (list[BaseNetDatabase]).
+    * :model:: It is the compiled keras model (tf.keras.model).
+    * :summary:: The tf.keras.model information (str).
     """
     def __init__(self, compiler=None, model: keras.Model = None, name: str = '', verbose: bool = False):
         """
@@ -108,11 +119,11 @@ class BaseNetModel:
             self.summary = ex
             logging.error(f'BaseNetModel: The model is empty. Raised the following exception: {ex}.')
 
-    def fit(self, ndb, epochs, tensorboard: bool = True, avoid_lock: bool = False):
+    def fit(self, ndb: int = -1, epochs: int = 10, tensorboard: bool = True, avoid_lock: bool = False):
         """
         This function fits the BaseNetModel with the selected database.
-        :param ndb: Index of the database already loaded.
-        :param epochs: Number of epochs to train.
+        :param ndb: Index of the database already loaded. The default is the last database.
+        :param epochs: Number of epochs to train. It is 10 by default.
         :param tensorboard: Activates or deactivates the Tensorboard.
         :param avoid_lock: Avoids the training process to lock the parent process.
         :return: BaseNetResults of the fitting process.
@@ -222,7 +233,7 @@ class BaseNetModel:
         result = metric(_output_, ytest)
         return result
 
-    def add_database(self, db: (BaseNetDatabase, None) = None, db_path: str = '') -> object:
+    def add_database(self, db: (BaseNetDatabase, None, str) = None, db_path: str = '') -> object:
         """
         This method adds a database into the model.
         :param db: A BaseNetDatabase.
@@ -231,7 +242,13 @@ class BaseNetModel:
         """
         try:
             if db is not None:
-                self.breech.append(db)
+                if isinstance(db, str):
+                    self.breech.append(BaseNetDatabase.load(db_path))
+                elif isinstance(db, BaseNetDatabase):
+                    self.breech.append(db)
+                else:
+                    if self._verbose:
+                        logging.warning(f'BaseNetModel: Unknown type for a database: {type(db)}.')
             elif db_path:
                 self.breech.append(BaseNetDatabase.load(db_path))
             else:
@@ -368,9 +385,10 @@ class BaseNetModel:
             return self
         else:
             if isinstance(input_model, BaseNetModel):
-                keras_model = input_model.model
+                pass
             else:
-                keras_model = input_model
+                raise ValueError('Cannot import a keras model because there is no current way to '
+                                 f'trace back the parameters in this version: {__version__}.')
 
         the_model_is_parallel = False
         the_model_is_under_the_current_model = True
@@ -389,28 +407,40 @@ class BaseNetModel:
         if not the_model_is_parallel:
             if the_model_is_under_the_current_model:
                 result_model_layers = []
-                result_model_layers.extend(self.model.layers)
-                result_model_layers.extend(keras_model.layers[1:])
+                result_model_layers.extend(self.model.compiler.layers)
+                result_model_layers.extend(input_model.compiler.layers)
             else:
                 result_model_layers = []
-                result_model_layers.extend(keras_model.layers)
+                result_model_layers.extend(input_model.compiler.layers)
                 result_model_layers.extend(self.model.layers[1:])
 
-            _in = result_model_layers[0]
-            mids = _in
-            for layer in result_model_layers:
-                mids = layer(mids)
-            _out = mids
-            result_model = keras.models.Model(inputs=[_in], outputs=[_out], name=name)
+            # _in = result_model_layers[0].input
+            # _add_layers = result_model_layers[1:]
+            # mids = _in
+            # for layer in _add_layers:
+            #     layer_type = layer.name.capitalize()
+            #     mids = getattr(keras.layers, layer_type)()(mids)
+            # _out = mids
+            # result_model = keras.models.Model(inputs=[_in], outputs=[_out], name=name)
+            self.compiler.layers = result_model_layers
+            self.compiler.compile_options = options
+            self._build()
 
         else:
-            _in0 = keras.Input(shape=self.model.input_shape)
-            _in1 = keras.Input(shape=keras_model.input_shape)
-            _out = keras.layers.concatenate([_in0, _in1])
+            _in0 = keras.Input(shape=self.compiler.io_shape[0])
+            _in1 = keras.Input(shape=input_model.compiler.io_shape[0])
+            lastlayer0 = self._build(inputs=_in0)
+            lastlayer1 = input_model._build(inputs=_in1)
+            _out = keras.layers.concatenate([lastlayer0, lastlayer1])
+            _out = keras.layers.Dense(self.compiler.io_shape[1], activation='sigmoid', name='output')(_out)
             result_model = keras.models.Model(inputs=[(_in0, _in1)], outputs=[_out], name=name)
 
-        result_model.compile(options)
-        self.model = result_model
+            result_model.compile(**options)
+            self.compiler.layers.append({'NotUncompilable': ((), {})})
+            self.compiler.compile_options = options
+            self.model = result_model
+
+        self.name = name
         return self
 
     # Private methods:
@@ -427,12 +457,15 @@ class BaseNetModel:
         log.flush()
         return summary
 
-    def _build(self) -> keras.Model:
+    def _build(self, inputs=None) -> (keras.Model, any):
         _scope = self._get_scope(self.compiler.devices)
 
         with _scope:
             # Add the input of the model.
-            _inp = keras.Input(shape=self.compiler.io_shape[0])
+            if inputs is None:
+                _inp = keras.Input(shape=self.compiler.io_shape[0])
+            else:
+                _inp = inputs
             _inp._name = 'compiled-model-keras'
             _lastlay = _inp
 
@@ -467,6 +500,8 @@ class BaseNetModel:
 
                         _lastlay = this_lay(_lastlay)
 
+            if inputs is not None:
+                return _lastlay
             # Add the output of the model.
             out = keras.layers.Dense(self.compiler.io_shape[1], activation="sigmoid", name='output')(_lastlay)
             _compile = copy.copy(self.compiler.compile_options)
@@ -556,9 +591,11 @@ class BaseNetModel:
         model2 into the model1. By default, all the model parameters and options are inherited from the model1.
 
         :param args: Incoming model: BaseNetModel or tf.keras.model.
-        :param kwargs: {'name': the model name: inherits the model1 name by default,
+        :param kwargs:
+        'name': the model name: inherits the model1 name by default,
         'parallel': True for separate inputs, False to be sequential: False by default,
-        'options': compile options: inherits the model1 compile options by default}
+        'options': compile options: inherits the model1 compile options by default
+        'top': If it's true, the input model goes at the top, else it goes at the bottom.
         :return: A bypass of the current object, even if an exception occurs.
         """
         try:
@@ -586,7 +623,7 @@ class _FitCallback(keras.callbacks.Callback):
         self.val_loss = []
         self.is_training = True
 
-    def on_batch_end(self, batch, logs=None):
+    def on_epoch_end(self, epoch, logs=None):
         loss = logs.get('loss')
         val_loss = logs.get('loss')
         self.loss.append(loss)
@@ -616,6 +653,8 @@ class BaseNetResults:
         my_basenet_model.recover()
 
         keep_doing_my_main_task()
+
+    You can only acces the attribute BaseNetResults.is_training and BaseNetResults.get()
     """
     def __init__(self, loss=None, val_loss=None, queue: Queue = None, parent: Process = None):
         """

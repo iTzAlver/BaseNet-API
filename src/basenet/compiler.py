@@ -226,7 +226,7 @@ class BaseNetCompiler:
                                verbose=verbose)
         return self
 
-    def compile(self, name: str = None) -> object:
+    def compile(self, name: str = None):
         """
         This method of the BaseNetCompiler generates a BaseNetModel from a valid BaseNetCompiler.
         :param name: Name of the model. This variable overrides the name parameter of the BaseNetCompiler

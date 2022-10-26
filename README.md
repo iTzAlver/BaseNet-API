@@ -44,11 +44,10 @@ framework flexibility. BaseNet API tries to implement almost everything from a f
 * **Feature 3:** Real multiprocessing training process.
 * **Feature 4:** Automatic and custom GPU usage.
 * **Feature 5:** Easy-to-use classes.
-* **Feature 6:** 
-* **Feature 7:** 
-* **Feature 8:** 
-* **Feature x:** API documentation.
-* **Feature x:** Python Packaging and PyPi indexing.
+* **Feature 6:** Model merging.
+* **Feature 7:** Multiple model inputs.
+* **Feature 8:** API documentation.
+* **Feature 9:** Python Packaging and PyPi indexing.
 
 ## Basic and fast usage
 
@@ -71,7 +70,7 @@ database with the BaseNetDatabase class.
     #    > array([[255., 0., 255., ..., dtype=float32)
 
     distribution = {'train': 60, 'test': 5, 'val': 35}
-    mydb = BaseNetDatabase(x, y, 
+    mydb = BaseNetDatabase(my_data_x, my_data_y, 
                            distribution=distribution)
     
     print(mydb)
@@ -95,9 +94,9 @@ parameters. You can build your BaseNetCompiler from Python code only or a .yaml 
     #    > BaseNetDatabase with 32000 instances.
 
     layers = [
-        {'Dense': (255, {})},
-        {'Dense': (64, {'activation': 'relu'})},
-        {'Dropout': (0.5, {})}
+        {'Dense': ((255,), {})},
+        {'Dense': ((64,), {'activation': 'relu'})},
+        {'Dropout': ((0.5,), {})}
     ]
 
     my_devs = BaseNetCompiler.show_devs()
@@ -114,7 +113,7 @@ parameters. You can build your BaseNetCompiler from Python code only or a .yaml 
         name='my_first_model'
     ).compile()
 
-    my_fitst_model.add_database(mydb)
+    my_first_model.add_database(mydb)
 
 You can also use the BaseNetModel.add() method to add layers.
 
@@ -148,8 +147,8 @@ and omit the process of loading the parameters into the compiler manually.
 
     yaml_path = './my_model.yaml'
 
-    my_first_model = BaseNetCompiler().build_from_yaml(yaml_path).compile()
-    my_fitst_model.add_database(mydb)
+    my_first_model = BaseNetCompiler.build_from_yaml(yaml_path).compile()
+    my_first_model.add_database(mydb)
 
 An example of ``.yaml`` to replicate the same model as in the section 
 ``Building a BaseNetCompiler from Python code only.``, the ``.yaml`` file will be the following:
@@ -200,7 +199,102 @@ If you want to learn more about building a model from a ```.yaml``` file, please
 
 ### Example of usage of the BaseNetModel.
 
+Once you build and compile a ``BaseNetModel`` with a ```BaseNetCompiler.compile()``` method, you can make use of all the
+methods that the BaseNetModel provides:
 
+* ```BaseNetModel.load()```: This method loads a tf.keras.model and the compiler from the given path.
+* ```BaseNetModel.save()```: This method saves a tf.keras.model and the compiler into the given path.
+* ```BaseNetModel.print()```: This method renders a ``.png`` image of the model into the given path.
+* ```BaseNetModel.add_database()```: The ``BaseNetModel`` contains a breech of databases. It is a list with all the loaded
+databases previously. This method adds a database from a path or from a ```BaseNetDatabase``` object.
+* ```BaseNetModel.predict()```: Performs a prediction given an input.
+* ```BaseNetModel.evaluate()```: Evaluates the model with the pointed database test subset.
+* ```BaseNetModel.fit()```: Trains the model with the pointed database.
+* ```BaseNetModel.call()```: Merges two models into one. It can be used as a function.
+
+#### Printing and fitting a model.
+
+    from basenet import BaseNetDatabase, BaseNetCompiler
+
+    mydb = BaseNetDatabase.load('./mydb.db')
+    my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
+    my_first_model.add_database(mydb)
+
+    # Select database with index 0.
+    my_first_model.fit(0, epochs=6, tensorboard=False)
+
+    #    >   Tensorflow fitting info vomiting.
+
+    # Print the model.
+    my_first_model.print('./my_model.png')
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model.png">
+</p>
+
+#### Fitting a model in other process.
+
+**Important:** Debugging is not working properly when fitting a new process.
+
+Imagine working on a GUI. The training process of your model implemented on your
+GUI will block the parent process. The API implements a solution. Just activate
+``avoid_lock=True`` in the ``BaseNetModel.fit()`` method and check the results whenever you want.
+
+    from basenet import BaseNetDatabase, BaseNetCompiler
+
+    mydb = BaseNetDatabase.load('./mydb.db')
+    my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
+    my_first_model.add_database(mydb)
+
+    # Select database with index 0.
+    my_results = my_first_model.fit(0, epochs=6, tensorboard=False, avoid_lock=True)
+
+    while my_results.is_training:
+        do_my_main_activity(update_gui, collect_data, run_server, or_whatever)
+        current_loss_curve = my_results.get()
+    my_first_model.recover()
+
+    keep_doing_my_main_activity(update_gui, collect_data, run_server, or_whatever)
+
+Nota that if you don't make use of the method ``BaseNetModel.recover()`` the model will be empty as
+the trained model is bypassed by the child process until the parent process is able to recover the trained model.
+
+#### Using Tensorboard.
+
+The API also implements Tensorboard automatic opening and initialization. You can see the training process and keras
+app in real time while training.
+
+    my_first_model.fit(0, epochs=6, tensorboard=True)
+
+#### Merging two models into one with several inputs.
+
+You can merge two BaseNetModels by calling the object as a function:
+
+    from basenet import BaseNetDatabase, BaseNetCompiler
+    mydb = BaseNetDatabase.load('./mydb.db')
+    my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml', verbose=True).compile()
+    my_second_model = BaseNetCompiler.build_from_yaml('./my_model_2.yaml', verbose=True).compile()
+    my_first_model.add_database(mydb)
+
+    my_first_model(my_second_model, parallel=True, name='merged_model')
+    my_first_model.print('./')
+
+It will merge the two models into one single with two outputs if ``parallel=True``, else it will be added at the bottom.
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model2.png">
+</p>
+
+#### Obtaining training results from the fitting process.
+
+Once you train the model, you can get a ``BaseNetResults`` object with the training results. You can obtain the values from:
+
+    my_results = my_first_model.fit(0, epochs=6)
+    losses = my_results.get()
+    print(losses)
+
+    #    > {'loss': [1., 0.7, 0.6, 0.5, 0.4, 0.3], 
+    #       'val_loss': [1., 0.8, 0.7, 0.6, 0.5, 0.4]}
 
 ## What's new?
 
@@ -218,12 +312,13 @@ If you want to learn more about building a model from a ```.yaml``` file, please
 3. Switched print to logging.
 4. Project documentation.
 
-
+### TODO:
+* Extract loss results from the multiprocessing fitness function.
 ### Cite as
 
     @misc{cornetapi,
       title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
-      author={A.Palomo-Alonso, S.Jiménez-Fernández, S.Salcedo-Sanz},
+      author={A. Palomo-Alonso},
       booktitle={PhD in Telecommunication Engeneering},
       year={2022}
     }
