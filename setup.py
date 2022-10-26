@@ -44,6 +44,7 @@ setuptools.setup(
     extras_require={
         'dev': ['check-manifest'],
     },
+    include_package_data=True
 )
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
