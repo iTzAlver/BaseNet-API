@@ -1,13 +1,13 @@
 Metadata-Version: 2.1
 Name: basenet
-Version: 1.0.0
+Version: 1.0.1
 Summary: Basenet API: A simpler way to build ML models.
-Home-page: https://github.com/iTzAlver/cnet.git
+Home-page: https://github.com/iTzAlver/basenet_api.git
 Author: Palomo-Alonso, Alberto
 Author-email: a.palomo@edu.uah
 Project-URL: Documentation, https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html
-Project-URL: Bug Reports, https://github.com/iTzAlver/cnet/issues
-Project-URL: Source Code, https://github.com/iTzAlver/cnet.git
+Project-URL: Bug Reports, https://github.com/iTzAlver/basenet_api/issues
+Project-URL: Source Code, https://github.com/iTzAlver/basenet_api.git
 Keywords: deeplearning,ml,api
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Topic :: Software Development :: Build Tools
@@ -36,7 +36,7 @@ License-File: LICENSE
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.0.0-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.0.1-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -46,7 +46,7 @@ License-File: LICENSE
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.0.0
+# Basenet API Package - 1.0.1
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -335,9 +335,10 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 4. Project documentation.
 
 
-### 1.0.0
+### 1.0.0 - 1.0.1
 1. Python packaging
 2. PyPi indexing.
+3. 1.0.x: Upload bug solving.
 
 
 ### TODO:

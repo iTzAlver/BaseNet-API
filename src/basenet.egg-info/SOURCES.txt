@@ -4,7 +4,6 @@ README.md
 pyproject.toml
 setup.cfg
 setup.py
-config/config.json
 src/basenet/__init__.py
 src/basenet/__special__.py
 src/basenet/_names.py
