@@ -10,19 +10,19 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name='basenet',
-    version='1.0.0',
+    version='1.0.1',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',
     keywords='deeplearning, ml, api',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/iTzAlver/cnet.git',
+    url='https://github.com/iTzAlver/basenet_api.git',
     project_urls={
         'Documentation': 'https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/'
                          'main/doc/basenet.html',
-        'Bug Reports': 'https://github.com/iTzAlver/cnet/issues',
-        'Source Code': 'https://github.com/iTzAlver/cnet.git',
+        'Bug Reports': 'https://github.com/iTzAlver/basenet_api/issues',
+        'Source Code': 'https://github.com/iTzAlver/basenet_api.git',
         # 'Funding': '',
         # 'Say Thanks!': '',
     },

@@ -1,2 +1,3 @@
 include ./temp/*
 include ./config/*
+include ./src/*
