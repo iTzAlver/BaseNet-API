@@ -9,7 +9,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='basenet',
+    name='basenet_api',
     version='1.1.0',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
@@ -35,9 +35,8 @@ setuptools.setup(
         'Topic :: Software Development :: Build Tools',
 
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'License :: OSI Approved :: Apache License'
+        'License :: OSI Approved :: Apache Software License'
     ],
     python_requires='>=3.6',
     # install_requires=['Pillow'],

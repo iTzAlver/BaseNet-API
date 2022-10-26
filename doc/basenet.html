@@ -119,7 +119,7 @@ database with the BaseNetDatabase class.</p>
 
 <h3 id="example-of-building-a-basenetdataset">Example of building a BaseNetDataset.</h3>
 
-<pre><code>from basenet import BaseNetDatabase
+<pre><code>from basenet_api import BaseNetDatabase
 
 my_data_x, my_data_y = load_my_data()
 print(my_data_y)
@@ -148,7 +148,7 @@ parameters. You can build your BaseNetCompiler from Python code only or a .yaml 
 
 <h3 id="example-of-building-a-basenetcompiler-from-python-code-only">Example of building a BaseNetCompiler from Python code only.</h3>
 
-<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
 
 mydb = BaseNetDatabase.load('./mydb.db')
 print(mydb)
@@ -203,7 +203,7 @@ my_first_model = my_first_compiler.compile()
 the proper format you can load your compiler with the method <code>BaseNetCompiler().build_from_yaml(yaml_path)</code>
 and omit the process of loading the parameters into the compiler manually.</p>
 
-<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
 
 mydb = BaseNetDatabase.load('./mydb.db')
 print(mydb)
@@ -282,7 +282,7 @@ databases previously. This method adds a database from a path or from a <code>Ba
 
 <h4 id="printing-and-fitting-a-model">Printing and fitting a model.</h4>
 
-<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
 
 mydb = BaseNetDatabase.load('./mydb.db')
 my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
@@ -309,7 +309,7 @@ my_first_model.print('./my_model.png')
 GUI will block the parent process. The API implements a solution. Just activate
 <code>avoid_lock=True</code> in the <code>BaseNetModel.fit()</code> method and check the results whenever you want.</p>
 
-<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
 
 mydb = BaseNetDatabase.load('./mydb.db')
 my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
@@ -341,7 +341,7 @@ app in real time while training.</p>
 
 <p>You can merge two BaseNetModels by calling the object as a function:</p>
 
-<pre><code>from basenet import BaseNetDatabase, BaseNetCompiler
+<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
 mydb = BaseNetDatabase.load('./mydb.db')
 my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml', verbose=True).compile()
 my_second_model = BaseNetCompiler.build_from_yaml('./my_model_2.yaml', verbose=True).compile()
@@ -409,13 +409,14 @@ print(losses)
 
 <ul>
 <li>Extract loss results from the multiprocessing fitness function.</li>
+<li>Configure GPU visibility.</li>
 </ul>
 
 <h3 id="cite-as">Cite as</h3>
 
 <p>Please, cite this library as:</p>
 
-<pre><code>@misc{cornetapi,
+<pre><code>@misc{basenetapi,
   title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
   author={A. Palomo-Alonso},
   booktitle={PhD in Telecommunication Engeneering},

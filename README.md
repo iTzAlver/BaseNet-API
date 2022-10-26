@@ -58,7 +58,7 @@ database with the BaseNetDatabase class.
 
 ### Example of building a BaseNetDataset.
 
-    from basenet import BaseNetDatabase
+    from basenet_api import BaseNetDatabase
 
     my_data_x, my_data_y = load_my_data()
     print(my_data_y)
@@ -86,7 +86,7 @@ parameters. You can build your BaseNetCompiler from Python code only or a .yaml 
 
 ### Example of building a BaseNetCompiler from Python code only.
 
-    from basenet import BaseNetDatabase, BaseNetCompiler
+    from basenet_api import BaseNetDatabase, BaseNetCompiler
 
     mydb = BaseNetDatabase.load('./mydb.db')
     print(mydb)
@@ -138,7 +138,7 @@ Suppose you have a ``.yaml`` file in the ``./my_model.yaml`` location with
 the proper format you can load your compiler with the method ``BaseNetCompiler().build_from_yaml(yaml_path)``
 and omit the process of loading the parameters into the compiler manually.
 
-    from basenet import BaseNetDatabase, BaseNetCompiler
+    from basenet_api import BaseNetDatabase, BaseNetCompiler
 
     mydb = BaseNetDatabase.load('./mydb.db')
     print(mydb)
@@ -214,7 +214,7 @@ databases previously. This method adds a database from a path or from a ```BaseN
 
 #### Printing and fitting a model.
 
-    from basenet import BaseNetDatabase, BaseNetCompiler
+    from basenet_api import BaseNetDatabase, BaseNetCompiler
 
     mydb = BaseNetDatabase.load('./mydb.db')
     my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
@@ -240,7 +240,7 @@ Imagine working on a GUI. The training process of your model implemented on your
 GUI will block the parent process. The API implements a solution. Just activate
 ``avoid_lock=True`` in the ``BaseNetModel.fit()`` method and check the results whenever you want.
 
-    from basenet import BaseNetDatabase, BaseNetCompiler
+    from basenet_api import BaseNetDatabase, BaseNetCompiler
 
     mydb = BaseNetDatabase.load('./mydb.db')
     my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
@@ -270,7 +270,7 @@ app in real time while training.
 
 You can merge two BaseNetModels by calling the object as a function:
 
-    from basenet import BaseNetDatabase, BaseNetCompiler
+    from basenet_api import BaseNetDatabase, BaseNetCompiler
     mydb = BaseNetDatabase.load('./mydb.db')
     my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml', verbose=True).compile()
     my_second_model = BaseNetCompiler.build_from_yaml('./my_model_2.yaml', verbose=True).compile()

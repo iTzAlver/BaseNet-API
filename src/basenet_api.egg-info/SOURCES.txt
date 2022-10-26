@@ -10,11 +10,6 @@ src/basenet/_names.py
 src/basenet/compiler.py
 src/basenet/database.py
 src/basenet/model.py
-src/basenet.egg-info/PKG-INFO
-src/basenet.egg-info/SOURCES.txt
-src/basenet.egg-info/dependency_links.txt
-src/basenet.egg-info/requires.txt
-src/basenet.egg-info/top_level.txt
 src/basenet/_algorithms/__init__.py
 src/basenet/_algorithms/_pbmm.py
 src/basenet/_loss_functions/__init__.py
@@ -39,3 +34,8 @@ src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666
 src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666794923.DESKTOP-TUNV74K.6196.1.v2
 src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666799299.DESKTOP-TUNV74K.1052.1.v2
 src/basenet/include/temp/render/base_model.png
+src/basenet_api.egg-info/PKG-INFO
+src/basenet_api.egg-info/SOURCES.txt
+src/basenet_api.egg-info/dependency_links.txt
+src/basenet_api.egg-info/requires.txt
+src/basenet_api.egg-info/top_level.txt
