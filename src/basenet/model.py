@@ -625,7 +625,7 @@ class _FitCallback(keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         loss = logs.get('loss')
-        val_loss = logs.get('loss')
+        val_loss = logs.get('val_loss')
         self.loss.append(loss)
         self.val_loss.append(val_loss)
         if self.queue:

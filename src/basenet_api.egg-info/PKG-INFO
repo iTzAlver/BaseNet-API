@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: basenet-api
-Version: 1.1.0
+Version: 1.2.0
 Summary: Basenet API: A simpler way to build ML models.
 Home-page: https://github.com/iTzAlver/basenet_api.git
 Author: Palomo-Alonso, Alberto
@@ -35,7 +35,7 @@ License-File: LICENSE
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.1.0-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.2.0-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -45,7 +45,7 @@ License-File: LICENSE
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.1.0
+# Basenet API Package - 1.2.0
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -343,9 +343,10 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 2. PyPi indexing.
 
 
-### TODO:
-* Extract loss results from the multiprocessing fitness function.
-* Configure GPU visibility.
+### 1.2.0:
+1. Loss results included in the BaseNetResults while multiprocessing.
+2. GPU auto set up to avoid TensorFlow memory errors.
+3. Method ``BaseNetCompiler.set_up_devices()`` configures the GPUs according to the free RAM to be used in the API.
 
 ### Cite as
 
