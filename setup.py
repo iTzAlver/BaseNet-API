@@ -10,7 +10,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 REQUIREMENTS = ['tensorflow~=2.10.0',
-                'tensorflow-gpu==2.10.*',
+                # 'tensorflow-gpu==2.10.*',
                 'graphviz >= 0.20.1',
                 'matplotlib==3.6.1',
                 'future~=0.18.2',
