@@ -83,6 +83,7 @@ class BaseNetModel:
         won't be used during the construction.
         """
         self._verbose = verbose
+        self._stop_callback = None
 
         self.compiler = compiler
         self.is_trained = False
@@ -150,12 +151,14 @@ class BaseNetModel:
 
         __history__ = None
         fit_callback = _FitCallback()
+        self._stop_callback = _ForceStopCallback()
         try:
             if avoid_lock:
                 keras.models.save_model(self.model, __bypass_path__)
                 queue = Queue()
                 p = Process(target=self._fit_in_other_process, args=((xtrain, ytrain), (xval, yval),
-                                                                     epochs, db.batch_size, self.name, queue, db.dtype))
+                                                                     epochs, db.batch_size, self.name, queue, db.dtype,
+                                                                     self._stop_callback))
                 p.start()
                 __history__ = BaseNetResults(queue=queue, parent=p)
             else:
@@ -174,6 +177,7 @@ class BaseNetModel:
                 history = self.model.fit(trai, batch_size=db.batch_size, epochs=epochs,
                                          validation_data=val,
                                          callbacks=[
+                                             self._stop_callback,
                                              fit_callback,
                                              tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/'
                                                                                     f'{self.name}'),
@@ -443,6 +447,20 @@ class BaseNetModel:
         self.name = name
         return self
 
+    def fit_stop(self):
+        """
+        The fit_stop method stops the current training process.
+        :return: It returns True if the fitting process finished; or False if there was no training process.
+        """
+        if self._stop_callback is None:
+            if self._verbose:
+                logging.warning('BaseNetModel: Cannot stop fitting because there is no fitting process open.')
+            return False
+        else:
+            self._stop_callback.stop()
+            return True
+
+
     # Private methods:
     def _get_summary(self):
         log = StdoutLogger()
@@ -547,7 +565,7 @@ class BaseNetModel:
 
     @staticmethod
     def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue,
-                              dtype: tuple[str, str]):
+                              dtype: tuple[str, str], stop_callback):
         print('Joined other process for training.')
         model = keras.models.load_model(__bypass_path__)
         # Auto shard options. Avoid console-vomiting in TF 2.0.
@@ -565,10 +583,11 @@ class BaseNetModel:
         model.fit(train, batch_size=batch_size, epochs=epochs,
                   validation_data=val,
                   callbacks=[
-                     fit_callback,
-                     tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/{name}'),
-                     tf.keras.callbacks.EarlyStopping(patience=10),
-                     tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}{name}.h5')
+                      stop_callback,
+                      fit_callback,
+                      tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/{name}'),
+                      tf.keras.callbacks.EarlyStopping(patience=10),
+                      tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}{name}.h5')
                   ])
         keras.models.save_model(model, __bypass_path__)
 
@@ -635,6 +654,14 @@ class _FitCallback(keras.callbacks.Callback):
         self.is_training = False
         if self.queue:
             self.queue.put('END')
+
+
+class _ForceStopCallback(keras.callbacks.Callback):
+    def __init__(self):
+        super().__init__()
+
+    def stop(self):
+        self.model.stop_training = True
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF SUPERCLASS                  #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

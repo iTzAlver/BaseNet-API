@@ -14,7 +14,7 @@
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.3.0-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.4.0-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.3.0
+# Basenet API Package - 1.4.0
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -329,6 +329,10 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 
 ### 1.3.0
 1. Included WindowDiff to the project scope.
+
+### 1.4.0
+1. Solved python packaging problems.
+2. Included force stop callback in the ```BaseNetModel.fit_stop()``` method.
 
 ### Cite as
 
