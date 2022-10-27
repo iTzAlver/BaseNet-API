@@ -9,7 +9,7 @@ import setuptools
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
-REQUIREMENTS = ['tensorflow~=2.10.0',
+REQUIREMENTS = ['tensorflow>=2.10.0',
                 # 'tensorflow-gpu==2.10.*',
                 'graphviz >= 0.20.1',
                 'matplotlib==3.6.1',
@@ -28,7 +28,7 @@ REQUIREMENTS = ['tensorflow~=2.10.0',
 
 setuptools.setup(
     name='basenet_api',
-    version='1.3.2',
+    version='1.3.3',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',
