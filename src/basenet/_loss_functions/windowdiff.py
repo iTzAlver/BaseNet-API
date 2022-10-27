@@ -10,6 +10,13 @@ import tensorflow as tf
 
 # -----------------------------------------------------------
 def window_diff(a: tf.Tensor, b: tf.Tensor, th=0.5):
+    """
+    This function computes the WindowDiff of two segmentations with Tensorflow.
+    :param a: Hypothesis segmentation.
+    :param b: Reference segmentation.
+    :param th: Segmentation threshold.
+    :return: WindowDiff metric.
+    """
     # Data fromatting:
     _b = tf.cast(tf.convert_to_tensor(b), dtype='float32')
     _a = tf.cast(tf.convert_to_tensor(a), dtype='float32')

@@ -4,7 +4,7 @@
 # Universidad de Alcalá - Escuela Politécnica Superior      #
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
-from ._windowdiff import window_diff
+from .windowdiff import window_diff
 
 
 class Sublosses:

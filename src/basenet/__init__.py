@@ -20,6 +20,7 @@ from ._names import PREBUILT_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LAYERS, KERAS_L
 from .compiler import BaseNetCompiler
 from .database import BaseNetDatabase
 from .model import BaseNetModel
+from ._loss_functions import window_diff
 
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

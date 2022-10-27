@@ -13,7 +13,7 @@ src/basenet/model.py
 src/basenet/_algorithms/__init__.py
 src/basenet/_algorithms/_pbmm.py
 src/basenet/_loss_functions/__init__.py
-src/basenet/_loss_functions/_windowdiff.py
+src/basenet/_loss_functions/windowdiff.py
 src/basenet/_utils/__init__.py
 src/basenet/_utils/_logger.py
 src/basenet/include/config/compilers/base_compiler.yaml

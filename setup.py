@@ -5,12 +5,30 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 import setuptools
+
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
+REQUIREMENTS = ['tensorflow~=2.10.0',
+                'tensorflow-gpu==2.10.*',
+                'graphviz >= 0.20.1',
+                'matplotlib==3.6.1',
+                'future~=0.18.2',
+                'Pillow~=9.2.0',
+                'numpy==1.23.4',
+                'ttkwidgets~=0.12.1',
+                'pydot~=1.4.2',
+                'keras~=2.9.0',
+                'setuptools~=60.2.0',
+                'PyYAML~=6.0',
+                'tensorboard~=2.9.1',
+                'psutil~=5.9.3',
+                'pynvml~=11.4.1']
+
+
 setuptools.setup(
     name='basenet_api',
-    version='1.2.0',
+    version='1.3.0',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',
@@ -43,7 +61,8 @@ setuptools.setup(
     extras_require={
         'dev': ['check-manifest'],
     },
-    include_package_data=True
+    include_package_data=True,
+    install_requires=REQUIREMENTS
 )
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #

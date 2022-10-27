@@ -275,7 +275,7 @@ class BaseNetCompiler:
         popped = self.layers.pop(-index)
         return popped
 
-    def add(self, layer: dict, where: int = -1) -> object:
+    def add(self, layer: dict, where: int = -1):
         """
         This function adds a new layer on the bottom of the architecture.
         :param layer: The layer to be added to the compiler.
@@ -349,7 +349,7 @@ class BaseNetCompiler:
             return False
 
     @staticmethod
-    def load(_compiler_path: str) -> object:
+    def load(_compiler_path: str):
         """
         This function loads a BaseNetCompiler from a .cpl file format.
         :param _compiler_path: Path where the BaseNetCompiler is being loaded from the file system.

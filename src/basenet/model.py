@@ -233,7 +233,7 @@ class BaseNetModel:
         result = metric(_output_, ytest)
         return result
 
-    def add_database(self, db: (BaseNetDatabase, None, str) = None, db_path: str = '') -> object:
+    def add_database(self, db: (BaseNetDatabase, None, str) = None, db_path: str = ''):
         """
         This method adds a database into the model.
         :param db: A BaseNetDatabase.
@@ -292,7 +292,7 @@ class BaseNetModel:
             return False
 
     @staticmethod
-    def load(model_path: str, compiler_path: str = '') -> object:
+    def load(model_path: str, compiler_path: str = ''):
         """
         This function loads a pair: .cpl (BaseNetCompiler) and .h5 (keras.model) format and builds a BaseNetModel from
         the loaded parameters.
@@ -322,7 +322,7 @@ class BaseNetModel:
         name = model_path.split('/')[-1].replace('.h5', '')
         return BaseNetModel(compiler, model=model, name=name)
 
-    def print(self, print_path: str = __print_model_path__) -> object:
+    def print(self, print_path: str = __print_model_path__):
         """
         This function renders an image with the architecture of the compiled model.
         :param print_path: Path where the image of the model is saved.
