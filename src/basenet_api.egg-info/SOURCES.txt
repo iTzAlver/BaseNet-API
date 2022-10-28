@@ -20,8 +20,8 @@ src/basenet/include/config/compilers/base_compiler.yaml
 src/basenet/include/temp/bypass/bypass.h5
 src/basenet/include/temp/checkpoints/model.base_model.h5
 src/basenet/include/temp/checkpoints/model.my_first_model.h5
-src/basenet/include/temp/logs/base_model/train/events.out.tfevents.1666870861.DESKTOP-TUNV74K.6128.2.v2
-src/basenet/include/temp/logs/base_model/validation/events.out.tfevents.1666870869.DESKTOP-TUNV74K.6128.3.v2
+src/basenet/include/temp/logs/base_model/train/events.out.tfevents.1666889237.DESKTOP-TUNV74K.7136.0.v2
+src/basenet/include/temp/logs/base_model/validation/events.out.tfevents.1666889246.DESKTOP-TUNV74K.7136.1.v2
 src/basenet/include/temp/logs/my_first_model/train/events.out.tfevents.1666793528.DESKTOP-TUNV74K.11252.0.v2
 src/basenet/include/temp/logs/my_first_model/train/events.out.tfevents.1666793546.DESKTOP-TUNV74K.5344.0.v2
 src/basenet/include/temp/logs/my_first_model/train/events.out.tfevents.1666793577.DESKTOP-TUNV74K.3988.0.v2

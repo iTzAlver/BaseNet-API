@@ -31,6 +31,7 @@ class BaseNetDatabase:
         *   name: Name of the database.
         *   distribution: Train, validation and test distribution of the input database.
         *   batch_size: Current batch size of the database.
+        *   size: The size of the database (train, validation , test).
 
     The BaseNetDatabase can be loaded and saved with its own methods.
     """
@@ -54,7 +55,7 @@ class BaseNetDatabase:
                 _distribution = (distribution['train'], distribution['val'], distribution['test'])
 
             self.name: str = name
-            self.distribution: distribution
+            self.distribution = _distribution
 
             if isinstance(y, np.ndarray):
                 _y = y.tolist()
@@ -78,6 +79,8 @@ class BaseNetDatabase:
             self.yval = np.array(yval, dtype=self.dtype[1])
             self.xtest = np.array(xtest, dtype=self.dtype[0])
             self.ytest = np.array(ytest, dtype=self.dtype[1])
+
+            self.size = (len(self.xtrain), len(self.xval), len(self.xtest))
 
             if batch_size is None:
                 self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
@@ -167,7 +170,7 @@ class BaseNetDatabase:
         return self.is_valid
 
     def __repr__(self):
-        return f'BaseNetDatabase with {len(self.xtrain) + len(self.xval) + len(self.xtest)} instances.'
+        return f'BaseNetDatabase with {sum(self.size)} instances.'
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

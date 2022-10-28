@@ -83,7 +83,8 @@ class BaseNetModel:
         won't be used during the construction.
         """
         self._verbose = verbose
-        self._stop_callback = None
+        self._stop_queue = None
+        self._recover_queue = None
 
         self.compiler = compiler
         self.is_trained = False
@@ -151,14 +152,16 @@ class BaseNetModel:
 
         __history__ = None
         fit_callback = _FitCallback()
-        self._stop_callback = _ForceStopCallback()
+        self._stop_queue = Queue()
+        self._recover_queue = Queue()
         try:
             if avoid_lock:
                 keras.models.save_model(self.model, __bypass_path__)
+                self.model = None
                 queue = Queue()
                 p = Process(target=self._fit_in_other_process, args=((xtrain, ytrain), (xval, yval),
                                                                      epochs, db.batch_size, self.name, queue, db.dtype,
-                                                                     self._stop_callback))
+                                                                     (self._stop_queue, self._recover_queue)))
                 p.start()
                 __history__ = BaseNetResults(queue=queue, parent=p)
             else:
@@ -177,7 +180,6 @@ class BaseNetModel:
                 history = self.model.fit(trai, batch_size=db.batch_size, epochs=epochs,
                                          validation_data=val,
                                          callbacks=[
-                                             self._stop_callback,
                                              fit_callback,
                                              tf.keras.callbacks.TensorBoard(log_dir=f'{__tensorboard_logs__}/'
                                                                                     f'{self.name}'),
@@ -447,19 +449,22 @@ class BaseNetModel:
         self.name = name
         return self
 
-    def fit_stop(self):
+    def fit_stop(self, task=None):
         """
         The fit_stop method stops the current training process.
         :return: It returns True if the fitting process finished; or False if there was no training process.
         """
-        if self._stop_callback is None:
+        if self._stop_queue is None:
             if self._verbose:
                 logging.warning('BaseNetModel: Cannot stop fitting because there is no fitting process open.')
             return False
         else:
-            self._stop_callback.stop()
+            self._stop_queue.put('STOP')
+            while self._recover_queue.empty():
+                if task is not None:
+                    task()
+            self.recover()
             return True
-
 
     # Private methods:
     def _get_summary(self):
@@ -547,13 +552,16 @@ class BaseNetModel:
 
     @staticmethod
     def _threshold(y, th):
-        __y__ = []
-        for element in y:
-            if element > th:
-                __y__.append(1)
-            else:
-                __y__.append(0)
-        return tf.convert_to_tensor(__y__)
+        _return_ = []
+        for row in y:
+            __y__ = []
+            for element in row:
+                if element > th:
+                    __y__.append(1)
+                else:
+                    __y__.append(0)
+            _return_.append(__y__)
+        return tf.convert_to_tensor(_return_)
 
     def _flush(self):
         flush_checkpoints = f'{__keras_checkpoint__}{self.name}.h5'
@@ -565,7 +573,7 @@ class BaseNetModel:
 
     @staticmethod
     def _fit_in_other_process(train, val, epochs: int, batch_size: int, name: str, queue: Queue,
-                              dtype: tuple[str, str], stop_callback):
+                              dtype: tuple[str, str], stop_queues):
         print('Joined other process for training.')
         model = keras.models.load_model(__bypass_path__)
         # Auto shard options. Avoid console-vomiting in TF 2.0.
@@ -579,6 +587,7 @@ class BaseNetModel:
         train = tf.data.Dataset.from_tensor_slices((_xtrain, _ytrain)).batch(batch_size).with_options(options)
         val = tf.data.Dataset.from_tensor_slices((_xval, _yval)).batch(batch_size).with_options(options)
 
+        stop_callback = _ForceStopCallback(queue=stop_queues[0])
         fit_callback = _FitCallback(queue=queue)
         model.fit(train, batch_size=batch_size, epochs=epochs,
                   validation_data=val,
@@ -590,6 +599,7 @@ class BaseNetModel:
                       tf.keras.callbacks.ModelCheckpoint(filepath=f'{__keras_checkpoint__}{name}.h5')
                   ])
         keras.models.save_model(model, __bypass_path__)
+        stop_queues[1].put('SAVED')
 
     # Build functions:
     def __repr__(self):
@@ -657,11 +667,13 @@ class _FitCallback(keras.callbacks.Callback):
 
 
 class _ForceStopCallback(keras.callbacks.Callback):
-    def __init__(self):
+    def __init__(self, queue: Queue = None):
         super().__init__()
+        self.queue = queue
 
-    def stop(self):
-        self.model.stop_training = True
+    def on_batch_end(self, batch, logs=None):
+        if not self.queue.empty():
+            self.model.stop_training = True
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF SUPERCLASS                  #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

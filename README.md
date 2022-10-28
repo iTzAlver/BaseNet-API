@@ -14,7 +14,7 @@
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.4.0-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.5.0-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.4.0
+# Basenet API Package - 1.5.0
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -253,12 +253,16 @@ GUI will block the parent process. The API implements a solution. Just activate
     while my_results.is_training:
         do_my_main_activity(update_gui, collect_data, run_server, or_whatever)
         current_loss_curve = my_results.get()
-    my_first_model.recover()
+
+    # my_first_model.recover() Use it in versions < 1.5.0.
 
     keep_doing_my_main_activity(update_gui, collect_data, run_server, or_whatever)
 
-Nota that if you don't make use of the method ``BaseNetModel.recover()`` the model will be empty as
+```OutDated```:
+Note that if you don't make use of the method ``BaseNetModel.recover()`` the model will be empty as
 the trained model is bypassed by the child process until the parent process is able to recover the trained model.
+
+```From >= 1.5.0```: The model recovers itself, there is no need (or ways) to recover it manually.
 
 #### Using Tensorboard.
 
@@ -334,6 +338,15 @@ Once you train the model, you can get a ``BaseNetResults`` object with the train
 1. Solved python packaging problems.
 2. Included force stop callback in the ```BaseNetModel.fit_stop()``` method.
 
+### 1.5.0
+1. BaseNetDatabase now has the attributes ``BaseNetDatabase.size`` and ``BaseNetDatabase.distribution``.
+2. Solved forced stopping bugs with multiprocessing in the method ``BaseNetDatabase.fit_stop()``.
+3. ```BaseNetModel._threshold()``` private method now takes a set of outputs instead only one. 
+This was only for optimization.
+4. Solved wrong ```BaseNetModel.recover()```.
+5. **Auto recover implemented**, now ```BaseNetModel.recover()``` is a private method: ```BaseNetModel._recover()```.
+Now the used does not need to recover it. *The model recovers by itself. -- Hans Niemann 2022.*
+
 ### Cite as
 
 Please, cite this library as:
@@ -342,6 +355,6 @@ Please, cite this library as:
     @misc{basenetapi,
       title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
       author={A. Palomo-Alonso},
-      booktitle={PhD in Telecommunication Engeneering},
+      booktitle={PhD in TIC: Machine Learning and NLP.},
       year={2022}
     }

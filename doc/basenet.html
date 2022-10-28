@@ -25,7 +25,7 @@
         <h2>Contents</h2>
         <ul>
   <li><a href="#basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</a></li>
-  <li><a href="#basenet-api-package-140">Basenet API Package - 1.4.0</a>
+  <li><a href="#basenet-api-package-150">Basenet API Package - 1.5.0</a>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
@@ -72,7 +72,7 @@ basenet    </h1>
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
     <a href="https://github.com/iTzAlver/basenet_api.git">
-        <img src="https://img.shields.io/badge/release-1.4.0-white?color=white&style=plastic" /></a>
+        <img src="https://img.shields.io/badge/release-1.5.0-white?color=white&style=plastic" /></a>
 </p>
 
 <p align="center">
@@ -82,7 +82,7 @@ basenet    </h1>
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-<h1 id="basenet-api-package-140">Basenet API Package - 1.4.0</h1>
+<h1 id="basenet-api-package-150">Basenet API Package - 1.5.0</h1>
 
 <p>This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.</p>
@@ -322,13 +322,17 @@ my_results = my_first_model.fit(0, epochs=6, tensorboard=False, avoid_lock=True)
 while my_results.is_training:
     do_my_main_activity(update_gui, collect_data, run_server, or_whatever)
     current_loss_curve = my_results.get()
-my_first_model.recover()
+
+# my_first_model.recover() Use it in versions &lt; 1.5.0.
 
 keep_doing_my_main_activity(update_gui, collect_data, run_server, or_whatever)
 </code></pre>
 
-<p>Nota that if you don't make use of the method <code>BaseNetModel.recover()</code> the model will be empty as
+<p><code>OutDated</code>:
+Note that if you don't make use of the method <code>BaseNetModel.recover()</code> the model will be empty as
 the trained model is bypassed by the child process until the parent process is able to recover the trained model.</p>
+
+<p><code>From &gt;= 1.5.0</code>: The model recovers itself, there is no need (or ways) to recover it manually.</p>
 
 <h4 id="using-tensorboard">Using Tensorboard.</h4>
 
@@ -427,6 +431,18 @@ print(losses)
 <li>Included force stop callback in the <code>BaseNetModel.fit_stop()</code> method.</li>
 </ol>
 
+<h3 id="150">1.5.0</h3>
+
+<ol>
+<li>BaseNetDatabase now has the attributes <code>BaseNetDatabase.size</code> and <code>BaseNetDatabase.distribution</code>.</li>
+<li>Solved forced stopping bugs with multiprocessing in the method <code>BaseNetDatabase.fit_stop()</code>.</li>
+<li><code>BaseNetModel._threshold()</code> private method now takes a set of outputs instead only one. 
+This was only for optimization.</li>
+<li>Solved wrong <code>BaseNetModel.recover()</code>.</li>
+<li><strong>Auto recover implemented</strong>, now <code>BaseNetModel.recover()</code> is a private method: <code>BaseNetModel._recover()</code>.
+Now the used does not need to recover it. <em>The model recovers by itself. -- Hans Niemann 2022.</em></li>
+</ol>
+
 <h3 id="cite-as">Cite as</h3>
 
 <p>Please, cite this library as:</p>
@@ -434,7 +450,7 @@ print(losses)
 <pre><code>@misc{basenetapi,
   title={CorNet: Correlation clustering solving methods based on Deep Learning Models},
   author={A. Palomo-Alonso},
-  booktitle={PhD in Telecommunication Engeneering},
+  booktitle={PhD in TIC: Machine Learning and NLP.},
   year={2022}
 }
 </code></pre>
