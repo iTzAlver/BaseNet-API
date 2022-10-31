@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/badge/requirements-pypi-red?color=red&style=plastic" /></a>
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
-    <a href="https://github.com/iTzAlver/basenet_api.git">
+    <a href="https://github.com/iTzAlver/BaseNet-API/releases/tag/1.5.0-release">
         <img src="https://img.shields.io/badge/release-1.5.0-white?color=white&style=plastic" /></a>
 </p>
 
