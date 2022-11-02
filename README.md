@@ -24,7 +24,7 @@
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.5.0
+# Basenet API Package - 1.5.1
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -346,6 +346,10 @@ This was only for optimization.
 4. Solved wrong ```BaseNetModel.recover()```.
 5. **Auto recover implemented**, now ```BaseNetModel.recover()``` is a private method: ```BaseNetModel._recover()```.
 Now the used does not need to recover it. *The model recovers by itself. -- Hans Niemann 2022.*
+
+### 1.5.1
+1. Solved a bug where ``BaseNetDatabase`` modified the incoming list of instances in the database; avoiding checkpoints
+for large database generators.
 
 ### Cite as
 

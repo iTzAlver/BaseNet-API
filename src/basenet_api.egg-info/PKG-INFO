@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: basenet-api
-Version: 1.5.0
+Version: 1.5.1
 Summary: Basenet API: A simpler way to build ML models.
 Home-page: https://github.com/iTzAlver/basenet_api.git
 Author: Palomo-Alonso, Alberto
@@ -34,7 +34,7 @@ License-File: LICENSE
         <img src="https://img.shields.io/badge/requirements-pypi-red?color=red&style=plastic" /></a>
     <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
         <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
-    <a href="https://github.com/iTzAlver/basenet_api.git">
+    <a href="https://github.com/iTzAlver/BaseNet-API/releases/tag/1.5.0-release">
         <img src="https://img.shields.io/badge/release-1.5.0-white?color=white&style=plastic" /></a>
 </p>
 
@@ -45,7 +45,7 @@ License-File: LICENSE
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.5.0
+# Basenet API Package - 1.5.1
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -367,6 +367,10 @@ This was only for optimization.
 4. Solved wrong ```BaseNetModel.recover()```.
 5. **Auto recover implemented**, now ```BaseNetModel.recover()``` is a private method: ```BaseNetModel._recover()```.
 Now the used does not need to recover it. *The model recovers by itself. -- Hans Niemann 2022.*
+
+### 1.5.1
+1. Solved a bug where ``BaseNetDatabase`` modified the incoming list of instances in the database; avoiding checkpoints
+for large database generators.
 
 ### Cite as
 

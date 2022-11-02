@@ -17,7 +17,7 @@
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
         <div>
-            <img src="https://github.com/iTzAlver/BaseNet-API/blob/main/doc/multimedia/basenet_logo.png" class="logo" alt="project logo"/>
+            <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png" class="logo" alt="project logo"/>
 
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
@@ -25,7 +25,7 @@
         <h2>Contents</h2>
         <ul>
   <li><a href="#basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</a></li>
-  <li><a href="#basenet-api-package-150">Basenet API Package - 1.5.0</a>
+  <li><a href="#basenet-api-package-151">Basenet API Package - 1.5.1</a>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
@@ -82,7 +82,7 @@ basenet    </h1>
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-<h1 id="basenet-api-package-150">Basenet API Package - 1.5.0</h1>
+<h1 id="basenet-api-package-151">Basenet API Package - 1.5.1</h1>
 
 <p>This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.</p>
@@ -441,6 +441,13 @@ This was only for optimization.</li>
 <li>Solved wrong <code>BaseNetModel.recover()</code>.</li>
 <li><strong>Auto recover implemented</strong>, now <code>BaseNetModel.recover()</code> is a private method: <code>BaseNetModel._recover()</code>.
 Now the used does not need to recover it. <em>The model recovers by itself. -- Hans Niemann 2022.</em></li>
+</ol>
+
+<h3 id="151">1.5.1</h3>
+
+<ol>
+<li>Solved a bug where <code>BaseNetDatabase</code> modified the incoming list of instances in the database; avoiding checkpoints
+for large database generators.</li>
 </ol>
 
 <h3 id="cite-as">Cite as</h3>

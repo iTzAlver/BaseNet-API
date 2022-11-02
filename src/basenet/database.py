@@ -12,6 +12,7 @@ import logging
 import random
 import numpy as np
 import pickle
+import copy
 
 
 # -----------------------------------------------------------
@@ -58,11 +59,11 @@ class BaseNetDatabase:
             self.distribution = _distribution
 
             if isinstance(y, np.ndarray):
-                _y = y.tolist()
+                _y = copy.copy(y).tolist()
             else:
-                _y = y
+                _y = copy.copy(y)
 
-            _x = self._rescale(x, rescale)
+            _x = self._rescale(copy.copy(x), rescale)
 
             if len(_x) != len(_y):
                 logging.error('BaseNetDatabase: Error while building the database, the number of instances of '
