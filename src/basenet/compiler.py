@@ -33,13 +33,8 @@ from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_L
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
 from .model import BaseNetModel
 from tensorflow.python.client import device_lib
+from pynvml.smi import nvidia_smi
 from .__special__ import __base_compiler__
-try:
-    from pynvml.smi import nvidia_smi
-    __nvml_is_installed__ = True
-except Exception as ex:
-    logging.error(f'NVML: Nvidia drivers are not detected: {ex}')
-    __nvml_is_installed__ = False
 
 
 # -----------------------------------------------------------
@@ -380,10 +375,7 @@ class BaseNetCompiler:
         :param let_free_ram: The percentage of RAM not to be used.
         :return: Nothing, this function just sets up an internal API config file.
         """
-        if not __nvml_is_installed__:
-            logging.warning('Configured 0 GPUs for the session, NVIDIA Drivers are not detected.')
-            os.environ["CUDA_VISIBLE_DEVICES"] = ""
-        else:
+        try:
             # Obtain the usable devices without OUT_OF_MEMORY errors.
             nvsmi = nvidia_smi.getInstance()
             query_devs = nvsmi.DeviceQuery('memory.free, name')['gpu']
@@ -420,6 +412,10 @@ class BaseNetCompiler:
             #     cfg = json.load(file)
             #     cfg['gpu_devices'] = _visible_config_
             os.environ["CUDA_VISIBLE_DEVICES"] = _visible_config_
+        except Exception as ex:
+            logging.error(f'NVML: Nvidia drivers are not detected: {ex}')
+            logging.warning('Configured 0 GPUs for the session, NVIDIA Drivers are not detected.')
+            os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
     # Checking:
     def _check(self, from_which=0):
