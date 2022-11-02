@@ -347,9 +347,10 @@ This was only for optimization.
 5. **Auto recover implemented**, now ```BaseNetModel.recover()``` is a private method: ```BaseNetModel._recover()```.
 Now the used does not need to recover it. *The model recovers by itself. -- Hans Niemann 2022.*
 
-### 1.5.1
+### 1.5.1 - 1.5.2
 1. Solved a bug where ``BaseNetDatabase`` modified the incoming list of instances in the database; avoiding checkpoints
 for large database generators.
+2. Exception handler for ``nvml`` library if NVIDIA Drivers are not installed`in the machine.
 
 ### Cite as
 

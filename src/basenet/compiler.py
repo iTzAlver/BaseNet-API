@@ -33,8 +33,13 @@ from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_L
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
 from .model import BaseNetModel
 from tensorflow.python.client import device_lib
-from pynvml.smi import nvidia_smi
 from .__special__ import __base_compiler__
+try:
+    from pynvml.smi import nvidia_smi
+    __nvml_is_installed__ = True
+except Exception as ex:
+    logging.error(f'NVML: Nvidia drivers are not detected: {ex}')
+    __nvml_is_installed__ = False
 
 
 # -----------------------------------------------------------
@@ -375,42 +380,46 @@ class BaseNetCompiler:
         :param let_free_ram: The percentage of RAM not to be used.
         :return: Nothing, this function just sets up an internal API config file.
         """
-        # Obtain the usable devices without OUT_OF_MEMORY errors.
-        nvsmi = nvidia_smi.getInstance()
-        query_devs = nvsmi.DeviceQuery('memory.free, name')['gpu']
-        devs = []
-        total_vram = 0
-        _total_ram = psutil.virtual_memory().free / 1000000
-        total_usable_vram = _total_ram * let_free_ram
-        for dev in query_devs:
-            total_vram += dev['fb_memory_usage']['free']
-            devs.append({dev['product_name']: dev['fb_memory_usage']['free']})
-        sorted_devs = copy.copy(devs)
-        sorted_devs.sort(key=lambda x: x.items())
-        free_ram = total_usable_vram
-        usable_devices = []
+        if not __nvml_is_installed__:
+            logging.warning('Configured 0 GPUs for the session, NVIDIA Drivers are not detected.')
+            os.environ["CUDA_VISIBLE_DEVICES"] = ""
+        else:
+            # Obtain the usable devices without OUT_OF_MEMORY errors.
+            nvsmi = nvidia_smi.getInstance()
+            query_devs = nvsmi.DeviceQuery('memory.free, name')['gpu']
+            devs = []
+            total_vram = 0
+            _total_ram = psutil.virtual_memory().free / 1000000
+            total_usable_vram = _total_ram * let_free_ram
+            for dev in query_devs:
+                total_vram += dev['fb_memory_usage']['free']
+                devs.append({dev['product_name']: dev['fb_memory_usage']['free']})
+            sorted_devs = copy.copy(devs)
+            sorted_devs.sort(key=lambda x: x.items())
+            free_ram = total_usable_vram
+            usable_devices = []
 
-        for dev in sorted_devs:
-            k_i = dev.items()
-            for name, dev_vram in k_i:
-                if free_ram > dev_vram:
-                    usable_devices.append(name)
-                    free_ram -= dev_vram
+            for dev in sorted_devs:
+                k_i = dev.items()
+                for name, dev_vram in k_i:
+                    if free_ram > dev_vram:
+                        usable_devices.append(name)
+                        free_ram -= dev_vram
 
-        _visible_config_ = ''
-        for index, dev in enumerate(devs):
-            for name in dev.keys():
-                if name in usable_devices:
-                    if _visible_config_:
-                        _visible_config_ = f'{_visible_config_},{index}'
-                    else:
-                        _visible_config_ = f'{index}'
+            _visible_config_ = ''
+            for index, dev in enumerate(devs):
+                for name in dev.keys():
+                    if name in usable_devices:
+                        if _visible_config_:
+                            _visible_config_ = f'{_visible_config_},{index}'
+                        else:
+                            _visible_config_ = f'{index}'
 
-        # Set up the config in the os.environ variable and the API config file.
-        # with open(__config_path__, 'w', encoding='utf-8') as file:
-        #     cfg = json.load(file)
-        #     cfg['gpu_devices'] = _visible_config_
-        os.environ["CUDA_VISIBLE_DEVICES"] = _visible_config_
+            # Set up the config in the os.environ variable and the API config file.
+            # with open(__config_path__, 'w', encoding='utf-8') as file:
+            #     cfg = json.load(file)
+            #     cfg['gpu_devices'] = _visible_config_
+            os.environ["CUDA_VISIBLE_DEVICES"] = _visible_config_
 
     # Checking:
     def _check(self, from_which=0):
