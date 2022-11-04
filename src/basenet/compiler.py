@@ -34,7 +34,7 @@ from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_L
 from .model import BaseNetModel
 from tensorflow.python.client import device_lib
 from pynvml.smi import nvidia_smi
-from .__special__ import __base_compiler__
+from .__special__ import __base_compiler__, __version__
 
 
 # -----------------------------------------------------------
@@ -172,6 +172,7 @@ class BaseNetCompiler:
         :param name: Name of the model.
         :param verbose: Print state and errors in the BaseNetCompiler.
         """
+        self.__version__ = __version__
         if layers is not None:
             self.layers: list[dict] = layers
         else:
@@ -362,7 +363,10 @@ class BaseNetCompiler:
                 __compiler_path = _compiler_path
             with open(__compiler_path, 'rb') as file:
                 compiler = pickle.load(file)
-            return compiler
+            if hasattr(compiler, '__version__'):
+                if compiler.__version__ == __version__:
+                    return compiler
+            return BaseNetCompiler._reversion(compiler)
         else:
             return None
 
@@ -492,6 +496,17 @@ class BaseNetCompiler:
                                 logging.warning(f'BaseNetCompiler: layer {key}: {item[0]} does not contain a '
                                                 f'tuple: (shapes,).')
                             return self.is_valid
+
+    @staticmethod
+    def _reversion(picked):
+        reversioned = BaseNetCompiler((), {}, {})
+        reversioned.layers = picked.layers
+        reversioned.name = picked.name
+        reversioned.compile_options = picked.compile_options
+        reversioned.devices = picked.devices
+        reversioned.io_shape = picked.io_shape
+        reversioned._check()
+        return reversioned
 
     # Build methods:
     def __repr__(self):

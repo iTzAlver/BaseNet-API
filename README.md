@@ -356,6 +356,8 @@ for large database generators.
 ### 1.5.4
 1. Added some ``BaseNetDatabase`` utils: merge and split databases.
 2. Added ``BaseNetDatabase`` equality check.
+3. Added a ``BaseNetDatabase._reversion()``, ``BaseNetCompiler._reversion()`` and ``BaseNetModel.__version__``. Which
+rebuilds the Classes to the current version of the API.
 
 ### Cite as
 

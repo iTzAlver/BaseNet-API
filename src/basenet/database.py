@@ -13,6 +13,7 @@ import random
 import numpy as np
 import pickle
 import copy
+from .__special__ import __version__
 
 
 # -----------------------------------------------------------
@@ -49,6 +50,7 @@ class BaseNetDatabase:
         :param dtype: Data type of the dataset. ('input', 'output') (x, y)
         :param bits: Bits used for the data type. ('input', 'output') (x, y)
         """
+        self.__version__ = __version__
         try:
             if distribution is None:
                 _distribution = (70, 20, 10)
@@ -84,14 +86,17 @@ class BaseNetDatabase:
             self.size = (len(self.xtrain), len(self.xval), len(self.xtest))
 
             if batch_size is None:
-                self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
+                self.batch_size = 1
+                if len(xtrain) > 0:
+                    self.batch_size = 2 ** round(np.log2(len(xtrain) / 256))
                 if self.batch_size < 1:
                     self.batch_size = 1
             else:
                 self.batch_size = batch_size
 
+            self.is_valid = False
             if sum(_distribution) == 100:
-                self.is_valid = True
+                self._check_validation()
             else:
                 logging.warning('BaseNetDatabase: The sum of the distributions for train, validation and test does not '
                                 'add up to 100%')
@@ -111,7 +116,10 @@ class BaseNetDatabase:
             if path:
                 with open(path, 'rb') as file:
                     self = pickle.load(file)
-                return self
+                if hasattr(self, '__version__'):
+                    if __version__ == self.__version__:
+                        return self
+                return BaseNetDatabase._reversion(self)
             else:
                 return None
         except Exception as ex:
@@ -143,6 +151,7 @@ class BaseNetDatabase:
         :return: A tulpe of splitted BaseNetDatabases.
         """
         if isinstance(other, int):
+            self._check_validation()
             if other > 0:
                 if self.is_valid:
                     try:
@@ -171,6 +180,8 @@ class BaseNetDatabase:
         :return: A merged BaseNetDatabase.
         """
         if isinstance(other, BaseNetDatabase):
+            self._check_validation()
+            other._check_validation()
             if other:
                 if self.is_valid:
                     try:
@@ -193,6 +204,34 @@ class BaseNetDatabase:
             return self
 
     # Private methods:
+    @staticmethod
+    def _reversion(input_db):
+        reversioned = BaseNetDatabase([], [])
+        reversioned.xtrain = input_db.xtrain
+        reversioned.xval = input_db.xval
+        reversioned.xtest = input_db.xtest
+        reversioned.ytrain = input_db.ytrain
+        reversioned.yval = input_db.yval
+        reversioned.ytest = input_db.ytest
+        reversioned.size = input_db.size
+        reversioned.name = input_db.name
+        reversioned.dtype = input_db.dtype
+        reversioned.distribution = input_db.distribution
+        reversioned._check_validation()
+        return reversioned
+
+    def _check_validation(self):
+        if sum(self.size) > 0:
+            c_train = len(self.xtrain) == len(self.ytrain)
+            c_test = len(self.xtest) == len(self.ytest)
+            c_val = len(self.xval) == len(self.yval)
+            if c_test and c_train and c_val:
+                self.is_valid = True
+            else:
+                self.is_valid = False
+        else:
+            self.is_valid = False
+
     @staticmethod
     def _splitdb(setz: tuple, split: tuple) -> tuple:
         # This function splits the database into test, train and validation from a single distribution.
@@ -243,11 +282,14 @@ class BaseNetDatabase:
             this_db.yval = self.yval[last_index_val:split_val]
             this_db.ytest = self.ytest[last_index_test:split_test]
             this_db.size = (len(this_db.xtrain), len(this_db.xval), len(this_db.xtest))
+            this_db.distribution = (len(this_db.xtrain) / sum(this_db.size), len(this_db.xval) / sum(this_db.size),
+                                    len(this_db.xtest) / sum(this_db.size))
             if this_db.size[0] < this_db.batch_size:
                 this_db.batch_size = this_db.size[0]
                 logging.warning(f'BaseNetDatabase: The splitted database size is lower than the initial batch size. '
                                 f'Consider reasigning the batch_size attribute properly; now it is resized to the '
                                 f'length of xtrain.')
+            this_db._check_validation()
             list_of_dbs.append(this_db)
             last_index_train = split_train
             last_index_val = split_val
@@ -262,6 +304,9 @@ class BaseNetDatabase:
         self.xtest = np.append(self.xtest, other.xtest, axis=0)
         self.ytest = np.append(self.ytest, other.ytest, axis=0)
         self.size = (len(self.xtrain), len(self.xval), len(self.xtest))
+        self.distribution = (len(self.xtrain) / sum(self.size), len(self.xval) / sum(self.size),
+                             len(self.xtest) / sum(self.size))
+        self._check_validation()
         return self
 
     def __bool__(self):
@@ -299,16 +344,19 @@ class BaseNetDatabase:
 
     def __eq__(self, other):
         if isinstance(other, BaseNetDatabase):
-            if self.size == other.size:
-                cs_train = (self.xtrain.size == other.xtrain.size) and (self.ytrain.size == other.ytrain.size)
-                cs_val = (self.xval.size == other.xval.size) and (self.yval.size == other.yval.size)
-                cs_test = (self.xtest.size == other.xtest.size) and (self.ytest.size == other.ytest.size)
-                if cs_test and cs_val and cs_train:
-                    c_train = (self.xtrain == other.xtrain).all() and (self.ytrain == other.ytrain).all()
-                    c_val = (self.xval == other.xval).all() and (self.yval == other.yval).all()
-                    c_test = (self.xtest == other.xtest).all() and (self.ytest == other.ytest).all()
-                    if c_test and c_val and c_train:
-                        return True
+            if self and other:
+                if self.size == other.size:
+                    cs_train = (self.xtrain.size == other.xtrain.size) and (self.ytrain.size == other.ytrain.size)
+                    cs_val = (self.xval.size == other.xval.size) and (self.yval.size == other.yval.size)
+                    cs_test = (self.xtest.size == other.xtest.size) and (self.ytest.size == other.ytest.size)
+                    if cs_test and cs_val and cs_train:
+                        c_train = (self.xtrain == other.xtrain).all() and (self.ytrain == other.ytrain).all()
+                        c_val = (self.xval == other.xval).all() and (self.yval == other.yval).all()
+                        c_test = (self.xtest == other.xtest).all() and (self.ytest == other.ytest).all()
+                        if c_test and c_val and c_train:
+                            return True
+                        else:
+                            return False
                     else:
                         return False
                 else:

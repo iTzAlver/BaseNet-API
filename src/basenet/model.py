@@ -82,6 +82,7 @@ class BaseNetModel:
         :param model: If a keras.model is already compiled, you can import it in the model parameter, so the compiler
         won't be used during the construction.
         """
+        self.__version__ = __version__
         self._verbose = verbose
         self._stop_queue = None
         self._recover_queue = None
