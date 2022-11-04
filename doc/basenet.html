@@ -25,7 +25,7 @@
         <h2>Contents</h2>
         <ul>
   <li><a href="#basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</a></li>
-  <li><a href="#basenet-api-package-153">Basenet API Package - 1.5.3</a>
+  <li><a href="#basenet-api-package-154">Basenet API Package - 1.5.4</a>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
@@ -82,7 +82,7 @@ basenet    </h1>
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-<h1 id="basenet-api-package-153">Basenet API Package - 1.5.3</h1>
+<h1 id="basenet-api-package-154">Basenet API Package - 1.5.4</h1>
 
 <p>This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.</p>
@@ -440,7 +440,8 @@ print(losses)
 This was only for optimization.</li>
 <li>Solved wrong <code>BaseNetModel.recover()</code>.</li>
 <li><strong>Auto recover implemented</strong>, now <code>BaseNetModel.recover()</code> is a private method: <code>BaseNetModel._recover()</code>.
-Now the used does not need to recover it. <em>The model recovers by itself. -- Hans Niemann 2022.</em></li>
+Now the used does not need to recover it. <em>The model recovers by itself. -- Hans Niemann 2022.</em> 
+<strong>NOTE</strong>: RECOVER IS NECESARY WHEN THE MODEL IS EARLY STOPPED; CONSIDER RECOVERING ALWAYS THE MODEL.</li>
 </ol>
 
 <h3 id="151-153">1.5.1 - 1.5.3</h3>
@@ -449,6 +450,15 @@ Now the used does not need to recover it. <em>The model recovers by itself. -- H
 <li>Solved a bug where <code>BaseNetDatabase</code> modified the incoming list of instances in the database; avoiding checkpoints
 for large database generators.</li>
 <li>Exception handler for <code>nvml</code> library if NVIDIA Drivers are not installed`in the machine.</li>
+</ol>
+
+<h3 id="154">1.5.4</h3>
+
+<ol>
+<li>Added some <code>BaseNetDatabase</code> utils: merge and split databases.</li>
+<li>Added <code>BaseNetDatabase</code> equality check.</li>
+<li>Added a <code>BaseNetDatabase._reversion()</code>, <code>BaseNetCompiler._reversion()</code> and <code>BaseNetModel.__version__</code>. Which
+rebuilds the Classes to the current version of the API.</li>
 </ol>
 
 <h3 id="cite-as">Cite as</h3>
