@@ -136,6 +136,62 @@ class BaseNetDatabase:
             logging.error(f'BaseNetDatabase: Failed to save {path}: {ex}')
             return False
 
+    def split(self, other):
+        """
+        The split function of the BaseNetDatabase divides a BaseNetDatabase in n parts.
+        :param other: The number of parts to divide the database.
+        :return: A tulpe of splitted BaseNetDatabases.
+        """
+        if isinstance(other, int):
+            if other > 0:
+                if self.is_valid:
+                    try:
+                        return self._split(other)
+                    except Exception as ex:
+                        logging.error(f'BaseNetDatabase: Exception raised while splitting two BaseNetDatabase: {ex}')
+                        return self
+                else:
+                    logging.error(f'BaseNetDatabase: The current BaseNetDatabase is not a valid database. '
+                                  f'The module is returning a non splitted BaseNetDatabase. ')
+                    return self
+            else:
+                logging.error(f'BaseNetDatabase: Trying to divide the database in a number lower than 0. '
+                              f'The module is returning a non splitted BaseNetDatabase.')
+                return self
+        else:
+            logging.error(f'BaseNetDatabase: Trying to divide the database in something different to an integer. '
+                          f'The module is returning a non splitted BaseNetDatabase. '
+                          f'Expecting type "int", given {type(other)}.')
+            return self
+
+    def merge(self, other):
+        """
+        The merge function of the BaseNetDatabase Class merges two BaseNetDatabases.
+        :param other: A BaseNetDatabase object to merge.
+        :return: A merged BaseNetDatabase.
+        """
+        if isinstance(other, BaseNetDatabase):
+            if other:
+                if self.is_valid:
+                    try:
+                        return self._merge(other)
+                    except Exception as ex:
+                        logging.error(f'BaseNetDatabase: Exception raised while merging two BaseNetDatabase: {ex}')
+                        return self
+                else:
+                    logging.error(f'BaseNetDatabase: The current BaseNetDatabase is not a valid database. '
+                                  f'The module is returning a non merged BaseNetDatabase. ')
+                    return self
+            else:
+                logging.error(f'BaseNetDatabase: The incoming BaseNetDatabase is not a valid database. '
+                              f'The module is returning a non merged BaseNetDatabase. ')
+                return self
+        else:
+            logging.error(f'BaseNetDatabase: Trying to merge the database in something different to a BaseNetDatabase. '
+                          f'The module is returning a non merged BaseNetDatabase. '
+                          f'Expecting type "BaseNetDatabase", given {type(other)}.')
+            return self
+
     # Private methods:
     @staticmethod
     def _splitdb(setz: tuple, split: tuple) -> tuple:
@@ -167,11 +223,100 @@ class BaseNetDatabase:
     def _rescale(x, scale):
         return list(np.array(x) / scale)
 
+    def _split(self, other):
+        splits_train = np.linspace(0, self.size[0], other + 1)
+        spltis_val = np.linspace(0, self.size[1], other + 1)
+        splits_test = np.linspace(0, self.size[2], other + 1)
+        last_index_train = 0
+        last_index_val = 0
+        last_index_test = 0
+        list_of_dbs = []
+        for _split_train, _split_val, _split_test in zip(splits_train[1:], splits_test[1:], spltis_val[1:]):
+            split_train = int(np.ceil(_split_train))
+            split_val = int(np.ceil(_split_val))
+            split_test = int(np.ceil(_split_test))
+            this_db = copy.copy(self)
+            this_db.xtrain = self.xtrain[last_index_train:split_train]
+            this_db.xval = self.xval[last_index_val:split_val]
+            this_db.xtest = self.xtest[last_index_test:split_test]
+            this_db.ytrain = self.ytrain[last_index_train:split_train]
+            this_db.yval = self.yval[last_index_val:split_val]
+            this_db.ytest = self.ytest[last_index_test:split_test]
+            this_db.size = (len(this_db.xtrain), len(this_db.xval), len(this_db.xtest))
+            if this_db.size[0] < this_db.batch_size:
+                this_db.batch_size = this_db.size[0]
+                logging.warning(f'BaseNetDatabase: The splitted database size is lower than the initial batch size. '
+                                f'Consider reasigning the batch_size attribute properly; now it is resized to the '
+                                f'length of xtrain.')
+            list_of_dbs.append(this_db)
+            last_index_train = split_train
+            last_index_val = split_val
+            last_index_test = split_test
+        return tuple(list_of_dbs)
+
+    def _merge(self, other):
+        self.xtrain = np.append(self.xtrain, other.xtrain, axis=0)
+        self.ytrain = np.append(self.ytrain, other.ytrain, axis=0)
+        self.xval = np.append(self.xval, other.xval, axis=0)
+        self.yval = np.append(self.yval, other.yval, axis=0)
+        self.xtest = np.append(self.xtest, other.xtest, axis=0)
+        self.ytest = np.append(self.ytest, other.ytest, axis=0)
+        self.size = (len(self.xtrain), len(self.xval), len(self.xtest))
+        return self
+
     def __bool__(self):
         return self.is_valid
 
     def __repr__(self):
         return f'BaseNetDatabase with {sum(self.size)} instances.'
+
+    def __call__(self, *args, **kwargs):
+        """
+        The call function of the BaseNetDatabase Class merges two BaseNetDatabases.
+        :param args: A BaseNetDatabase object to merge.
+        :param kwargs: Ignored.
+        :return: A merged BaseNetDatabase
+        """
+        return self.merge(args[0])
+
+    def __add__(self, other):
+        """
+        The add function of the BaseNetDatabase Class merges two BaseNetDatabases.
+        :param other: A BaseNetDatabase object to merge.
+        :return: A merged BaseNetDatabase.
+        """
+        copy_object = copy.copy(self)
+        return copy_object.merge(other)
+
+    def __truediv__(self, other):
+        """
+        The add function of the BaseNetDatabase Class divides a BaseNetDatabase in n parts.
+        :param other: The number of parts to divide the database.
+        :return: A tulpe of splitted BaseNetDatabases.
+        """
+        copy_object = copy.copy(self)
+        return copy_object.split(other)
+
+    def __eq__(self, other):
+        if isinstance(other, BaseNetDatabase):
+            if self.size == other.size:
+                cs_train = (self.xtrain.size == other.xtrain.size) and (self.ytrain.size == other.ytrain.size)
+                cs_val = (self.xval.size == other.xval.size) and (self.yval.size == other.yval.size)
+                cs_test = (self.xtest.size == other.xtest.size) and (self.ytest.size == other.ytest.size)
+                if cs_test and cs_val and cs_train:
+                    c_train = (self.xtrain == other.xtrain).all() and (self.ytrain == other.ytrain).all()
+                    c_val = (self.xval == other.xval).all() and (self.yval == other.yval).all()
+                    c_test = (self.xtest == other.xtest).all() and (self.ytest == other.ytest).all()
+                    if c_test and c_val and c_train:
+                        return True
+                    else:
+                        return False
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
