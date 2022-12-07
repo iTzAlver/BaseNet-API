@@ -13,3 +13,7 @@ PyYAML>=6.0
 tensorboard>=2.9.1
 psutil>=5.9.3
 pynvml>=11.4.1
+pandas~=1.5.2
+hvplot~=0.8.2
+panel~=0.14.1
+ray~=2.1.0

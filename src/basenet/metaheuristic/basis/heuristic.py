@@ -7,14 +7,13 @@
 # Import statements:
 import logging
 import time
-
 import tensorflow as tf
 from abc import abstractmethod
-from src.baseneth.basis.constraints import HeuristicConstraints
-from src.baseneth.basis.computational_scope import ComputationalScope
-from src.baseneth.basis.basic_evolutive import random_initializer, basic_mutation, elitist_selection
 
-from src.baseneth.basis.dashboard import Dashboard
+from .constraints import HeuristicConstraints
+from .computational_scope import ComputationalScope
+from .basic_evolutive import random_initializer, basic_mutation, elitist_selection
+from .dashboard import Dashboard
 
 
 # -----------------------------------------------------------
@@ -52,6 +51,8 @@ class BaseNetHeuristic:
             self.there_is_dashboard: bool = False
         self.each_dashboard = dashboard - 1
         self.dashboard = None
+
+        self.__idiot_proof_told = [False, False]
 
     def add_parameter(self, parameter_type: str = 'real', minimum: any = 0, maximum: any = 0):
         """
@@ -109,13 +110,15 @@ class BaseNetHeuristic:
                 cscope.bind(self.fitness)
                 self.population = self._initializer_(self.number_of_individuals, self.constraints)
                 self.population = self.constraints.apply_bindings(self.population)
+                self.population = self._initialization_correction(self.population)
+                new_individuals = self.population
                 for epoch_number in range(epoch):
                     performance = {'fitness': 0, 'crossover': 0, 'selection': 0}
                     tik = time.time()
                     #
                     #   Get the fitness function and sort in descending order.
                     #
-                    divs = self._divide(self.population, self.ray[2])   # Divide into computational segments.
+                    divs = self._divide(new_individuals, self.ray[2])   # Divide into computational segments.
                     cscope.run(divs)                                    # Run the computational segments.
                     futures = self._collapse(cscope.get())              # Obtain and collapse the results.
                     self.score = self._idiot_proof_futures(futures)     # Some idiot proofing of the fitness function.
@@ -126,14 +129,9 @@ class BaseNetHeuristic:
                     #   Crossover.
                     #
                     new_individuals = self.constraints.apply_bindings(self._crossover_(self.population))    # New pop.
-                    disrespectful = self.constraints.check_constraints(new_individuals)                     # Rules.
-                    while disrespectful:                                        # While the rules are not respected...
-                        new = self._crossover_(self.population)                 # New individuals.
-                        new_individuals = self.constraints.apply_bindings(new)  # Apply constraints (min, max, type).
-                        disrespectful = self.constraints.check_constraints(new_individuals)  # Who does not respect?
-                        [...]
-                    tik = time.time()                                   # Tik-toc.
-                    performance['crossover'] = tik - tak                # Performance store.
+                    new_individuals = self._crossover_correction(new_individuals)     # Correct the wrong individuals.
+                    tik = time.time()                                    # Tik-toc.
+                    performance['crossover'] = tik - tak                 # Performance store.
                     #
                     #   Selection.
                     #
@@ -179,6 +177,53 @@ class BaseNetHeuristic:
     """
     This are the private methods of the Heuristic Model.
     """
+    def _initialization_correction(self, new_individuals):
+        disrespectful = self.constraints.check_constraints(new_individuals)  # Rules.
+        if disrespectful:
+            correct_list = list()
+            if not self.__idiot_proof_told[0]:
+                logging.warning(f'Idiot-Proof-Warning: Your initializer does not respect the constraints of the problem'
+                                f'. Check your rules and your initializer.\nAutocorrection is enabled, '
+                                f'it will decrease the performance of your MetaHeuristic.')
+                self.__idiot_proof_told[0] = True
+            while len(correct_list) < self.number_of_individuals:                   # While the rules are not respected:
+                correct = self._append_respectful(disrespectful, new_individuals)   # Get correct individuals.
+                correct_list.extend(correct)                                            # Extend the correct list.
+                new = self._initializer_(self.number_of_individuals, self.constraints)  # New individuals.
+                new_individuals = self.constraints.apply_bindings(new)              # Apply constraints (min, max, type)
+                disrespectful = self.constraints.check_constraints(new_individuals)     # Who does not respect?
+            return tf.convert_to_tensor(correct_list[:self.number_of_individuals])
+        else:
+            return new_individuals
+
+    def _crossover_correction(self, new_individuals):
+        disrespectful = self.constraints.check_constraints(new_individuals)  # Rules.
+        if disrespectful:
+            if not self.__idiot_proof_told[1]:
+                logging.warning(f'Idiot-Proof-Warning: Your crossover does not respect the constraints of the problem'
+                                f'. Check your rules and your crossover.\nAutocorrection is enabled, '
+                                f'it will decrease the performance of your MetaHeuristic.')
+                self.__idiot_proof_told[1] = True
+            correct_list = list()
+            while len(correct_list) < self.new_individuals_per_epoch:               # While the rules are not respected:
+                correct = self._append_respectful(disrespectful, new_individuals)   # Get the correct individuals.
+                correct_list.extend(correct)                                        # Extend the correct list.
+                new = self._crossover_(self.population)                             # New individuals.
+                new_individuals = self.constraints.apply_bindings(new)              # Apply constraints (min, max, type)
+                disrespectful = self.constraints.check_constraints(new_individuals)  # Who does not respect?
+            return tf.convert_to_tensor(correct_list[:self.new_individuals_per_epoch])
+        else:
+            return new_individuals
+
+    @staticmethod
+    def _append_respectful(drp, ni):
+        totals = set(range(len(ni)))
+        correct = list()
+        for element in totals:
+            if element not in drp:
+                correct.append(ni[element])
+        return correct
+
     def _sort(self) -> tuple[tf.Tensor, tf.Tensor]:
         indices = tf.argsort(self.score, direction='DESCENDING')
         pop = tf.gather(self.population, indices)
@@ -193,12 +238,14 @@ class BaseNetHeuristic:
         divs.append(population[(divisions - 1) * individuals_per_division:].numpy())
         return divs
 
-    @staticmethod
-    def _collapse(futures):
+    def _collapse(self, futures):
         collapsed = list()
         for future in futures:
             collapsed.extend(future)
-        return tf.convert_to_tensor(collapsed)
+        news = tf.convert_to_tensor(collapsed)
+        if self.score is None:
+            return news
+        return tf.concat([self.score[0:-self.new_individuals_per_epoch], news], 0)
     """
     This are the idiot-proof wrappers for the abstract functions.
     """
@@ -213,9 +260,6 @@ class BaseNetHeuristic:
             else:
                 logging.warning(f'Idiot-Proof-Warning: Your initializer does not return {number_of_individuals} '
                                 f'individuals, it returns {len(_return_value_)} individuals. Fix your initializer.')
-            if constraints.check_constraints(_return_value_):
-                logging.warning(f'Idiot-Proof-Warning: Your initializer does not respect the constraints of the problem'
-                                f'. Check your rules and your initializer.')
             if isinstance(_return_value_, tf.Tensor):
                 return _return_value_
             else:

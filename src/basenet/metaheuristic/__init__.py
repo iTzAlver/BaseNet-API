@@ -8,6 +8,9 @@
 # -----------------------------------------------------------
 from .basis import BaseNetHeuristic
 from .basis import ComputationalScope
+
+from .algorithms import BaseNetRandomSearch
+from .algorithms import BaseNetGenetic
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

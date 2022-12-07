@@ -5,12 +5,8 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from .heuristic import BaseNetHeuristic
-
-from .computational_scope import ComputationalScope
-from .constraints import HeuristicConstraints
-
-from .basic_evolutive import basic_mutation, random_initializer, elitist_selection
+from .random_search import BaseNetRandomSearch
+from .genetic import BaseNetGenetic
 # -----------------------------------------------------------
 
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

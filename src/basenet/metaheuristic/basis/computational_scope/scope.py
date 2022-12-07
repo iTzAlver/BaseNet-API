@@ -16,7 +16,11 @@ class ComputationalScope:
         self.pipeline = ComputationalPipeline()
         if cluster_ip_address:
             self.cluster = RayCluster(cluster_ip_address, ray_runtime_env)
-            self.orchestrator = ComputationalOrchestrator(has_cluster=True)
+            if self.cluster.is_valid:
+                self.orchestrator = ComputationalOrchestrator(has_cluster=True)
+            else:
+                self.cluster = None
+                self.orchestrator = ComputationalOrchestrator(has_cluster=False)
         else:
             self.cluster = None
             self.orchestrator = ComputationalOrchestrator(has_cluster=False)

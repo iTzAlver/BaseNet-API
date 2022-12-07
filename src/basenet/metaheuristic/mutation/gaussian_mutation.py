@@ -5,14 +5,19 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from .heuristic import BaseNetHeuristic
+import tensorflow as tf
+import numpy as np
 
-from .computational_scope import ComputationalScope
-from .constraints import HeuristicConstraints
 
-from .basic_evolutive import basic_mutation, random_initializer, elitist_selection
 # -----------------------------------------------------------
-
+def gaussian_mutation(population: tf.Tensor, mutation_variance: float) -> tf.Tensor:
+    new_indis = list()
+    var = np.sqrt(mutation_variance)
+    lp = len(population[0])
+    for individual in population.numpy():
+        noise = var * np.random.randn(lp)
+        new_indis.append(individual + noise)
+    return tf.convert_to_tensor(new_indis, dtype=tf.float32)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

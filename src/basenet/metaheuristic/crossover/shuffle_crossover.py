@@ -5,14 +5,13 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from .heuristic import BaseNetHeuristic
+import tensorflow as tf
+import numpy as np
 
-from .computational_scope import ComputationalScope
-from .constraints import HeuristicConstraints
 
-from .basic_evolutive import basic_mutation, random_initializer, elitist_selection
 # -----------------------------------------------------------
-
+def shuffle_crossover(indis):
+    return indis
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

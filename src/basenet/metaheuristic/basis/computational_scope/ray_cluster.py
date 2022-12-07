@@ -22,7 +22,12 @@ class RayCluster:
             self.runtime_env = {}
         self.base_target = None
         self.futures = []
-        self.open()
+        try:
+            self.open()
+            self.is_valid = True
+        except RuntimeError as ex:
+            logging.error(f'RayCluster error. The Python version of the cluster and the environment do not match\n{ex}')
+            self.is_valid = False
 
     def open(self):
         """

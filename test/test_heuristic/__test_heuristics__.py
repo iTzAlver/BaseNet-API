@@ -5,7 +5,7 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from basenet.experimental import HeuristicOptimization, HeuristicConstraints
+from basenet.metaheuristic import HeuristicOptimization, HeuristicConstraints
 # -----------------------------------------------------------
 
 

@@ -13,10 +13,6 @@ import pandas as pd
 import hvplot.pandas
 import panel as pn
 
-# import holoviews as hv
-# hv.extension('bokeh')
-# pn.extension('bokeh')
-
 CROSS_SECTION_COLOR_1 = '#11B281'
 CROSS_SECTION_COLOR_0 = '#00A170'
 SIDEBAR_COLOR = CROSS_SECTION_COLOR_1
@@ -31,10 +27,16 @@ class Dashboard:
         self.constraints = constraints
 
         if cscope:
-            self.cscope_info = {'ip': cscope.cluster.ip,
-                                'c_cpus': cscope.orchestrator.ray_cpus,
-                                'cpus': cscope.orchestrator.cpus,
-                                'seg': cscope.orchestrator.partial}
+            if cscope.cluster:
+                self.cscope_info = {'ip': cscope.cluster.ip,
+                                    'c_cpus': cscope.orchestrator.ray_cpus,
+                                    'cpus': cscope.orchestrator.cpus,
+                                    'seg': cscope.orchestrator.partial}
+            else:
+                self.cscope_info = {'ip': None,
+                                    'c_cpus': None,
+                                    'cpus': cscope.orchestrator.cpus,
+                                    'seg': 1}
         else:
             self.cscope_info = {'ip': None, 'c_cpus': None, 'cpus': 1, 'seg': 1}
 
@@ -106,13 +108,20 @@ class Dashboard:
         def get_plot(ts):
             idx = timestamps.index(ts)
             dataframe = pf[pf.ts.isin(timestamps[idx:])]
-            return dataframe.hvplot.bar(x='ts', stacked=True, width=765, height=355, value_label='Elapsed Time (s)',
+            return dataframe.hvplot.bar(x='ts', stacked=True, width=325, height=222, value_label='Elapsed Time (s)',
                                         legend='top', grid=True)
 
-        bound_table = pn.bind(get_table, n=how_many_indiv, ts=select_ts)
+        def get_fitting_epoch(ts):
+            idx = timestamps.index(ts)
+            dataframe = pp[pp.ts.isin(timestamps[idx:]) & (pp.individual == 0)]
+            return dataframe.hvplot.bar(x='ts', y='fitness', value_label='Best Fitness score', grid=True, stacked=True,
+                                        width=765, height=355, title=ts, legend=False).opts(color='ts', cmap='autumn')
+
+        bound_table = pn.bind(get_table, n=how_many_indiv, ts=select_frame)
         fitness_curve = pn.bind(get_curve, ts=select_frame)
         fitness_bar = pn.bind(get_bar, ts=select_frame)
         performance_plot = pn.bind(get_plot, ts=select_ts)
+        fitting_plot = pn.bind(get_fitting_epoch, ts=select_ts)
 
         ptit = pn.Row(
             pn.pane.Markdown('<center>\n# BaseNetHeuristic Dashboard - A simple way to monitor your'
@@ -125,22 +134,22 @@ class Dashboard:
                       how_many_indiv,
                       pn.pane.Markdown('## Epoch selection for Fitness'),
                       select_frame,
-                      pn.pane.Markdown('## Epoch selection for Population'),
+                      pn.pane.Markdown('## Epoch selection for Performance'),
                       select_ts,
                       pn.pane.Markdown(f'## ComputationalScope information\n'
                                        f'\n*\t**Cluster IP**: \t{cscope_info["ip"]}\n'
                                        f'*\t**Cluster cores**: \t{cscope_info["c_cpus"]}\n'
                                        f'*\t**Own cores**: \t{cscope_info["cpus"]}\n'
                                        f'*\t**Segmentation**: \t{round(cscope_info["seg"], 3)}\n\n\n'
-                                       f'### Last epoch: {len(timestamps)} at {timestamps[-1]}',
-                                       height=410),
+                                       f'### Last epoch: {len(timestamps)} at {timestamps[-1]}'),
+                      performance_plot,
                       background=SIDEBAR_COLOR),
             pn.Column(pn.pane.Markdown('<center>\n## Fitness score metrics in the selected TimeStamp\n</center>',
                                        width=765),
                       fitness_bar,
-                      pn.pane.Markdown('<center>\n## Performance of the Heuristic over the epoch\n</center>',
+                      pn.pane.Markdown('<center>\n## Best individual over the epochs\n</center>',
                                        width=765),
-                      performance_plot,
+                      fitting_plot,
                       background=CROSS_SECTION_COLOR_0),
             pn.Column(pn.pane.Markdown('<center>\n## Fitness score for each individual in the selected TimeStamp'
                                        '\n</center>', width=765),
