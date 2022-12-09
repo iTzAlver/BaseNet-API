@@ -1,0 +1,21 @@
+compiler:
+  name: "model_in_serie"
+  input_shape:
+    - 10
+  output_shape: 10
+
+  compile_options:
+    loss: "categorical_crossentropy"
+    optimizer: "adam"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Train"
+
+  layers:
+    - layer:
+        name: "Dense"
+        shape:
+          - 32
+        options:

@@ -1,0 +1,35 @@
+compiler:
+  name: "valid_solution"
+  input_shape:
+    - 28
+    - 28
+    - 1
+  output_shape: 10
+
+  compile_options:
+    loss: "categorical_crossentropy"
+    optimizer: "adam"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Train"
+
+  layers:
+    - layer: 
+        name: "Conv2D"
+        shape:
+            - 32
+            - 3
+        options:
+    
+    - layer:
+        name: "Flatten"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 64
+        options:

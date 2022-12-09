@@ -90,7 +90,7 @@ class BaseNetModel:
         self.compiler = compiler
         self.is_trained = False
         self.name = name
-        self.breech = []
+        self.breech = list()
 
         try:
             if model is not None:
@@ -196,7 +196,7 @@ class BaseNetModel:
         finally:
             return __history__
 
-    def predict(self, x, scale: float = 1.0, th: (None, float) = 0.5, expand_dims: bool = False) -> tf.Tensor:
+    def predict(self, x, scale: float = 1.0, th: (None, float) = None, expand_dims: bool = False) -> tf.Tensor:
         """
         This function predicts with the current model an output from the input 'x', divided by the 'scale' and converted
         to a binary matrix with a custom threshold 'th'.
@@ -219,7 +219,7 @@ class BaseNetModel:
             __y__ = _y_
         return __y__
 
-    def evaluate(self, ndb, metric, th: (None, float) = 0.5) -> (tf.Tensor, None):
+    def evaluate(self, ndb, metric, th: (None, float) = None) -> (tf.Tensor, None):
         """
         This method evaluates the test dataset of a BaseNetDatabase.
         :param ndb: Number of the database to be tested.
@@ -236,7 +236,7 @@ class BaseNetModel:
             return None
         xtest = tf.convert_to_tensor(db.xtest, dtype=getattr(tf, db.dtype[0]))
         ytest = tf.convert_to_tensor(db.ytest, dtype=getattr(tf, db.dtype[1]))
-        _output_ = self.predict(xtest, th=th, scale=1.0)
+        _output_ = self.predict(xtest, th=th)
         result = metric(_output_, ytest)
         return result
 
@@ -391,46 +391,37 @@ class BaseNetModel:
                                 f'{type(input_model)}.')
             return self
         else:
-            if isinstance(input_model, BaseNetModel):
-                pass
-            else:
+            if not isinstance(input_model, BaseNetModel):
                 raise ValueError('Cannot import a keras model because there is no current way to '
                                  f'trace back the parameters in this version: {__version__}.')
 
         the_model_is_parallel = False
         the_model_is_under_the_current_model = True
-        name = self.name
-        options = self.compiler.compile_options
         for key, item in kwargs.items():
             if key == 'parallel':
                 the_model_is_parallel = item
             elif key == 'top':
                 the_model_is_under_the_current_model = item
             elif key == 'name':
-                name = item
+                self.name = item
             elif key == 'options':
-                options = item
+                self.compiler.compile_options = item
 
         if not the_model_is_parallel:
             if the_model_is_under_the_current_model:
-                result_model_layers = []
-                result_model_layers.extend(self.model.compiler.layers)
+                result_model_layers = list()
+                result_model_layers.extend(self.compiler.layers)
                 result_model_layers.extend(input_model.compiler.layers)
+                for layer in result_model_layers:
+                    if 'NotUncompilable' in layer:
+                        raise ValueError('Cannot compile a Uncompilable layer, probably you introduced a model in'
+                                         f'parallel, you cannot re-compile a parallel model in versio {__version__}.')
             else:
-                result_model_layers = []
+                result_model_layers = list()
                 result_model_layers.extend(input_model.compiler.layers)
                 result_model_layers.extend(self.model.layers[1:])
 
-            # _in = result_model_layers[0].input
-            # _add_layers = result_model_layers[1:]
-            # mids = _in
-            # for layer in _add_layers:
-            #     layer_type = layer.name.capitalize()
-            #     mids = getattr(keras.layers, layer_type)()(mids)
-            # _out = mids
-            # result_model = keras.models.Model(inputs=[_in], outputs=[_out], name=name)
             self.compiler.layers = result_model_layers
-            self.compiler.compile_options = options
             self._build()
 
         else:
@@ -440,14 +431,12 @@ class BaseNetModel:
             lastlayer1 = input_model._build(inputs=_in1)
             _out = keras.layers.concatenate([lastlayer0, lastlayer1])
             _out = keras.layers.Dense(self.compiler.io_shape[1], activation='sigmoid', name='output')(_out)
-            result_model = keras.models.Model(inputs=[(_in0, _in1)], outputs=[_out], name=name)
+            result_model = keras.models.Model(inputs=[(_in0, _in1)], outputs=[_out], name=self.name)
 
-            result_model.compile(**options)
+            result_model.compile(**self.compiler.compile_options)
             self.compiler.layers.append({'NotUncompilable': ((), {})})
-            self.compiler.compile_options = options
             self.model = result_model
 
-        self.name = name
         return self
 
     def fit_stop(self, task=None):
@@ -495,7 +484,7 @@ class BaseNetModel:
 
             last_master = None
             pipeline_opened = False
-            towers = []
+            towers = list()
 
             for layer in self.compiler.layers:
                 for layer_type, (layer_shape, layer_args) in layer.items():
@@ -511,7 +500,7 @@ class BaseNetModel:
                         pipeline_opened = False
                         towers.append(_lastlay)
                         _lastlay = keras.layers.concatenate(towers, **layer_args)
-                        towers = []
+                        towers = list()
                     else:
                         if layer_type in KERAS_LIST_LAYERS and layer_type not in PREBUILT_LAYERS:
                             this_lay = getattr(keras.layers, layer_type)(*layer_shape, **layer_args)
@@ -540,7 +529,7 @@ class BaseNetModel:
     @staticmethod
     def _get_scope(devices):
         # Creates a scope from the current devices.
-        _devices = []
+        _devices = list()
         for _dev, role in devices.items():
             if role == 'Train':
                 _devices.append(_dev)
@@ -553,9 +542,9 @@ class BaseNetModel:
 
     @staticmethod
     def _threshold(y, th):
-        _return_ = []
+        _return_ = list()
         for row in y:
-            __y__ = []
+            __y__ = list()
             for element in row:
                 if element > th:
                     __y__.append(1)
@@ -643,14 +632,14 @@ class BaseNetModel:
 class _FitCallback(keras.callbacks.Callback):
     def __init__(self, queue: Queue = None):
         super().__init__()
-        self.loss = []
-        self.val_loss = []
+        self.loss = list()
+        self.val_loss = list()
         self.is_training = True
         self.queue = queue
 
     def on_train_begin(self, logs=None):
-        self.loss = []
-        self.val_loss = []
+        self.loss = list()
+        self.val_loss = list()
         self.is_training = True
 
     def on_epoch_end(self, epoch, logs=None):
@@ -708,11 +697,11 @@ class BaseNetResults:
         if loss:
             self._loss = loss
         else:
-            self._loss = []
+            self._loss = list()
         if val_loss:
             self._val_loss = val_loss
         else:
-            self._val_loss = []
+            self._val_loss = list()
         self._queue = queue
         self._parent = parent
 

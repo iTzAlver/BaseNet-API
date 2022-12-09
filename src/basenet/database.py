@@ -8,11 +8,14 @@
 The database.py file contains the BaseNetDatabase class.
 """
 # Import statements:
+import tensorflow as tf
 import logging
 import random
 import numpy as np
 import pickle
 import copy
+import pandas as pd
+
 from .__special__ import __version__
 
 
@@ -37,7 +40,7 @@ class BaseNetDatabase:
 
     The BaseNetDatabase can be loaded and saved with its own methods.
     """
-    def __init__(self, x, y, distribution: dict = None, name='unnamed_database', batch_size: int = None,
+    def __init__(self, x, y=None, distribution: dict = None, name='unnamed_database', batch_size: int = None,
                  rescale: float = 1.0, dtype: tuple[str, str] = ('float', 'float'), bits: tuple[int, int] = (32, 32)):
         """
         This class builds a BaseNetDatabase, compatible with the NetBase API.
@@ -52,6 +55,11 @@ class BaseNetDatabase:
         """
         self.__version__ = __version__
         try:
+            if y is None or isinstance(y, str):
+                x_, y_ = self._framework_convertion(x, y)
+            else:
+                x_, y_ = x, y
+
             if distribution is None:
                 _distribution = (70, 20, 10)
             else:
@@ -60,12 +68,13 @@ class BaseNetDatabase:
             self.name: str = name
             self.distribution = _distribution
 
-            if isinstance(y, np.ndarray):
-                _y = copy.copy(y).tolist()
+            if isinstance(y_, np.ndarray):
+                _y = copy.copy(y_).tolist()
             else:
-                _y = copy.copy(y)
+                _y = copy.copy(y_)
 
-            _x = self._rescale(copy.copy(x), rescale)
+            _y = self._to_binary(_y)
+            _x = self._rescale(copy.copy(x_), rescale)
 
             if len(_x) != len(_y):
                 logging.error('BaseNetDatabase: Error while building the database, the number of instances of '
@@ -236,10 +245,10 @@ class BaseNetDatabase:
     def _splitdb(setz: tuple, split: tuple) -> tuple:
         # This function splits the database into test, train and validation from a single distribution.
         total = len(setz[0])
-        xtrain = []
-        ytrain = []
-        xval = []
-        yval = []
+        xtrain = list()
+        ytrain = list()
+        xval = list()
+        yval = list()
         ntrain = round(total * split[0] / 100)
         nval = round(total * split[1] / 100)
         ntest = total - ntrain - nval
@@ -269,7 +278,7 @@ class BaseNetDatabase:
         last_index_train = 0
         last_index_val = 0
         last_index_test = 0
-        list_of_dbs = []
+        list_of_dbs = list()
         for _split_train, _split_val, _split_test in zip(splits_train[1:], splits_test[1:], spltis_val[1:]):
             split_train = int(np.ceil(_split_train))
             split_val = int(np.ceil(_split_val))
@@ -308,6 +317,68 @@ class BaseNetDatabase:
                              len(self.xtest) / sum(self.size))
         self._check_validation()
         return self
+
+    @staticmethod
+    def _to_binary(_y):
+        """
+        This function can convert:
+        [0, 3, 5, 6, 9, 4, 9] -> [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0, 0]] (binarized)
+        [5.67, 0.92, 0.12, 6.32] -> [0.8, 0.1, 0.12, 1]                                     (normalized)
+            Untouched:
+        [0.8, 0.1, 0.3, 0.1, 0.8] -> [0.8, 0.1, 0.3, 0.1, 0.8]
+            Error:
+        []              -> ValueError
+        Object (false): -> ValueError
+        """
+        try:
+            __y = np.array(_y)
+            if len(__y.shape) == 2:
+                return _y
+            if not _y:
+                raise ValueError(f'BaseNetDatabaseError: The value of y is not provided.')
+            else:
+
+                my = max(__y)
+                if __y.dtype != int:
+                    if my > 1:
+                        return (__y / my).tolist()
+                    else:
+                        return _y
+                else:
+                    y = list()
+                    for element in _y:
+                        element_y = np.zeros(my + 1)
+                        element_y[element] = 1
+                        y.append(element_y)
+            return y
+        except Exception as ex:
+            raise RuntimeError('BaseNetDatabase:_to_binary: An error ocurred while converting the non-binzarized and'
+                               f'non-normalized labels into the API database:\n{ex}')
+
+    @staticmethod
+    def _framework_convertion(x, y_hint=None):
+        if isinstance(x, pd.DataFrame):
+            if y_hint is None:
+                _x = np.array(x)
+                return _x[:, :-1], _x[:, -1]
+            else:
+                try:
+                    _y = np.array(x[y_hint])
+                    _x = np.array(x.loc[:, x.columns != y_hint])
+                    return _x, _y
+                except Exception as ex:
+                    raise ValueError('BaseNetDatabase Error: The given value of y is not a valid column for the given'
+                                     f'DataFrame.\n{ex}')
+        elif isinstance(x, tf.data.Dataset):
+            _x = list()
+            _y = list()
+            for batched in x:
+                _x.append(batched['image'])
+                _y.append(batched['label'])
+            return _x, _y
+        else:
+            raise ValueError('BaseNetDatabase Error: The values of y are not provided and the input x is not '
+                             'recognized as a compatible framework.')
 
     def __bool__(self):
         return self.is_valid
@@ -355,16 +426,7 @@ class BaseNetDatabase:
                         c_test = (self.xtest == other.xtest).all() and (self.ytest == other.ytest).all()
                         if c_test and c_val and c_train:
                             return True
-                        else:
-                            return False
-                    else:
-                        return False
-                else:
-                    return False
-            else:
-                return False
-        else:
-            return False
+        return False
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

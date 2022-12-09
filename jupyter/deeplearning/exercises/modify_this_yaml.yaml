@@ -1,0 +1,39 @@
+compiler:
+  name: "new_model"
+  input_shape:
+    - 28
+    - 28
+    - 1
+  output_shape: 10
+
+  compile_options:
+    loss: "categorical_crossentropy"
+    optimizer: "adam"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Train"
+
+# Start from here: the previous is already configured:
+
+  layers:
+    - layer:
+        name: "Flatten"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 128
+        options:
+          - option:
+              name: "activation"
+              value: "relu"
+
+    - layer:
+        name: "Dropout"
+        shape:
+          - 0.5
+        options:

@@ -6,6 +6,7 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
 import sys
+import os
 
 
 class Logger:
@@ -21,8 +22,12 @@ class Logger:
     def write(self, text):
         self.messages.append(text)
 
-    def flush(self):
-        pass
+    @staticmethod
+    def flush():
+        if 'win' in sys.platform:
+            os.system('cls')
+        else:
+            os.system("clear")
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
