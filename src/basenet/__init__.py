@@ -21,6 +21,7 @@ from .compiler import BaseNetCompiler
 from .database import BaseNetDatabase
 from .model import BaseNetModel
 from ._loss_functions import window_diff
+from .__special__ import __version__
 
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

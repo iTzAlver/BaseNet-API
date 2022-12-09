@@ -176,7 +176,7 @@ class BaseNetCompiler:
         if layers is not None:
             self.layers: list[dict] = layers
         else:
-            self.layers: list[dict] = []
+            self.layers: list[dict] = list()
         self.compile_options: dict = compile_options
         self.devices: dict = devices
         self.io_shape: tuple = io_shape
@@ -208,7 +208,7 @@ class BaseNetCompiler:
                 if typ == 'cpu' or typ == 'gpu':
                     devices[dev['name']] = dev['state']
 
-        layers = []
+        layers = list()
         for __layer in compiler['layers']:
             for typ, layer in __layer.items():
                 if typ == 'layer':
@@ -383,7 +383,7 @@ class BaseNetCompiler:
             # Obtain the usable devices without OUT_OF_MEMORY errors.
             nvsmi = nvidia_smi.getInstance()
             query_devs = nvsmi.DeviceQuery('memory.free, name')['gpu']
-            devs = []
+            devs = list()
             total_vram = 0
             _total_ram = psutil.virtual_memory().free / 1000000
             total_usable_vram = _total_ram * let_free_ram
@@ -393,7 +393,7 @@ class BaseNetCompiler:
             sorted_devs = copy.copy(devs)
             sorted_devs.sort(key=lambda x: x.items())
             free_ram = total_usable_vram
-            usable_devices = []
+            usable_devices = list()
 
             for dev in sorted_devs:
                 k_i = dev.items()
