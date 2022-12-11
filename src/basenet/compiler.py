@@ -216,7 +216,7 @@ class BaseNetCompiler:
                     if layer['shape'] is not None:
                         _layer['shape'] = tuple(layer['shape'])
                     else:
-                        _layer['shape'] = (None,)
+                        _layer['shape'] = ()  # Add None in previous versions.
                     _options = {}
                     if layer['options'] is not None:
                         for _option_ in layer['options']:
@@ -267,13 +267,13 @@ class BaseNetCompiler:
         _retval_[libdiv[0].name] = 'Train'
         return _retval_
 
-    def pop(self, index: int) -> dict:
+    def pop(self, index: int = 0) -> dict:
         """
         This method pops out a layer from the architecture.
         :param index: The place of the layer in the layers list.
         :return: The popped layer.
         """
-        popped = self.layers.pop(-index)
+        popped = self.layers.pop(- index - 1)
         return popped
 
     def add(self, layer: dict, where: int = -1):
@@ -324,10 +324,11 @@ class BaseNetCompiler:
 
         _layers_ = list()
         for layer in self.layers:
-            _options_ = list()
             for key, item in layer.items():
-                _options_.append({'option': {'name': key, 'value': item}})
-            _layers_.append({'layer': {'name': layer['name'], 'shape': layer['shape'], 'options': _options_}})
+                _options_ = list()
+                for key2, item2 in item[1].items():
+                    _options_.append({'option': {'name': key2, 'value': item2}})
+                _layers_.append({'layer': {'name': key, 'shape': item[0], 'options': _options_}})
 
         _yaml_full_ = {
             'name': self.name,
@@ -343,7 +344,7 @@ class BaseNetCompiler:
                 __compiler_path = f'{_compiler_path}.yaml'
             else:
                 __compiler_path = _compiler_path
-            with open(__compiler_path, 'wb') as file:
+            with open(__compiler_path, 'w') as file:
                 yaml.dump(yaml_on, file, default_flow_style=False)
             return True
         else:
@@ -513,9 +514,8 @@ class BaseNetCompiler:
         return f'Compiler with {len(self.layers)} layers, options:\n{self.compile_options}'
 
     def __add__(self, other):
-        self.layers.append(other)
-        if not self._check(from_which=-1):
-            self.layers.pop(-1)
+        self.add(other)
+        return self
 
     def __bool__(self):
         return self.is_valid

@@ -119,10 +119,6 @@ PREBUILT_LAYERS = [
     'open_pipeline',
     'close_pipeline',
     ''
-    '(!) RandomForest',
-    '(!) DecisionTree',
-    '(!) Pbmm',
-    ''
 ]
 
 KERAS_LOSSES = [

@@ -9,6 +9,7 @@ import tensorflow as tf
 
 
 # -----------------------------------------------------------
+@tf.function
 def window_diff(a: tf.Tensor, b: tf.Tensor, th=0.5):
     """
     This function computes the WindowDiff of two segmentations with Tensorflow.

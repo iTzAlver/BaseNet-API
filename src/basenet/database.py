@@ -55,7 +55,7 @@ class BaseNetDatabase:
         """
         self.__version__ = __version__
         try:
-            if y is None or isinstance(y, str):
+            if y is None or isinstance(y, (str, tuple)):
                 x_, y_ = self._framework_convertion(x, y)
             else:
                 x_, y_ = x, y
@@ -73,12 +73,15 @@ class BaseNetDatabase:
             else:
                 _y = copy.copy(y_)
 
-            _y = self._to_binary(_y)
+            if _y:
+                _y = self._to_binary(_y)
+            else:
+                _y = list()
             _x = self._rescale(copy.copy(x_), rescale)
 
             if len(_x) != len(_y):
                 logging.error('BaseNetDatabase: Error while building the database, the number of instances of '
-                              f'x and y must be the same. Found x: {len(_x)} != y: {len(y)}.')
+                              f'x and y must be the same. Found x: {len(_x)} != y: {len(_y)}.')
                 self.is_valid = False
                 return
 
@@ -211,6 +214,64 @@ class BaseNetDatabase:
                           f'The module is returning a non merged BaseNetDatabase. '
                           f'Expecting type "BaseNetDatabase", given {type(other)}.')
             return self
+
+    @staticmethod
+    def from_datasets(train: tuple, val: tuple, test: tuple, batch_size: int = None,
+                      name: str = 'unnamed_database', dtype: tuple[str, str] = ('float', 'float'),
+                      bits: tuple[int, int] = (32, 32), rescale: float = 1.):
+        """
+        This method builds the BaseNetDatabase from the given datasets (train, validation and test).
+        :param train: A tuple with the (xtrain, ytrain) dataset.
+        :param val: A tuple with the (xval, yval) dataset.
+        :param test: A tuple with the (xtest, ytest) dataset.
+        :param name: The database name.
+        :param batch_size: Custom batch size for training.
+        :param rescale: Rescale factor, all the values in x are divided by this factor, in case rescale is needed.
+        :param dtype: Data type of the dataset. ('input', 'output') (x, y)
+        :param bits: Bits used for the data type. ('input', 'output') (x, y)
+        :return: The built BaseNetDatabase.
+        """
+        reversioned = BaseNetDatabase([], [])
+        try:
+            reversioned.dtype = (f'{dtype[0]}{bits[0]}', f'{dtype[1]}{bits[1]}')
+
+            _train = list(np.array(train[0]) / rescale)
+            _test = list(np.array(test[0]) / rescale)
+            _val = list(np.array(val[0]) / rescale)
+
+            reversioned.xtrain = np.array(_train, dtype=reversioned.dtype[0])
+            reversioned.xval = np.array(_val, dtype=reversioned.dtype[0])
+            reversioned.xtest = np.array(_test, dtype=reversioned.dtype[0])
+            reversioned.ytrain = np.array(train[1], dtype=reversioned.dtype[1])
+            reversioned.yval = np.array(val[1], dtype=reversioned.dtype[1])
+            reversioned.ytest = np.array(test[1], dtype=reversioned.dtype[1])
+            reversioned.size = (len(train[0]), len(val[0]), len(test[0]))
+            reversioned.name = name
+            ssize = sum(reversioned.size)
+            reversioned.distribution = (100 * reversioned.size[0] / ssize, 100 * reversioned.size[1] / ssize,
+                                        100 * reversioned.size[2] / ssize)
+
+            if batch_size is None:
+                reversioned.batch_size = 1
+                if len(train[0]) > 0:
+                    reversioned.batch_size = 2 ** round(np.log2(len(train[0]) / 256))
+                if reversioned.batch_size < 1:
+                    reversioned.batch_size = 1
+            else:
+                reversioned.batch_size = batch_size
+
+            reversioned.is_valid = False
+            if sum(reversioned.distribution) == 100:
+                reversioned._check_validation()
+            else:
+                logging.warning('BaseNetDatabase: The sum of the distributions for train, validation and test does not '
+                                f'add up to 100%, they add up to {sum(reversioned.distribution)}')
+                reversioned.is_valid = False
+        except Exception as ex:
+            reversioned.is_valid = False
+            logging.error(f'BaseNetDatabase: Error while building the database, raised the following exception: {ex}')
+        finally:
+            return reversioned
 
     # Private methods:
     @staticmethod
@@ -353,7 +414,7 @@ class BaseNetDatabase:
             return y
         except Exception as ex:
             raise RuntimeError('BaseNetDatabase:_to_binary: An error ocurred while converting the non-binzarized and'
-                               f'non-normalized labels into the API database:\n{ex}')
+                               f' non-normalized labels into the API database:\n{ex}')
 
     @staticmethod
     def _framework_convertion(x, y_hint=None):
@@ -363,7 +424,7 @@ class BaseNetDatabase:
                 return _x[:, :-1], _x[:, -1]
             else:
                 try:
-                    _y = np.array(x[y_hint])
+                    _y = np.array(x[y_hint], dtype='int')
                     _x = np.array(x.loc[:, x.columns != y_hint])
                     return _x, _y
                 except Exception as ex:
@@ -372,9 +433,13 @@ class BaseNetDatabase:
         elif isinstance(x, tf.data.Dataset):
             _x = list()
             _y = list()
+            if y_hint is None:
+                y_h = 'x', 'y'
+            else:
+                y_h = y_hint
             for batched in x:
-                _x.append(batched['image'])
-                _y.append(batched['label'])
+                _x.append(batched[y_h[0]].numpy())
+                _y.append(batched[y_h[1]].numpy())
             return _x, _y
         else:
             raise ValueError('BaseNetDatabase Error: The values of y are not provided and the input x is not '

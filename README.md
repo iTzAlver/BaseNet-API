@@ -24,7 +24,7 @@
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.6.0
+# Basenet API Package - 1.7.0
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -62,10 +62,11 @@ framework flexibility. BaseNet API tries to implement almost everything from a f
 * **Feature 12:** Model merging and multiple model inputs.
 * **Feature 13:** Computational cluster linking.
 * **Feature 14:** The different parts of the API are designed to interact.
+* **Feature 15:** It allows to create dynamic databases for data ingestion and math problems that require synthetic data.
 
 #### **RELIABILITY**
-* **Feature 15:** Depends on huge and reliable frameworks: KERAS, TENSORFLOW, RAY.
-* **Feature 16:** Code updating and active support.
+* **Feature 16:** Depends on huge and reliable frameworks: KERAS, TENSORFLOW, RAY.
+* **Feature 17:** Code updating and active support.
 
 
 ### Cons:
@@ -76,6 +77,10 @@ is still highly flexible.
 
 #### **DEPENDENCE**
 * This API is built over highly reliable frameworks, however, the API depends on those frameworks to run the models.
+
+[//]: # (#### **LEARNING**)
+[//]: # (* Even that this API is very easy to use and has Jupyter tutorial, you have to spend a little time on reading )
+[//]: # (documentation to learn to use it properly for your task.)
 
 #### **DEPLOYMENT**
 * The API can not deploy models by itself yet in this current verion. But I am planning!
@@ -145,6 +150,10 @@ rebuilds the Classes to the current version of the API.
 4. Included in ``BaseNetDatabase`` to read ``TensorFlow`` and ``Pandas`` databases.
 5. Some rework was done for bug-fixing and providing more logging information.
 
+### 1.7.0
+1. Reworked ``BaseNetDatabase`` for minor bug fixing.
+2. Added the ``BaseNetFeeder`` Class to generate dynamic ``BaseNetDatabase``s.
+3. Jupyter tutorials.
 
 ## Basic and fast usage
 

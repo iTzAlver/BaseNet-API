@@ -120,7 +120,7 @@ class BaseNetModel:
             self.model = None
             self.is_compiled = False
             self.summary = ex
-            logging.error(f'BaseNetModel: The model is empty. Raised the following exception: {ex}.')
+            logging.error(f'BaseNetModel:Raised the following exception: {ex}.')
 
     def fit(self, ndb: int = -1, epochs: int = 10, tensorboard: bool = True, avoid_lock: bool = False):
         """
