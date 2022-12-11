@@ -22,6 +22,8 @@
         <img src="https://img.shields.io/badge/dependencies-tensorflow-red?color=orange&style=for-the-badge" /></a>
     <a href="https://keras.io/">
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
+    <a href="https://www.ray.io/">
+        <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
 # Basenet API Package - 1.7.0
