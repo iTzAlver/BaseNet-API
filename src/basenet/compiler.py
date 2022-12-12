@@ -523,14 +523,14 @@ class BaseNetCompiler:
 
 # -----------------------------------------------------------
 class Layer:
-    def __init__(self, layer: str, *shape: tuple, **kwargs):
-        if layer in KERAS_LIST_LAYERS or PREBUILT_LAYERS:
-            self.name = layer
+    def __init__(self, layer: str, *shape: tuple, **kwargs: dict):
+        if layer in KERAS_LIST_LAYERS or layer in PREBUILT_LAYERS:
+            self.name: str = layer
         else:
             raise ValueError(f'Error in Layer: Layer {layer} not found in prebuilt_layers nor keras.layers.')
 
-        self.shape = shape
-        self.options = kwargs
+        self.shape: tuple = shape
+        self.options: dict = kwargs
 
     def __getitem__(self, item):
         logging.warning(f'BaseNetLayer: The access to the item {item} is ignored, returning the Layer parameters. '
