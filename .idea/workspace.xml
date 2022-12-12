@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="1.6.0 - Heuristics + Jupyter. Saved 2.">
-      <change afterPath="$PROJECT_DIR$/src/basenet/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Advanced heuristics.">
       <change beforePath="$PROJECT_DIR$/.idea/basenet_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/basenet_api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/_loss_functions/windowdiff.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/_loss_functions/windowdiff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/_names.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/_names.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +27,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="main" />
+      </list>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />

@@ -12,7 +12,7 @@ from abc import abstractmethod
 
 from .constraints import HeuristicConstraints
 from .computational_scope import ComputationalScope
-from .basic_evolutive import random_initializer, basic_mutation, elitist_selection
+# from .basic_evolutive import random_initializer, basic_mutation, elitist_selection
 from .dashboard import Dashboard
 
 
@@ -328,17 +328,26 @@ class BaseNetHeuristic:
     @staticmethod
     @abstractmethod
     def initializer(number_of_individuals: int, constraints: HeuristicConstraints) -> tf.Tensor:
-        return random_initializer(number_of_individuals, constraints)
+        raise NotImplementedError('The methods initializer, crossover and selection must be implemented in a'
+                                  'BaseNetHeuristic. They are abstract methods. To use a base layout consider'
+                                  'using BaseNetRandomSearch.')
+        # return random_initializer(number_of_individuals, constraints)
 
     @staticmethod
     @abstractmethod
     def crossover(number_of_new_individuals: int, population: tf.Tensor) -> tf.Tensor:
-        return basic_mutation(number_of_new_individuals, population)
+        raise NotImplementedError('The methods initializer, crossover and selection must be implemented in a'
+                                  'BaseNetHeuristic. They are abstract methods. To use a base layout consider'
+                                  'using BaseNetRandomSearch.')
+        # return basic_mutation(number_of_new_individuals, population)
 
     @staticmethod
     @abstractmethod
     def selection(new_individuals: tf.Tensor, population: tf.Tensor) -> tf.Tensor:
-        return elitist_selection(new_individuals, population)
+        raise NotImplementedError('The methods initializer, crossover and selection must be implemented in a'
+                                  'BaseNetHeuristic. They are abstract methods. To use a base layout consider'
+                                  'using BaseNetRandomSearch.')
+        # return elitist_selection(new_individuals, population)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

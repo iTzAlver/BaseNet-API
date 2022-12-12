@@ -24,6 +24,8 @@ from .feeder import BaseNetFeeder
 from ._loss_functions import window_diff
 from .__special__ import __version__
 
+
+from .metaheuristic import BaseNetHeuristic, BaseNetRandomSearch, BaseNetGenetic
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #

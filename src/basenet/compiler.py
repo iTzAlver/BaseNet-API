@@ -519,6 +519,22 @@ class BaseNetCompiler:
 
     def __bool__(self):
         return self.is_valid
+
+
+# -----------------------------------------------------------
+class Layer:
+    def __init__(self, layer: str, *shape: tuple, **kwargs):
+        self.name = layer
+        self.shape = shape
+        self.options = kwargs
+
+    def __getitem__(self, item):
+        logging.warning(f'BaseNetLayer: The access to the item {item} is ignored, returning the Layer parameters. '
+                        f'Use the method .items() to get the values of a Layer.')
+        return {self.name: (self.shape, self.options)}
+
+    def items(self):
+        yield self.name, (self.shape, self.options)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
