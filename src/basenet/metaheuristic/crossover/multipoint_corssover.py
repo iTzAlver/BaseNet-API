@@ -11,6 +11,33 @@ import numpy as np
 
 # -----------------------------------------------------------
 def multipoint_crossover(number_of_new_individuals, tf_population, number_of_points) -> tf.Tensor:
+    """
+    This function implements the multipoint crossover:
+    We select a number_of_points points in the individual.
+
+    Let's assume it was 1 point in the middle:
+    Parents:
+    p1 = [A, B, C. D, E]
+    p2 = [F, G, H. I, J]
+
+    Generate:
+    o1 = [A, B, C. I, J]
+    o2 = [F, G, H. D, E]
+
+    Let's assume it was 2 points in the middle:
+    Parents:
+    p1 = [A, B. C. D, E]
+    p2 = [F, G. H. I, J]
+
+    Generate:
+    o1 = [A, B. H. D, E]
+    o2 = [F, G. C. I, J]
+
+    :param number_of_new_individuals: Number of individuals in the new population.
+    :param tf_population: The current population.
+    :param number_of_points: Number of points in the multipoint crossover method.
+    :return: The new individuals as a result of the crossover.
+    """
     new_individuals = list()
     population = tf_population.numpy()
     for _ in range(round(number_of_new_individuals / 2)):

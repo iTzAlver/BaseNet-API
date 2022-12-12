@@ -54,7 +54,7 @@ def problem(bnh):
     bnh.add_plot(my_plot, name='PCA parameter 0')
     bnh.add_rule([0], [1, 2, 3, 4, 5], rule_first_is_maximum)
     # bnh.add_rule([5], [0, 1, 2, 3, 4], rule_last_is_minimum)
-    population, score = bnh.fit(20, callback=my_callback)
+    population, score = bnh.fit(20, callback=my_callback, objective=900)
     print(f'Best individual: {population[0]}:{score[0]}')
 
 

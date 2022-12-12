@@ -11,6 +11,12 @@ import tensorflow as tf
 
 # -----------------------------------------------------------
 def random_initializer(number_of_individuals: int, constraints) -> tf.Tensor:
+    """
+    This initializer creates a random population with uniform distribution.
+    :param number_of_individuals: Number of individuals in the population.
+    :param constraints: Problem constraints.
+    :return: The initial population.
+    """
     indis = list()
     for individual in range(number_of_individuals):
         indi = list()

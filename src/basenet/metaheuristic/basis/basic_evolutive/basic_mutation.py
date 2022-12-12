@@ -10,8 +10,8 @@ import numpy as np
 
 
 # -----------------------------------------------------------
-def basic_mutation(number_of_new_individuals: int, population: tf.Tensor) -> tf.Tensor:
-    mutatives = np.random.randint(0, len(population), number_of_new_individuals)
+def basic_mutation(population: tf.Tensor) -> tf.Tensor:
+    mutatives = np.random.randint(0, len(population), len(population))
     new_indis = list()
     for mutative in mutatives:
         individual = population[mutative].numpy()

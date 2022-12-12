@@ -6,8 +6,9 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
 from .multipoint_corssover import multipoint_crossover
-from .shuffle_crossover import shuffle_crossover
 from .uniform_corssover import uniform_crossover
+from .bypass_crossover import bypass_crossover
+from .arithmetic_crossover import arithmetic_crossover
 # -----------------------------------------------------------
 
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

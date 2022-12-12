@@ -8,10 +8,10 @@
 from abc import ABC
 import tensorflow as tf
 from ..basis import BaseNetHeuristic, HeuristicConstraints
-from ..crossover import multipoint_crossover, uniform_crossover
-from ..initialization import random_initializer, borderline_initializer
+from ..crossover import multipoint_crossover, uniform_crossover, arithmetic_crossover
+from ..initialization import random_initializer, borderline_initializer, gaussian_initializer
 from ..selection import elitist_selection
-from ..mutation import gaussian_mutation
+from ..mutation import gaussian_mutation, binary_mutation
 # -----------------------------------------------------------
 
 
@@ -56,7 +56,7 @@ class BaseNetGenetic(BaseNetHeuristic, ABC):
 
     @staticmethod
     def initializer(number_of_individuals: int, constraints: HeuristicConstraints) -> tf.Tensor:
-        return borderline_initializer(number_of_individuals, constraints)
+        return random_initializer(number_of_individuals, constraints)
 
     def crossover(self, number_of_new_individuals: int, population: tf.Tensor) -> tf.Tensor:
         non_muted = uniform_crossover(number_of_new_individuals, population)
