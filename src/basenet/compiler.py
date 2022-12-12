@@ -524,7 +524,11 @@ class BaseNetCompiler:
 # -----------------------------------------------------------
 class Layer:
     def __init__(self, layer: str, *shape: tuple, **kwargs):
-        self.name = layer
+        if layer in KERAS_LIST_LAYERS or PREBUILT_LAYERS:
+            self.name = layer
+        else:
+            raise ValueError(f'Error in Layer: Layer {layer} not found in prebuilt_layers nor keras.layers.')
+
         self.shape = shape
         self.options = kwargs
 
