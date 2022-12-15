@@ -7,7 +7,7 @@
 # Import statements:
 import pandas as pd
 import numpy as np
-from src.basenet.metaheuristic import BaseNetRandomSearch, BaseNetHeuristic, BaseNetGenetic
+from src.basenet.metaheuristic import BaseNetRandomSearch, BaseNetHeuristic, BaseNetGenetic, BaseNetPso
 import hvplot.pandas
 import holoviews as hv
 # -----------------------------------------------------------
@@ -75,13 +75,35 @@ def test_genetic():
                          ray_ip='192.168.79.101',
                          runtime_env={'working_dir': '../'},
                          computational_cores=10,
-                         multipoints=1,
-                         mutation_var=1)
+                         mutation_variance=1,
+                         )
     problem(bnh)
 
 
+def pso_plot(pp: pd.DataFrame, selector_individual: int, selector_epoch: str):
+    _pp_ = pp[pp.ts == selector_epoch].reset_index()
+    ifix = _pp_.hvplot.scatter(x='param0', y='param1', by='fitness', cmap='rainbow', grid=True, xlim=(-5, 105),
+                               ylim=(-55, 105))
+    return ifix
+
+
+def test_pso():
+    pso = BaseNetPso(test_fitness,
+                     number_of_individuals=10,
+                     # ray_ip='192.168.79.101',
+                     # runtime_env={'working_dir': '../'},
+                     computational_cores=10,
+                     inertia=2)
+    pso.add_parameter(parameter_type='integer', maximum=100)
+    pso.add_parameter(minimum=-50, maximum=100)
+    pso.add_plot(pso_plot, name='PSO monitoring')
+    population, score = pso.fit(20, objective=20_000)
+    print(f'Best individual: {population[0]}: {score[0]}.')
+
+
 if __name__ == '__main__':
-    test_genetic()
+    test_pso()
+    # test_genetic()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

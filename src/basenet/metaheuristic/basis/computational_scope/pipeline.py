@@ -15,8 +15,10 @@ class ComputationalPipeline:
         Initializes a Computational Pipeline.
         """
         self.base_target = None
-        self.process: list[multiprocessing.Process] = []
-        self.futures: list[multiprocessing.Queue] = []
+        self.process_old: list[multiprocessing.Process] = list()
+        self.futures_old: list[multiprocessing.Queue] = list()
+        self.futures = None
+        self.pool = None
 
     def bind(self, function):
         """
@@ -27,7 +29,7 @@ class ComputationalPipeline:
         self.base_target = function
         return self
 
-    def run(self, arg_list: list[tuple], kwarg_list: list[dict]):
+    def run_old(self, arg_list: list[tuple], kwarg_list: list[dict]):
         """
         Runs the bind function.
         :param arg_list: List of arguments.
@@ -47,7 +49,29 @@ class ComputationalPipeline:
             self.futures = q
         return self
 
+    def run(self, arg_list: list[tuple], kwarg_list: list[dict]):
+        """
+        Runs the bind function.
+        :param arg_list: List of arguments.
+        :param kwarg_list: List of kwarguments.
+        :return: The object of the Computational Pipeline Class.
+        """
+        if self.base_target is not None:
+            self.pool = multiprocessing.Pool(processes=len(arg_list))
+            self.futures = self.pool.imap(self.base_target, arg_list)
+        return self
+
     def get(self):
+        """
+        Waits the process to be finished and recovers the return values from the bind function.
+        :return: A list with the returned values.
+        """
+        if self.futures:
+            return list(self.futures)
+        else:
+            return None
+
+    def get_old(self):
         """
         Waits the process to be finished and recovers the return values from the bind function.
         :return: A list with the returned values.

@@ -54,7 +54,7 @@ def multipoint_crossover(number_of_new_individuals, tf_population, number_of_poi
 
         new_individuals.append(offspring_0)
         new_individuals.append(offspring_1)
-    return tf.convert_to_tensor(new_individuals)
+    return tf.convert_to_tensor(new_individuals, dtype=tf.float32)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

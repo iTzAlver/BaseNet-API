@@ -4,26 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Added Layer in compilers.">
-      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/bypass_crossover.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/gaussian_initializer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/load_initializer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/stochastic_mutation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/uniform_mutation.py" afterDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Added new methods for metaheuristic.">
+      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/_utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/_utils/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/cro.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/selection/no_selection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/_test_pool.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/genetic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/genetic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/basic_mutation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/basic_mutation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/elitist_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/elitist_selection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/random_initializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/basic_evolutive/random_initializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/computational_scope/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/computational_scope/pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/bypass_crossover.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/bypass_crossover.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/multipoint_corssover.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/multipoint_corssover.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/shuffle_crossover.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/arithmetic_crossover.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/uniform_corssover.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/crossover/uniform_corssover.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/borderline_initializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/initialization/borderline_initializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/binary_mutation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/binary_mutation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/gaussian_mutation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/mutation/gaussian_mutation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/selection/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/selection/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +60,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/fract/Desktop/BaseNet-API&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ialve/Desktop/BaseNet-API&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
 }</component>
@@ -76,7 +74,7 @@
       <recent name="C:\Users\fract\Desktop\BaseNet-API\doc\multimedia" />
     </key>
   </component>
-  <component name="RunManager" selected="Python._test_heuristic_">
+  <component name="RunManager" selected="Python._test_pool">
     <configuration name="__debug__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="basenet_api" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -140,8 +138,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="_test_pool" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="basenet_api" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/_test_pool.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python._test_pool" />
         <item itemvalue="Python._test_heuristic_" />
         <item itemvalue="Python.__test_feeder__" />
         <item itemvalue="Python.__debug__" />
@@ -262,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670835974362</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added new methods for metaheuristic.">
+      <created>1670858704824</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670858704824</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,7 +312,8 @@
     <MESSAGE value="1.6.0 - Heuristics + Jupyter. Saved." />
     <MESSAGE value="1.6.0 - Heuristics + Jupyter. Saved 2." />
     <MESSAGE value="Added Layer in compilers." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Layer in compilers." />
+    <MESSAGE value="Added new methods for metaheuristic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new methods for metaheuristic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -299,11 +327,6 @@
           <url>file://$PROJECT_DIR$/test/__test_feeder__.py</url>
           <line>27</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

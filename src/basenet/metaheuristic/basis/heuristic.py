@@ -39,6 +39,7 @@ class BaseNetHeuristic:
         self.new_individuals_per_epoch: int = new_individuals_per_epoch
         self.population: (tf.Tensor, None) = None
         self.score: (tf.Tensor, None) = None
+        self.identification: (tf.Tensor, None) = None
         self.ray: tuple = (ray_ip, runtime_env, computational_cores)
         if fitness_function is not None:
             self.fitness = fitness_function
@@ -103,7 +104,7 @@ class BaseNetHeuristic:
         :return: The trained population, the fitness score according to the population.
         """
         with ComputationalScope(self.ray[0], self.ray[1]) as cscope:
-            with Dashboard(self.constraints, self.extra_plots, cscope, cnt=self.each_dashboard) as self.dashboard:
+            with Dashboard(self.constraints, self.extra_plots, cscope, cnt=self.each_dashboard) as dashboard:
                 #
                 #   Initialization.
                 #
@@ -112,6 +113,8 @@ class BaseNetHeuristic:
                 self.population = self.constraints.apply_bindings(self.population)
                 self.population = self._initialization_correction(self.population)
                 new_individuals = self.population
+                self.identification = tf.cast(tf.linspace(0, new_individuals.shape[0], new_individuals.shape[0] + 1),
+                                              tf.int32)
                 for epoch_number in range(epoch):
                     performance = {'fitness': 0, 'crossover': 0, 'selection': 0}
                     tik = time.time()
@@ -126,6 +129,25 @@ class BaseNetHeuristic:
                     tak = time.time()                                   # Tik-toc.
                     performance['fitness'] = tak - tik                  # Performance store.
                     #
+                    #   Additional actions per epoch:
+                    #
+                    #   Callback.
+                    #
+                    if callback is not None:
+                        if not callback(epoch_number, self.population, self.score):
+                            break
+                    #   Dashboard.
+                    #
+                    if self.there_is_dashboard:
+                        dashboard.add(self.score, self.population, performance)
+                        dashboard.refresh_tab()
+                    #      Objective check.
+                    #
+                    if objective is not None:
+                        if max(self.score) >= objective:
+                            logging.info(f'The objective {objective} was achieved in epoch {epoch_number}.')
+                            break
+                    #
                     #   Crossover.
                     #
                     new_individuals = self.constraints.apply_bindings(self._crossover_(self.population))    # New pop.
@@ -138,25 +160,6 @@ class BaseNetHeuristic:
                     self.population = self._selection_(self.population, new_individuals)    # Selection in the pop.
                     tak = time.time()                                                       # Tik-tok.
                     performance['selection'] = tak - tik                                    # Performance store.
-                    #
-                    #   Additional actions per epoch:
-                    #
-                    #   Callback.
-                    #
-                    if callback is not None:
-                        if not callback(epoch_number, self.population, self.score):
-                            break
-                    #   Dashboard.
-                    #
-                    if self.there_is_dashboard:
-                        self.dashboard.add(self.score, self.population, performance)
-                        self.dashboard.refresh_tab()
-                    #      Objective check.
-                    #
-                    if objective is not None:
-                        if max(self.score) >= objective:
-                            logging.info(f'The objective {objective} was achieved in epoch {epoch_number}.')
-                            break
         return self.population, self.score
 
     def add_plot(self, plot_function, name='User plot'):
@@ -227,6 +230,7 @@ class BaseNetHeuristic:
     def _sort(self) -> tuple[tf.Tensor, tf.Tensor]:
         indices = tf.argsort(self.score, direction='DESCENDING')
         pop = tf.gather(self.population, indices)
+        self.identification = tf.gather(self.identification, indices)
         return pop, tf.sort(self.score, direction='DESCENDING')
 
     @staticmethod

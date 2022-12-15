@@ -9,14 +9,11 @@ import tensorflow as tf
 
 
 # -----------------------------------------------------------
-def bypass_crossover(number_of_new_individuals, tf_population) -> tf.Tensor:
-    """
-    This crossover function returns the population. There is no crossover. It is an util function.
-    :param number_of_new_individuals: Number of new individuals.
-    :param tf_population: The current population.
-    :return: The best number_of_individuals in the population.
-    """
-    return tf_population[:number_of_new_individuals]
+def no_selection(new_individuals: tf.Tensor, population: tf.Tensor, which='old') -> tf.Tensor:
+    if which == 'new':
+        return new_individuals
+    else:
+        return population
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

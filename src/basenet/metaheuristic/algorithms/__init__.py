@@ -7,6 +7,8 @@
 # Import statements:
 from .random_search import BaseNetRandomSearch
 from .genetic import BaseNetGenetic
+from .pso import BaseNetPso
+from .cro import BaseNetCro
 # -----------------------------------------------------------
 
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

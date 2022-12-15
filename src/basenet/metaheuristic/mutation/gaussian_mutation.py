@@ -11,8 +11,14 @@ import numpy as np
 
 # -----------------------------------------------------------
 def gaussian_mutation(population: tf.Tensor, mutation_variance: float) -> tf.Tensor:
-    noise = np.sqrt(mutation_variance) * np.random.randn(*population.shape)
-    new_indis = population.numpy() + noise
+    """
+    This function generates a gaussian mutation.
+    :param population: The current individuals to be mutated.
+    :param mutation_variance: The variance of the gaussian.
+    :return: The mutated individuals.
+    """
+    noise: np.ndarray = np.sqrt(mutation_variance) * np.random.randn(*population.shape)
+    new_indis = population + noise
     return tf.convert_to_tensor(new_indis, dtype=tf.float32)
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #

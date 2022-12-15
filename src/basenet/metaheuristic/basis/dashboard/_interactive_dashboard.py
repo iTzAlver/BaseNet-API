@@ -10,7 +10,7 @@ import datetime
 import numpy as np
 
 import pandas as pd
-import hvplot.pandas
+import hvplot.pandas  # Do not remove.
 import panel as pn
 
 CROSS_SECTION_COLOR_1 = '#11B281'
@@ -114,8 +114,8 @@ class Dashboard:
         def get_fitting_epoch(ts):
             idx = timestamps.index(ts)
             dataframe = pp[pp.ts.isin(timestamps[idx:]) & (pp.individual == 0)]
-            return dataframe.hvplot.bar(x='ts', y='fitness', value_label='Best Fitness score', grid=True, stacked=True,
-                                        width=765, height=355, title=ts, legend=False).opts(color='ts', cmap='autumn')
+            return dataframe.hvplot.line(x='ts', y='fitness', value_label='Best Fitness score', grid=True, stacked=True,
+                                         width=765, height=355, title=ts, legend=False, color=['red'])
 
         bound_table = pn.bind(get_table, n=how_many_indiv, ts=select_frame)
         fitness_curve = pn.bind(get_curve, ts=select_frame)

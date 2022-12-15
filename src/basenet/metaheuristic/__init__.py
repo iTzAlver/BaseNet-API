@@ -11,6 +11,8 @@ from .basis import ComputationalScope
 
 from .algorithms import BaseNetRandomSearch
 from .algorithms import BaseNetGenetic
+from .algorithms import BaseNetPso
+from .algorithms import BaseNetCro
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
