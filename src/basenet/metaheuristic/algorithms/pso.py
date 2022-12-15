@@ -5,6 +5,7 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
+import time
 from abc import ABC
 import tensorflow as tf
 import numpy as np
@@ -58,27 +59,40 @@ class BaseNetPso(BaseNetHeuristic, ABC):
 #                        AID CLASSES                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 
-
 class PSODifferentials:
     def __init__(self, inertia: float = 2., cognition: float = 1., social: float = 1.):
         self.inertia: float = inertia
         self.cognition: float = cognition
         self.social: float = social
+        self.performance: list = [0, 0, 0]
 
-        self.mapping: (dict[int: tuple[tf.Tensor, float, tf.Tensor]], None) = None
+        self.mapping: (list[tuple[tf.Tensor, float, tf.Tensor]], None) = None
 
-    def pso_mutation(self, population, score, ids):
+    def pso_mutation(self, population, score, ids, verbose=True):
 
         if self.mapping is None:
-            self.mapping = dict()
+            self.mapping = [()] * len(population)
             for individual, fitness, name in zip(population, score, ids):
                 self.mapping[int(name)] = (individual, fitness, tf.zeros(population.shape[1]))
                 # best_solution[1 x np], best_score[1 x 1], current_speed[1 x np]
 
-        speeds, bs = self.remap(population, ids)
+        tik = time.perf_counter()
+        speeds, bs = self.remap(ids)
+        tak = time.perf_counter()
+        self.performance[0] = tak - tik
+
         speed = self.compute_speed(population, speeds, bs)
+        tik = time.perf_counter()
+        self.performance[1] = tik - tak
+
         self.update_map(population, ids, speed, score)
         new_population = self.apply_speed(speed, population)
+        tak = time.perf_counter()
+        self.performance[2] = tak - tik
+
+        if verbose:
+            print(f'Crossover performance: [remap, compute, update_map]{self.performance}')
+
         return tf.convert_to_tensor(new_population, dtype=tf.float32)
 
     def compute_speed(self, population: tf.Tensor, speeds: tf.Tensor, best_sols: tf.Tensor) -> tf.Tensor:
@@ -99,11 +113,11 @@ class PSODifferentials:
         """
         return population + speed
 
-    def remap(self, population: tf.Tensor, ids: tf.Tensor):
+    def remap(self, ids: tf.Tensor):
         speeds = list()
         best_positions = list()
 
-        for individual, name in zip(population, ids):
+        for name in ids:
             this_best_position, _, this_speed = self.mapping[int(name)]
             speeds.append(this_speed)
             best_positions.append(this_best_position)

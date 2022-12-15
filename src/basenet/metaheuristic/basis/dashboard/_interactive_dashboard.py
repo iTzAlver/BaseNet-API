@@ -27,7 +27,9 @@ class Dashboard:
         self.constraints = constraints
 
         if cscope:
-            if cscope.cluster:
+            if hasattr(cscope, 'scope_information'):
+                self.cscope_info = cscope.scope_information
+            elif cscope.cluster:
                 self.cscope_info = {'ip': cscope.cluster.ip,
                                     'c_cpus': cscope.orchestrator.ray_cpus,
                                     'cpus': cscope.orchestrator.cpus,

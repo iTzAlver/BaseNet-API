@@ -16,4 +16,4 @@ pynvml>=11.4.1
 pandas~=1.5.2
 hvplot~=0.8.2
 panel~=0.14.1
-ray~=2.1.0
+ray>=2.1.0

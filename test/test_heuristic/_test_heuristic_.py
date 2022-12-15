@@ -10,12 +10,39 @@ import numpy as np
 from src.basenet.metaheuristic import BaseNetRandomSearch, BaseNetHeuristic, BaseNetGenetic, BaseNetPso
 import hvplot.pandas
 import holoviews as hv
+import psutil
 # -----------------------------------------------------------
 
 
 def my_callback(epoch_number, population, score):
-    print(f'Epoch {epoch_number}; best: {max(score)}.')
+    print(f'[i] Tracking information:\tEpoch\t\tBest fitness\n'
+          f'\t\t\t\t\t\t\t{epoch_number}\t\t\t{max(score)}')
     return True
+
+
+class MyPsoCb:
+    def __init__(self, min_iterations: int = 5):
+        self.tracking = list()
+        self.is_first = 2
+        self.miniters = min_iterations
+
+    def my_callback(self, epoch_number, population, score):
+        self.tracking.append(max(score))
+        if self.is_first:
+            print(f'[i] Tracking information:\tEpoch\t\tBest fitness\n'
+                  f'\t\t\t\t\t\t\t{epoch_number}\t\t\t{max(score)}')
+            self.is_first -= 1
+        else:
+            print(f'\t\t\t\t\t\t\t{epoch_number}\t\t\t{max(score)}')
+        if len(self.tracking) > self.miniters:
+            pill = 0
+            for x in self.tracking[-3:]:
+                if x == max(score):
+                    pill += 1
+            if pill == len(self.tracking[-3:]):
+                print(f'\nLocal minimum detected: STOP.\n')
+                return False
+        return True
 
 
 def test_fitness(*args, **kwargs):
@@ -70,13 +97,12 @@ def test_rs():
 
 def test_genetic():
     bnh = BaseNetGenetic(test_fitness,
-                         number_of_individuals=900,
+                         number_of_individuals=20_000,  # 900
                          new_individuals_per_epoch=300,
-                         ray_ip='192.168.79.101',
-                         runtime_env={'working_dir': '../'},
+                         # ray_ip='192.168.79.101',
+                         # runtime_env={'working_dir': '../'},
                          computational_cores=10,
-                         mutation_variance=1,
-                         )
+                         mutation_variance=1)
     problem(bnh)
 
 
@@ -88,16 +114,17 @@ def pso_plot(pp: pd.DataFrame, selector_individual: int, selector_epoch: str):
 
 
 def test_pso():
+    psocb = MyPsoCb()
     pso = BaseNetPso(test_fitness,
-                     number_of_individuals=10,
+                     number_of_individuals=100,
                      # ray_ip='192.168.79.101',
                      # runtime_env={'working_dir': '../'},
-                     computational_cores=10,
+                     computational_cores=1,
                      inertia=2)
-    pso.add_parameter(parameter_type='integer', maximum=100)
-    pso.add_parameter(minimum=-50, maximum=100)
-    pso.add_plot(pso_plot, name='PSO monitoring')
-    population, score = pso.fit(20, objective=20_000)
+    pso.add_parameter(maximum=100)
+    [pso.add_parameter(parameter_type='integer', minimum=-80, maximum=100) for _ in range(10_000)]
+    # pso.add_plot(pso_plot, name='PSO monitoring')
+    population, score = pso.fit(50, callback=psocb.my_callback)
     print(f'Best individual: {population[0]}: {score[0]}.')
 
 

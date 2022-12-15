@@ -8,10 +8,12 @@
 import logging
 import time
 import tensorflow as tf
+from alive_progress import alive_bar
 from abc import abstractmethod
 
 from .constraints import HeuristicConstraints
-from .computational_scope import ComputationalScope
+# from .computational_scope import ComputationalScope
+from ...cluster import RayScope as ComputationalScope
 # from .basic_evolutive import random_initializer, basic_mutation, elitist_selection
 from .dashboard import Dashboard
 
@@ -33,7 +35,8 @@ class BaseNetHeuristic:
         :param computational_cores: The number of cores to be used among the cluster and the cores of the user machine.
         :param dashboard: The number of epoch between a dashboard update. Select 0 for not displaying the dashboard.
         """
-        self.extra_plots = []
+        self.extra_plots = list()
+        self._cscope = None
         self.constraints: HeuristicConstraints = HeuristicConstraints()
         self.number_of_individuals: int = number_of_individuals
         self.new_individuals_per_epoch: int = new_individuals_per_epoch
@@ -102,31 +105,32 @@ class BaseNetHeuristic:
         and N is the number of the parameters).\n
         If it returns True, it allows the fit method to keep working. If False, it stops the fitting method.
         :return: The trained population, the fitness score according to the population.
-        """
+    """
         with ComputationalScope(self.ray[0], self.ray[1]) as cscope:
+            self._cscope = cscope
             with Dashboard(self.constraints, self.extra_plots, cscope, cnt=self.each_dashboard) as dashboard:
                 #
                 #   Initialization.
                 #
-                cscope.bind(self.fitness)
                 self.population = self._initializer_(self.number_of_individuals, self.constraints)
                 self.population = self.constraints.apply_bindings(self.population)
                 self.population = self._initialization_correction(self.population)
                 new_individuals = self.population
-                self.identification = tf.cast(tf.linspace(0, new_individuals.shape[0], new_individuals.shape[0] + 1),
-                                              tf.int32)
+                self.identification = tf.cast(tf.linspace(0, new_individuals.shape[0],
+                                                          new_individuals.shape[0] + 1), tf.int32)
+                performance = {'fitness': 0, 'crossover': 0, 'selection': 0}
                 for epoch_number in range(epoch):
-                    performance = {'fitness': 0, 'crossover': 0, 'selection': 0}
-                    tik = time.time()
+                    tik = time.perf_counter()
                     #
                     #   Get the fitness function and sort in descending order.
                     #
                     divs = self._divide(new_individuals, self.ray[2])   # Divide into computational segments.
+                    cscope.bind(self.fitness)                           # The fitness function will be run.
                     cscope.run(divs)                                    # Run the computational segments.
                     futures = self._collapse(cscope.get())              # Obtain and collapse the results.
-                    self.score = self._idiot_proof_futures(futures)     # Some idiot proofing of the fitness function.
-                    self.population, self.score = self._sort()          # Sort the individuals according to their score.
-                    tak = time.time()                                   # Tik-toc.
+                    self.score = self._idiot_proof_futures(futures)   # Some idiot proofing of the fitness function.
+                    self.population, self.score = self._sort()      # Sort the individuals according to their score.
+                    tak = time.perf_counter()                           # Tik-toc.
                     performance['fitness'] = tak - tik                  # Performance store.
                     #
                     #   Additional actions per epoch:
@@ -150,15 +154,20 @@ class BaseNetHeuristic:
                     #
                     #   Crossover.
                     #
-                    new_individuals = self.constraints.apply_bindings(self._crossover_(self.population))    # New pop.
-                    new_individuals = self._crossover_correction(new_individuals)     # Correct the wrong individuals.
-                    tik = time.time()                                    # Tik-toc.
+                    # divs = (round(self.new_individuals_per_epoch / self.ray[2]), self.population)
+                    # cscope.bind(self._crossover_)                       # The crossover function will be run.
+                    # cscope.run(*divs)                                   # Run the computational segments.
+                    # futures = self._collapse(cscope.get())              # Obtain and collapse the results.
+                    # new_individuals = self.constraints.apply_bindings(futures)      # New pop.
+                    new_individuals = self.constraints.apply_bindings(self._crossover_(self.population))  # New pop.
+                    new_individuals = self._crossover_correction(new_individuals)   # Correct the wrong individuals.
+                    tik = time.perf_counter()                            # Tik-toc.
                     performance['crossover'] = tik - tak                 # Performance store.
                     #
                     #   Selection.
                     #
                     self.population = self._selection_(self.population, new_individuals)    # Selection in the pop.
-                    tak = time.time()                                                       # Tik-tok.
+                    tak = time.perf_counter()                                               # Tik-tok.
                     performance['selection'] = tak - tik                                    # Performance store.
         return self.population, self.score
 
@@ -183,18 +192,22 @@ class BaseNetHeuristic:
     def _initialization_correction(self, new_individuals):
         disrespectful = self.constraints.check_constraints(new_individuals)  # Rules.
         if disrespectful:
+
             correct_list = list()
             if not self.__idiot_proof_told[0]:
                 logging.warning(f'Idiot-Proof-Warning: Your initializer does not respect the constraints of the problem'
                                 f'. Check your rules and your initializer.\nAutocorrection is enabled, '
                                 f'it will decrease the performance of your MetaHeuristic.')
                 self.__idiot_proof_told[0] = True
-            while len(correct_list) < self.number_of_individuals:                   # While the rules are not respected:
-                correct = self._append_respectful(disrespectful, new_individuals)   # Get correct individuals.
-                correct_list.extend(correct)                                            # Extend the correct list.
-                new = self._initializer_(self.number_of_individuals, self.constraints)  # New individuals.
-                new_individuals = self.constraints.apply_bindings(new)              # Apply constraints (min, max, type)
-                disrespectful = self.constraints.check_constraints(new_individuals)     # Who does not respect?
+            with alive_bar(self.number_of_individuals, title='Correcting initialization: ', manual=True) as bar:
+                while len(correct_list) < self.number_of_individuals:               # While the rules are not respected:
+                    correct = self._append_respectful(disrespectful, new_individuals)   # Get correct individuals.
+                    correct_list.extend(correct)                                            # Extend the correct list.
+                    new = self._initializer_(self.number_of_individuals, self.constraints)  # New individuals.
+                    new_individuals = self.constraints.apply_bindings(new)          # Apply constraints (min, max, type)
+                    disrespectful = self.constraints.check_constraints(new_individuals)     # Who does not respect?
+                    bar(len(correct[:self.number_of_individuals]) / self.number_of_individuals)
+                bar(1)
             return tf.convert_to_tensor(correct_list[:self.number_of_individuals])
         else:
             return new_individuals
@@ -208,12 +221,15 @@ class BaseNetHeuristic:
                                 f'it will decrease the performance of your MetaHeuristic.')
                 self.__idiot_proof_told[1] = True
             correct_list = list()
-            while len(correct_list) < self.new_individuals_per_epoch:               # While the rules are not respected:
-                correct = self._append_respectful(disrespectful, new_individuals)   # Get the correct individuals.
-                correct_list.extend(correct)                                        # Extend the correct list.
-                new = self._crossover_(self.population)                             # New individuals.
-                new_individuals = self.constraints.apply_bindings(new)              # Apply constraints (min, max, type)
-                disrespectful = self.constraints.check_constraints(new_individuals)  # Who does not respect?
+            with alive_bar(self.new_individuals_per_epoch, title='Correcting crossover: ', manual=True) as bar:
+                while len(correct_list) < self.new_individuals_per_epoch:           # While the rules are not respected:
+                    correct = self._append_respectful(disrespectful, new_individuals)   # Get the correct individuals.
+                    correct_list.extend(correct)                                        # Extend the correct list.
+                    new = self._crossover_(self.population)  # New individuals.
+                    new_individuals = self.constraints.apply_bindings(new)          # Apply constraints (min, max, type)
+                    disrespectful = self.constraints.check_constraints(new_individuals)  # Who does not respect?
+                    bar(len(correct[:self.new_individuals_per_epoch]) / self.new_individuals_per_epoch)
+                bar(1)
             return tf.convert_to_tensor(correct_list[:self.new_individuals_per_epoch])
         else:
             return new_individuals
