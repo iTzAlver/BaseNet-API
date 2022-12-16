@@ -48,7 +48,7 @@ class MyPsoCb:
 def test_fitness(*args, **kwargs):
     the_ind = np.array(args)
     the_sum = np.sum(the_ind ** 2, axis=-1)
-    return the_sum
+    return -the_sum
 
 
 def rule_first_is_maximum(conditionant: list, condition: list):
@@ -116,16 +116,17 @@ def pso_plot(pp: pd.DataFrame, selector_individual: int, selector_epoch: str):
 def test_pso():
     psocb = MyPsoCb()
     pso = BaseNetPso(test_fitness,
-                     number_of_individuals=1_000,
+                     number_of_individuals=20,
                      # ray_ip='192.168.79.101',
                      # runtime_env={'working_dir': '../'},
                      computational_cores=1,
-                     inertia=.5,
+                     inertia=0.5,
                      cognition_factor=1.,
                      social_factor=1.)
 
-    pso.add_parameter(maximum=100)
-    [pso.add_parameter(parameter_type='integer', minimum=-80, maximum=100) for _ in range(10_000)]
+    pso.add_parameter(parameter_type='integer', maximum=100)
+    [pso.add_parameter(parameter_type='real', minimum=-80, maximum=100) for _ in range(9)]
+    pso.add_plot(pso_plot)
     population, score = pso.fit(50, callback=psocb.my_callback)
     print(f'Best individual: {population[0]}: {score[0]}.')
 

@@ -62,7 +62,6 @@ class PSODifferentials:
         self.inertia: float = inertia
         self.cognition: float = cognition
         self.social: float = social
-        self.performance: list = [0, 0, 0]
 
         self.mapping: (list[tuple[tf.Tensor, float, tf.Tensor]], None) = None
 
