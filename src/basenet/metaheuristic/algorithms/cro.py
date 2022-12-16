@@ -9,7 +9,6 @@ from abc import ABC
 import tensorflow as tf
 from ..basis import BaseNetHeuristic, HeuristicConstraints
 from ..initialization import random_initializer
-from ..selection import elitist_selection
 from .._utils.utils import get_algorithm_parameters
 # -----------------------------------------------------------
 
@@ -25,7 +24,12 @@ class BaseNetCro(BaseNetHeuristic, ABC):
         :param args: Must include the fitness function as first parameter.
         :param kwargs: Contains the genetic algorithm parameters:
         """
-        self.mask, self.crossover_rate, self.mutation_variance = get_algorithm_parameters(kwargs=kwargs)
+        cro_type, crossover_rate, mutation_variance, kwargs = \
+            get_algorithm_parameters(cro_type='dynamic',
+                                     crossover_rate=1.,
+                                     mutation_variance=1.,
+                                     kwargs=kwargs)
+        self.cro = CroAlgorithm(cro_type=cro_type)
         super().__init__(*args, **kwargs)
 
     @staticmethod
@@ -33,21 +37,21 @@ class BaseNetCro(BaseNetHeuristic, ABC):
         return random_initializer(number_of_individuals, constraints)
 
     def crossover(self, number_of_new_individuals: int, population: tf.Tensor) -> tf.Tensor:
-        return cro_crossover(number_of_new_individuals, population)
+        return self.cro.cro_crossover(number_of_new_individuals, population)
 
-    @staticmethod
-    def selection(new_individuals: tf.Tensor, population: tf.Tensor) -> tf.Tensor:
-        return elitist_selection(new_individuals, population)
-
-
-def cro_crossover(number_of_new_individuals, population):
-
-    return population[:number_of_new_individuals]
+    def selection(self, new_individuals: tf.Tensor, population: tf.Tensor) -> tf.Tensor:
+        return self.cro.cro_selection(new_individuals, population)
 
 
-def cro_selection(new_individuals, population):
+class CroAlgorithm:
+    def __init__(self, cro_type='dynamic'):
+        self.cro_type = cro_type
 
-    return population
+    def cro_crossover(self, number_of_new_individuals, population):
+        return population[:number_of_new_individuals]
+
+    def cro_selection(self, new_individuals, population):
+        return population
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

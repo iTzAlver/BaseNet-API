@@ -116,14 +116,16 @@ def pso_plot(pp: pd.DataFrame, selector_individual: int, selector_epoch: str):
 def test_pso():
     psocb = MyPsoCb()
     pso = BaseNetPso(test_fitness,
-                     number_of_individuals=100,
+                     number_of_individuals=1_000,
                      # ray_ip='192.168.79.101',
                      # runtime_env={'working_dir': '../'},
                      computational_cores=1,
-                     inertia=2)
+                     inertia=.5,
+                     cognition_factor=1.,
+                     social_factor=1.)
+
     pso.add_parameter(maximum=100)
     [pso.add_parameter(parameter_type='integer', minimum=-80, maximum=100) for _ in range(10_000)]
-    # pso.add_plot(pso_plot, name='PSO monitoring')
     population, score = pso.fit(50, callback=psocb.my_callback)
     print(f'Best individual: {population[0]}: {score[0]}.')
 

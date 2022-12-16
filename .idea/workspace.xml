@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Testing mp">
-      <change afterPath="$PROJECT_DIR$/src/basenet/cluster/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/cluster/ray_clustering.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/basenet_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/basenet_api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Fixing crossover uniprocessing.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/cro.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/cro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/constraints.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/constraints.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" afterDir="false" />
@@ -289,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671106472247</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Fixing crossover uniprocessing.">
+      <created>1671134191638</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1671134191638</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -314,7 +318,8 @@
     <MESSAGE value="Added Layer in compilers." />
     <MESSAGE value="Added new methods for metaheuristic." />
     <MESSAGE value="Testing mp" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing mp" />
+    <MESSAGE value="Fixing crossover uniprocessing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixing crossover uniprocessing." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -330,9 +335,14 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="16" />
+          <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/dashboard/_interactive_dashboard.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

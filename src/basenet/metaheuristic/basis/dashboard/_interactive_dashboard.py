@@ -65,7 +65,7 @@ class Dashboard:
         self.stored_score_.append(score.numpy())
         self.stored_individuals_.append(_pop)
         self.performance_.append(performance)
-        self.inner_parameters['i_len'] = len(_pop)
+        self.inner_parameters['i_len'] = len(pop)
 
     def refresh_tab(self):
         if self.counter >= self.cnt:
@@ -235,7 +235,7 @@ class Dashboard:
         parameters = dict()
         individual = list()
         fitness = list()
-        for numpar, _ in enumerate(self.constraints.parameters):
+        for numpar, _ in enumerate(self.constraints.parameters[:600]):
             parameters[f'param{numpar}'] = []
 
         for epoch, pop in enumerate(self.stored_individuals_):

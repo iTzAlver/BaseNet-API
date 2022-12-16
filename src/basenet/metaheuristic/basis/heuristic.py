@@ -143,7 +143,7 @@ class BaseNetHeuristic:
                     #   Dashboard.
                     #
                     if self.there_is_dashboard:
-                        dashboard.add(self.score, self.population, performance)
+                        dashboard.add(self.score, self.population[:, :600], performance)
                         dashboard.refresh_tab()
                     #      Objective check.
                     #
@@ -159,6 +159,7 @@ class BaseNetHeuristic:
                     # cscope.run(*divs)                                   # Run the computational segments.
                     # futures = self._collapse(cscope.get())              # Obtain and collapse the results.
                     # new_individuals = self.constraints.apply_bindings(futures)      # New pop.
+                    tak = time.perf_counter()                             # Tik-toc.
                     new_individuals = self.constraints.apply_bindings(self._crossover_(self.population))  # New pop.
                     new_individuals = self._crossover_correction(new_individuals)   # Correct the wrong individuals.
                     tik = time.perf_counter()                            # Tik-toc.

@@ -5,6 +5,8 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
+import time
+
 import numpy as np
 import tensorflow as tf
 PARAMETER_TYPES = ['real', 'integer', 'categorical']
@@ -33,15 +35,28 @@ class HeuristicConstraints:
                 respectless.add(non_rule)
         return list(respectless)
 
+    # def __apply_bindings(self, population: tf.Tensor):
+    #     _population = tf.transpose(population)
+    #     racks = list()
+    #     for parameter, idea in zip(_population, self.parameters):
+    #         rack = tf.clip_by_value(parameter, clip_value_min=idea.minimum, clip_value_max=idea.maximum)
+    #         if idea.type == 'integer' or idea.type == 'categorical':
+    #             rack = tf.round(rack)
+    #         racks.append(rack)
+    #     return tf.transpose(tf.convert_to_tensor(racks))
+
     def apply_bindings(self, population: tf.Tensor):
-        _population = tf.transpose(population)
-        racks = list()
-        for parameter, idea in zip(_population, self.parameters):
-            rack = tf.clip_by_value(parameter, clip_value_min=idea.minimum, clip_value_max=idea.maximum)
-            if idea.type == 'integer' or idea.type == 'categorical':
-                rack = tf.round(rack)
-            racks.append(rack)
-        return tf.transpose(tf.convert_to_tensor(racks))
+        clip_min = list()
+        clip_max = list()
+        is_round = list()
+        population_ = population
+        for idea in self.parameters:
+            clip_min.append(idea.minimum)
+            clip_max.append(idea.maximum)
+            is_round.append(True if idea.type == 'real' else False)
+        population_ = tf.clip_by_value(population_, clip_value_min=[clip_min], clip_value_max=[clip_max])
+        population_rounded = tf.where(is_round, population_, tf.round(population_))
+        return population_rounded
 
 
 class HeuristicParameter:

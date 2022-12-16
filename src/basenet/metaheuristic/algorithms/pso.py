@@ -5,7 +5,6 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-import time
 from abc import ABC
 import tensorflow as tf
 import numpy as np
@@ -30,12 +29,11 @@ class BaseNetPso(BaseNetHeuristic, ABC):
         :param kwargs: Contains the genetic algorithm parameters:
         :param inertia: The PSO inertia:
             Velocity (v) of individual i in the population (pop) in parameter (p) in epoch (t):
-                if new best:
-                    v[i][p][t] = pop[i][p][t] - pop[best][p][t]
-                else:
-                    v[i][p] = v[i][p][t - 1] / inertia
+                v[i][p][t + 1] =    inertia * v[i][p][t] +
+                                    social_factor * (pop[i=best][p][t] - pop[i][p][t]) +
+                                    cognition_factor * (pop[i][p][t=best] - pop[i][p][t])
         """
-        inertia, cognition, social, kwargs = get_algorithm_parameters(inertia=2.,
+        inertia, cognition, social, kwargs = get_algorithm_parameters(inertia=.5,
                                                                       cognition_factor=1.,
                                                                       social_factor=1.,
                                                                       kwargs=kwargs)
@@ -68,30 +66,19 @@ class PSODifferentials:
 
         self.mapping: (list[tuple[tf.Tensor, float, tf.Tensor]], None) = None
 
-    def pso_mutation(self, population, score, ids, verbose=True):
+    def pso_mutation(self, population: tf.Tensor, score: tf.Tensor, ids: tf.Tensor):
 
         if self.mapping is None:
             self.mapping = [()] * len(population)
             for individual, fitness, name in zip(population, score, ids):
+                # noinspection PyTypeChecker
                 self.mapping[int(name)] = (individual, fitness, tf.zeros(population.shape[1]))
                 # best_solution[1 x np], best_score[1 x 1], current_speed[1 x np]
 
-        tik = time.perf_counter()
         speeds, bs = self.remap(ids)
-        tak = time.perf_counter()
-        self.performance[0] = tak - tik
-
         speed = self.compute_speed(population, speeds, bs)
-        tik = time.perf_counter()
-        self.performance[1] = tik - tak
-
         self.update_map(population, ids, speed, score)
         new_population = self.apply_speed(speed, population)
-        tak = time.perf_counter()
-        self.performance[2] = tak - tik
-
-        if verbose:
-            print(f'Crossover performance: [remap, compute, update_map]{self.performance}')
 
         return tf.convert_to_tensor(new_population, dtype=tf.float32)
 
