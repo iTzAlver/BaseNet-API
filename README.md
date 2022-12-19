@@ -86,11 +86,13 @@ is still highly flexible.
 
 ### Discipline coverage:
 
-- [x] Database building. (Planned for 0.0 release)
-- [x] Supervised learning. (Planned for 1.0 release)
-- [x] MetaHeuristic optimization. (Planned for 2.0 release)
+- [x] Database building.
+- [x] Supervised learning.
+- [x] MetaHeuristic optimization.
 - [ ] Unsupervised learning. (Planning in 3.0 release)
 - [ ] Reinforcement learning. (Planning in 4.0 release)
+- [ ] Computer Vision. (Planning in 5.0 release)
+- [ ] Natural Language Processing. (Will be in development from 3.0 to 6.0)
 
 
 
