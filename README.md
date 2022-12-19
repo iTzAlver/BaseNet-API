@@ -80,12 +80,20 @@ is still highly flexible.
 #### **DEPENDENCE**
 * This API is built over highly reliable frameworks, however, the API depends on those frameworks to run the models.
 
-[//]: # (#### **LEARNING**)
-[//]: # (* Even that this API is very easy to use and has Jupyter tutorial, you have to spend a little time on reading )
-[//]: # (documentation to learn to use it properly for your task.)
-
 #### **DEPLOYMENT**
 * The API can not deploy models by itself yet in this current verion. But I am planning!
+
+
+### Discipline coverage:
+
+- [x] Database building. (Planned for 0.0 release)
+- [x] Supervised learning. (Planned for 1.0 release)
+- [x] MetaHeuristic optimization. (Planned for 2.0 release)
+- [ ] Unsupervised learning. (Planning in 3.0 release)
+- [ ] Reinforcement learning. (Planning in 4.0 release)
+
+
+
 
 ## What's new?
 

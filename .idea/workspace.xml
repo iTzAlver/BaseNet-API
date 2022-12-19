@@ -6,17 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Heuristic are ready for 1.9.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/__special__.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/__special__.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/_loss_functions.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/_loss_functions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/_loss_functions/windowdiff.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/_loss_functions/windowdiff.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/_names.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/_names.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/_utils/_logger.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/_utils/_logger.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/compiler.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/compiler.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/database.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/database.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/model.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/model.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +309,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671440248879</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Heuristic are ready for 1.9.0">
+      <created>1671441010881</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1671441010881</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
