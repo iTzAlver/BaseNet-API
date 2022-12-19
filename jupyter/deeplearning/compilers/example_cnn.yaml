@@ -1,0 +1,56 @@
+compiler:
+  name: "cnn_from_yaml"
+  input_shape:
+    - 256
+    - 256
+    - 1
+  output_shape: 1
+
+  compile_options:
+    loss: "mean_squared_error"
+    optimizer: "adam"
+
+  devices:
+    - cpu:
+        name: "/device:CPU:0"
+        state: "Train"
+
+  layers:
+    - layer:
+        name: "Conv2D"
+        shape:
+          - 32
+          - 3
+        options:
+          - option:
+              name: "padding"
+              value: "same"
+
+    - layer:
+        name: "MaxPooling2D"
+        shape:
+        options:
+
+    - layer:
+        name: "Conv2D"
+        shape:
+          - 32
+          - 3
+        options:
+
+    - layer:
+        name: "MaxPooling2D"
+        shape:
+        options:
+
+    - layer:
+        name: "Flatten"
+        shape:
+        options:
+
+    - layer:
+        name: "Dense"
+        shape:
+          - 256
+        options:
+        

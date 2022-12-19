@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Roadmap updated.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/basenet_api-1.9.0-py3-none-any.whl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/basenet_api-1.9.0.tar.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/basenet/model.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/basenet/model.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ray-3.0.0.dev0-cp310-cp310-win_amd64.whl" beforeDir="false" afterPath="$PROJECT_DIR$/dist/ray-3.0.0.dev0-cp310-cp310-win_amd64.whl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deployment/deployed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deployment/deployed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet_api.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet_api.egg-info/PKG-INFO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet_api.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet_api.egg-info/SOURCES.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet_api.egg-info/requires.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet_api.egg-info/requires.txt" afterDir="false" />
-    </list>
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -355,7 +341,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671451335468</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <created>1671494271429</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1671494271429</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -386,7 +379,8 @@
     <MESSAGE value="Heuristic are ready for 1.9.0" />
     <MESSAGE value="Readme updated." />
     <MESSAGE value="Roadmap updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Roadmap updated." />
+    <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
