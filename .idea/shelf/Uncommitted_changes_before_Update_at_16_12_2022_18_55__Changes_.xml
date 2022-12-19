@@ -1,0 +1,29 @@
+<changelist name="Uncommitted_changes_before_Update_at_16_12_2022_18_55_[Changes]" date="1671213361623" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_12_2022_18_55_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 16/12/2022 18:55 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="jupyter/deeplearning/db/pd_ds.csv" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="jupyter/deeplearning/db/tf_ds/11462300229672148698/00000000.shard/00000000.snapshot" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="jupyter/deeplearning/db/tf_ds/snapshot.metadata" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="jupyter/deeplearning/db/np_ds.npy" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="jupyter/deeplearning/db/tf_ds/dataset_spec.pb" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+</changelist>

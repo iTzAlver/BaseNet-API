@@ -44,14 +44,14 @@ if __name__ == '__main__':
         my_first_compiler.add(layer)
 
     my_first_model = my_first_compiler.compile()
-    my_first_model.add_database(db_path='./mydb.db')
+    my_first_model.add_database(db_path='mydb.db')
 
     mydb = BaseNetDatabase.load('./mydb.db')
     print(mydb)
 
     #    > BaseNetDatabase with 32000 instances.
 
-    yaml_path = './my_model.yaml'
+    yaml_path = 'my_model.yaml'
 
     my_first_model = BaseNetCompiler.build_from_yaml(yaml_path).compile()
     my_first_model.add_database(mydb)

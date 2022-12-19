@@ -24,7 +24,7 @@ def test():
 
 
 def test2():
-    comp = BaseNetCompiler.build_from_yaml(path='../src/basenet/include/config/compilers/base_compiler.yaml')
+    comp = BaseNetCompiler.build_from_yaml(path='basenet/include/config/compilers/base_compiler.yaml')
     comp.compile()
     assert comp.is_compiled
 

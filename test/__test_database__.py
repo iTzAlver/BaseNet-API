@@ -53,7 +53,7 @@ def test2():
     db = BaseNetDatabase(x, y, distribution={'train': 30, 'test': 30, 'val': 40}, batch_size=64, rescale=255,
                          dtype=('int', 'float'))
     db.save('./testdir/testmodel_0.db')
-    assert os.path.exists('./testdir/testmodel_0.db')
+    assert os.path.exists('testdir/testmodel_0.db')
     logging.info('Test 2 completed: saving.')
 
 

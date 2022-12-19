@@ -13,7 +13,7 @@ import pickle
 
 
 def test():
-    with open('./db/testdb.ht', 'rb') as file:
+    with open('db/testdb.ht', 'rb') as file:
         other_db = pickle.load(file)
     x = []
     x.extend(other_db.dataset.xtrain)
@@ -25,13 +25,13 @@ def test():
     y.extend(other_db.dataset.ytest)
     my_db = BaseNetDatabase(x, y, rescale=255)
     my_db.save('./db/mydb.db')
-    assert os.path.exists('./db/mydb.db')
+    assert os.path.exists('db/mydb.db')
     logging.info('Test 0 completed: Rework a database.')
 
 
 def test1():
     basenet_model = BaseNetCompiler.build_from_yaml(verbose=True).compile()
-    basenet_model.add_database(db_path='./db/mydb.db')
+    basenet_model.add_database(db_path='db/mydb.db')
     results = basenet_model.fit(0, 3, tensorboard=False, avoid_lock=False)
     current_results = results.get()
     print(current_results)
@@ -40,7 +40,7 @@ def test1():
 
 def test2():
     basenet_model = BaseNetCompiler.build_from_yaml(verbose=True).compile()
-    basenet_model.add_database(db_path='./db/mydb.db')
+    basenet_model.add_database(db_path='db/mydb.db')
     results = basenet_model.fit(0, 3, tensorboard=False, avoid_lock=True)
 
     current_results = {}
@@ -54,7 +54,7 @@ def test2():
 
 def test3():
     basenet_model = BaseNetCompiler.build_from_yaml(verbose=True).compile()
-    basenet_model.add_database(db_path='./db/mydb.db')
+    basenet_model.add_database(db_path='db/mydb.db')
     results = basenet_model.fit(0, 100, tensorboard=True, avoid_lock=False)
     current_results = results.get()
     print(current_results)
