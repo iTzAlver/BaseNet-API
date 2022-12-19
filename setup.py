@@ -23,7 +23,10 @@ REQUIREMENTS = ['tensorflow>=2.10.0',
                 'PyYAML>=6.0',
                 'tensorboard>=2.9.1',
                 'psutil>=5.9.3',
-                'pynvml>=11.4.1']
+                'pynvml>=11.4.1',
+                'pandas',
+                'alive-progress',
+                'hvplot']
 
 
 setuptools.setup(

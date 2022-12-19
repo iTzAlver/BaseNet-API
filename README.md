@@ -31,6 +31,14 @@
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
 
+> **Disclaimer**: This API is under development. This means that there isn't a stable release yet.
+> However, some features are stable and can be used. Check the tutorials for more info. 
+> Please, check the roadmap below to see the future updates.
+
+> Any feature request is wellcome and appreciated; and has a high probability to be implemented.
+
+> Any issue is wellcome and appreciated; and it will often be inspected.
+
 ## About ##
 
     Author: A.Palomo-Alonso (a.palomo@uah.es)
@@ -84,8 +92,8 @@ is still highly flexible.
 * The API can not deploy models by itself yet in this current version. But I am planning!
 
 
-### Discipline coverage:
-
+### Roadmap:
+#### Discipline coverage:
 - [x] Database building.
 - [x] Supervised learning.
 - [x] MetaHeuristic optimization.
@@ -94,7 +102,40 @@ is still highly flexible.
 - [ ] Computer Vision. (Planning in 5.0 release)
 - [ ] Natural Language Processing. (Will be in development from 3.0 to 6.0)
 
+#### Feature roadmap:
 
+- [x] Feeder databases.
+- [x] Computational clustering.
+- [x] Monitoring.
+
+
+- [ ] BaseNetDeployment: 
+  - Deploy your model in your infrastructure with high connectivity and scalability. 
+  - With preprocess, model, postprocess and front-end sector.
+  - Automatic workload balance (probably with ``Ray`` or ``Spark`` clusters).
+  - Dynamic training after deployment. The model will still be learning from input data if desired.
+
+
+- [ ] Reinforcement learning:
+  - This will be hard to add in deployment.
+  - Custom environments.
+  - Connectivity with BaseNetCompiler: It will work with RL policy and DL!
+  - State-of-the-art RL.
+
+
+- [ ] Computer Vision:
+  - It is already possible to be implemented in DeepLearning API; but can be improved.
+  - Database visualization.
+  - Database size optimization.
+  - Computer vision utils.
+
+
+- [ ] Natural Language Processing:
+  - Hard to tell here, this discipline is very ad-hoc, and it is hard to pack it in an API.
+  - Transformers, LSTM and Word Vectorization will be included.
+  - Preprocessing will be a must.
+  - Probably will use ``HuggingFace`` package.
+  - Will be in constant development.
 
 
 ## What's new?
@@ -166,6 +207,7 @@ rebuilds the Classes to the current version of the API.
 1. Reworked ``BaseNetDatabase`` for minor bug fixing.
 2. Added the ``BaseNetFeeder`` Class to generate dynamic ``BaseNetDatabase``s.
 3. Jupyter tutorials.
+4. Added the ``BaseNetDeployment`` Class to deploy scalable Machine Learning models (in alpha, do not use until 3.0).
 
 ## Basic and fast usage
 
