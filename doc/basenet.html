@@ -25,20 +25,23 @@
         <h2>Contents</h2>
         <ul>
   <li><a href="#basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</a></li>
-  <li><a href="#basenet-api-package-154">Basenet API Package - 1.5.4</a>
+  <li><a href="#basenet-api-package-170">Basenet API Package - 1.7.0</a>
   <ul>
     <li><a href="#about">About</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#basic-and-fast-usage">Basic and fast usage</a></li>
     <li><a href="#whats-new">What's new?</a></li>
+    <li><a href="#basic-and-fast-usage">Basic and fast usage</a></li>
   </ul></li>
 </ul>
 
 
         <h2>Submodules</h2>
         <ul>
+                <li><a href="basenet/cluster.html">cluster</a></li>
                 <li><a href="basenet/compiler.html">compiler</a></li>
                 <li><a href="basenet/database.html">database</a></li>
+                <li><a href="basenet/feeder.html">feeder</a></li>
+                <li><a href="basenet/metaheuristic.html">metaheuristic</a></li>
                 <li><a href="basenet/model.html">model</a></li>
         </ul>
 
@@ -59,7 +62,7 @@ basenet    </h1>
                         <div class="docstring"><h1 id="basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</h1>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png">
+    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png" width="400px">
 </p>
 
 <p align="center">
@@ -80,9 +83,11 @@ basenet    </h1>
         <img src="https://img.shields.io/badge/dependencies-tensorflow-red?color=orange&style=for-the-badge" /></a>
     <a href="https://keras.io/">
         <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
+    <a href="https://www.ray.io/">
+        <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
-<h1 id="basenet-api-package-154">Basenet API Package - 1.5.4</h1>
+<h1 id="basenet-api-package-170">Basenet API Package - 1.7.0</h1>
 
 <p>This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.</p>
@@ -98,281 +103,74 @@ ISDEFE Chair of Research.
 
 <h2 id="features">Features</h2>
 
-<ul>
-<li><strong>Feature 1:</strong> Real-time logging.</li>
-<li><strong>Feature 2:</strong> Database train, validation and test automatic and random segmentation.</li>
-<li><strong>Feature 3:</strong> Real multiprocessing training process.</li>
-<li><strong>Feature 4:</strong> Automatic and custom GPU usage.</li>
-<li><strong>Feature 5:</strong> Easy-to-use classes.</li>
-<li><strong>Feature 6:</strong> Model merging.</li>
-<li><strong>Feature 7:</strong> Multiple model inputs.</li>
-<li><strong>Feature 8:</strong> API documentation.</li>
-<li><strong>Feature 9:</strong> Python Packaging and PyPi indexing.</li>
-<li><strong>Feature 10:</strong> Automatic GPU configuration and assignment.</li>
-</ul>
-
-<h2 id="basic-and-fast-usage">Basic and fast usage</h2>
-
-<h3 id="basenetdataset">BaseNetDataset</h3>
-
-<p>BaseNetDatabase is an easy-to-use database wrapper for the API. You can build your 
-database with the BaseNetDatabase class.</p>
-
-<h3 id="example-of-building-a-basenetdataset">Example of building a BaseNetDataset.</h3>
-
-<pre><code>from basenet_api import BaseNetDatabase
-
-my_data_x, my_data_y = load_my_data()
-print(my_data_y)
-
-#    &gt; array([[0.], [1.], ...], dtype=float32)
-
-print(my_data_x)
-
-#    &gt; array([[255., 0., 255., ..., dtype=float32)
-
-distribution = {'train': 60, 'test': 5, 'val': 35}
-mydb = BaseNetDatabase(my_data_x, my_data_y, 
-                       distribution=distribution)
-
-print(mydb)
-
-#    &gt; BaseNetDatabase with 32000 instances.
-
-mydb.save('./mydb.db')
-</code></pre>
-
-<h3 id="basenetcompiler">BaseNetCompiler</h3>
-
-<p>BaseNetCompiler takes the model architecture and builds a BaseNetModel with the given
-parameters. You can build your BaseNetCompiler from Python code only or a .yaml file.</p>
-
-<h3 id="example-of-building-a-basenetcompiler-from-python-code-only">Example of building a BaseNetCompiler from Python code only.</h3>
-
-<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
-
-mydb = BaseNetDatabase.load('./mydb.db')
-print(mydb)
-
-#    &gt; BaseNetDatabase with 32000 instances.
-
-layers = [
-    {'Dense': ((255,), {})},
-    {'Dense': ((64,), {'activation': 'relu'})},
-    {'Dropout': ((0.5,), {})}
-]
-
-my_devs = BaseNetCompiler.show_devs()
-print(my_devs)
-
-#    &gt; {'/device:CPU:0': 'Idle', 
-#       '/device:GPU:0': 'Train'}
-
-my_first_model = BaseNetCompiler(
-    io_shape=((8,), 8), 
-    compile_options={'loss': 'mean_squared_error', 'optimizer': 'adam'}, 
-    devices=my_devs, 
-    layers=layers,
-    name='my_first_model'
-).compile()
-
-my_first_model.add_database(mydb)
-</code></pre>
-
-<p>You can also use the BaseNetModel.add() method to add layers.</p>
-
-<pre><code>my_first_compiler = BaseNetCompiler(
-    io_shape=((8,), 8), 
-    compile_options={'loss': 'mean_squared_error', 'optimizer': 'adam'}, 
-    devices=my_devs,
-    name='my_first_model'
-)
-for layer in layers:
-    my_first_compiler.add(layer)
-
-my_first_model = my_first_compiler.compile()
-</code></pre>
-
-<p>You can also load the database from the path.</p>
-
-<pre><code>my_fitst_model.add_database('./mydb.db')
-</code></pre>
-
-<h3 id="example-of-building-a-basenetcompiler-from-yaml-file">Example of building a BaseNetCompiler from .yaml file.</h3>
-
-<p>Suppose you have a <code>.yaml</code> file in the <code>./my_model.yaml</code> location with
-the proper format you can load your compiler with the method <code>BaseNetCompiler().build_from_yaml(yaml_path)</code>
-and omit the process of loading the parameters into the compiler manually.</p>
-
-<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
-
-mydb = BaseNetDatabase.load('./mydb.db')
-print(mydb)
-
-#    &gt; BaseNetDatabase with 32000 instances.
-
-yaml_path = './my_model.yaml'
-
-my_first_model = BaseNetCompiler.build_from_yaml(yaml_path).compile()
-my_first_model.add_database(mydb)
-</code></pre>
-
-<p>An example of <code>.yaml</code> to replicate the same model as in the section 
-<code>Building a BaseNetCompiler from Python code only.</code>, the <code>.yaml</code> file will be the following:</p>
-
-<pre><code>compiler:
-  name: "my_first_model"
-  input_shape:
-    - 8
-  output_shape: 8
-
-  compile_options:
-    loss: "mean_squared_error"
-    optimizer: "adam"
-
-  devices:
-    - cpu:
-        name: "/device:CPU:0"
-        state: "Idle"
-    - gpu:
-        name: "/device:GPU:0"
-        state: "Train"
-
-  layers:
-    - layer:
-        name: "Dense"
-        shape:
-          - 128
-        options:
-
-    - layer:
-        name: "Dense"
-        shape:
-          - 128
-        options:
-          - option:
-              name: "activation"
-              value: "relu"
-
-    - layer:
-        name: "Dropout"
-        shape:
-          - 0.5
-        options:
-</code></pre>
-
-<p>If you want to learn more about building a model from a <code>.yaml</code> file, please, check the API 
-<a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">documentation</a>.</p>
-
-<h3 id="example-of-usage-of-the-basenetmodel">Example of usage of the BaseNetModel.</h3>
-
-<p>Once you build and compile a <code>BaseNetModel</code> with a <code>BaseNetCompiler.compile()</code> method, you can make use of all the
-methods that the BaseNetModel provides:</p>
+<h4 id="machine-learning"><strong>MACHINE LEARNING</strong></h4>
 
 <ul>
-<li><code>BaseNetModel.load()</code>: This method loads a tf.keras.model and the compiler from the given path.</li>
-<li><code>BaseNetModel.save()</code>: This method saves a tf.keras.model and the compiler into the given path.</li>
-<li><code>BaseNetModel.print()</code>: This method renders a <code>.png</code> image of the model into the given path.</li>
-<li><code>BaseNetModel.add_database()</code>: The <code>BaseNetModel</code> contains a breech of databases. It is a list with all the loaded
-databases previously. This method adds a database from a path or from a <code>BaseNetDatabase</code> object.</li>
-<li><code>BaseNetModel.predict()</code>: Performs a prediction given an input.</li>
-<li><code>BaseNetModel.evaluate()</code>: Evaluates the model with the pointed database test subset.</li>
-<li><code>BaseNetModel.fit()</code>: Trains the model with the pointed database.</li>
-<li><code>BaseNetModel.call()</code>: Merges two models into one. It can be used as a function.</li>
+<li><strong>Feature 01:</strong> Database train, validation and test automatic and random segmentation for DeepLearning.</li>
+<li><strong>Feature 02:</strong> Solving optimization problems for MetaHeuristic models.</li>
 </ul>
 
-<h4 id="printing-and-fitting-a-model">Printing and fitting a model.</h4>
+<h4 id="efficiency"><strong>EFFICIENCY</strong></h4>
 
-<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
+<ul>
+<li><strong>Feature 03:</strong> Real multiprocessing training process (CPU usage optimization).</li>
+<li><strong>Feature 04:</strong> Automatic and custom GPU usage and assignment.</li>
+</ul>
 
-mydb = BaseNetDatabase.load('./mydb.db')
-my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
-my_first_model.add_database(mydb)
+<h4 id="simplicity"><strong>SIMPLICITY</strong></h4>
 
-# Select database with index 0.
-my_first_model.fit(0, epochs=6, tensorboard=False)
+<ul>
+<li><strong>Feature 05:</strong> Easy-to-use API.</li>
+<li><strong>Feature 06:</strong> API documentation.</li>
+<li><strong>Feature 07:</strong> JuPyter Notebooks tutorials included.</li>
+<li><strong>Feature 08:</strong> Python Packaging and PyPi indexing.</li>
+</ul>
 
-#    &gt;   Tensorflow fitting info vomiting.
+<h4 id="monitorization"><strong>MONITORIZATION</strong></h4>
 
-# Print the model.
-my_first_model.print('./my_model.png')
-</code></pre>
+<ul>
+<li><strong>Feature 09:</strong> Real-time logging.</li>
+<li><strong>Feature 10:</strong> Dashboards included.</li>
+<li><strong>Feature 11:</strong> Model printing and easy debugging.</li>
+</ul>
 
-<p align="center">
-    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model.png">
-</p>
+<h4 id="connectivity"><strong>CONNECTIVITY</strong></h4>
 
-<h4 id="fitting-a-model-in-other-process">Fitting a model in other process.</h4>
+<ul>
+<li><strong>Feature 12:</strong> Model merging and multiple model inputs.</li>
+<li><strong>Feature 13:</strong> Computational cluster linking.</li>
+<li><strong>Feature 14:</strong> The different parts of the API are designed to interact.</li>
+<li><strong>Feature 15:</strong> It allows to create dynamic databases for data ingestion and math problems that require synthetic data.</li>
+</ul>
 
-<p><strong>Important:</strong> Debugging is not working properly when fitting a new process.</p>
+<h4 id="reliability"><strong>RELIABILITY</strong></h4>
 
-<p>Imagine working on a GUI. The training process of your model implemented on your
-GUI will block the parent process. The API implements a solution. Just activate
-<code>avoid_lock=True</code> in the <code>BaseNetModel.fit()</code> method and check the results whenever you want.</p>
+<ul>
+<li><strong>Feature 16:</strong> Depends on huge and reliable frameworks: KERAS, TENSORFLOW, RAY.</li>
+<li><strong>Feature 17:</strong> Code updating and active support.</li>
+</ul>
 
-<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
+<h3 id="cons">Cons:</h3>
 
-mydb = BaseNetDatabase.load('./mydb.db')
-my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml').compile()
-my_first_model.add_database(mydb)
+<h4 id="flexibility"><strong>FLEXIBILITY</strong></h4>
 
-# Select database with index 0.
-my_results = my_first_model.fit(0, epochs=6, tensorboard=False, avoid_lock=True)
+<ul>
+<li>An API must look for a balance between simplicity and flexibility. In this case, we bet on simplicity; but the API
+is still highly flexible.</li>
+<li>The API is designed for high level research and design. But it is not optimal for low-level research.</li>
+</ul>
 
-while my_results.is_training:
-    do_my_main_activity(update_gui, collect_data, run_server, or_whatever)
-    current_loss_curve = my_results.get()
+<h4 id="dependence"><strong>DEPENDENCE</strong></h4>
 
-# my_first_model.recover() Use it in versions &lt; 1.5.0.
+<ul>
+<li>This API is built over highly reliable frameworks, however, the API depends on those frameworks to run the models.</li>
+</ul>
 
-keep_doing_my_main_activity(update_gui, collect_data, run_server, or_whatever)
-</code></pre>
+<h4 id="deployment"><strong>DEPLOYMENT</strong></h4>
 
-<p><code>OutDated</code>:
-Note that if you don't make use of the method <code>BaseNetModel.recover()</code> the model will be empty as
-the trained model is bypassed by the child process until the parent process is able to recover the trained model.</p>
-
-<p><code>From &gt;= 1.5.0</code>: The model recovers itself, there is no need (or ways) to recover it manually.</p>
-
-<h4 id="using-tensorboard">Using Tensorboard.</h4>
-
-<p>The API also implements Tensorboard automatic opening and initialization. You can see the training process and keras
-app in real time while training.</p>
-
-<pre><code>my_first_model.fit(0, epochs=6, tensorboard=True)
-</code></pre>
-
-<h4 id="merging-two-models-into-one-with-several-inputs">Merging two models into one with several inputs.</h4>
-
-<p>You can merge two BaseNetModels by calling the object as a function:</p>
-
-<pre><code>from basenet_api import BaseNetDatabase, BaseNetCompiler
-mydb = BaseNetDatabase.load('./mydb.db')
-my_first_model = BaseNetCompiler.build_from_yaml('./my_model.yaml', verbose=True).compile()
-my_second_model = BaseNetCompiler.build_from_yaml('./my_model_2.yaml', verbose=True).compile()
-my_first_model.add_database(mydb)
-
-my_first_model(my_second_model, parallel=True, name='merged_model')
-my_first_model.print('./')
-</code></pre>
-
-<p>It will merge the two models into one single with two outputs if <code>parallel=True</code>, else it will be added at the bottom.</p>
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/example_model2.png">
-</p>
-
-<h4 id="obtaining-training-results-from-the-fitting-process">Obtaining training results from the fitting process.</h4>
-
-<p>Once you train the model, you can get a <code>BaseNetResults</code> object with the training results. You can obtain the values from:</p>
-
-<pre><code>my_results = my_first_model.fit(0, epochs=6)
-losses = my_results.get()
-print(losses)
-
-#    &gt; {'loss': [1., 0.7, 0.6, 0.5, 0.4, 0.3], 
-#       'val_loss': [1., 0.8, 0.7, 0.6, 0.5, 0.4]}
-</code></pre>
+<ul>
+<li>The API can not deploy models by itself yet in this current verion. But I am planning!</li>
+</ul>
 
 <h2 id="whats-new">What's new?</h2>
 
@@ -461,6 +259,30 @@ for large database generators.</li>
 rebuilds the Classes to the current version of the API.</li>
 </ol>
 
+<h3 id="160">1.6.0</h3>
+
+<ol>
+<li>Start to develop the second branch of the API: <code>BaseNetHeuristic</code></li>
+<li>Start to create JuPyter Notebook tutorials of the API.</li>
+<li>Included <code>BaseNetDatabase</code> binarization and normalization of databases.</li>
+<li>Included in <code>BaseNetDatabase</code> to read <code>TensorFlow</code> and <code>Pandas</code> databases.</li>
+<li>Some rework was done for bug-fixing and providing more logging information.</li>
+</ol>
+
+<h3 id="170">1.7.0</h3>
+
+<ol>
+<li>Reworked <code>BaseNetDatabase</code> for minor bug fixing.</li>
+<li>Added the <code>BaseNetFeeder</code> Class to generate dynamic <code>BaseNetDatabase</code>s.</li>
+<li>Jupyter tutorials.</li>
+</ol>
+
+<h2 id="basic-and-fast-usage">Basic and fast usage</h2>
+
+<p>There are Jupyter Notebooks with usage tutorials! Refer to them 
+<a href="https://github.com/iTzAlver/BaseNet-API/tree/main/jupyter">HERE</a>. You should run your notebook creating a 
+virtual environment in this README path.</p>
+
 <h3 id="cite-as">Cite as</h3>
 
 <p>Please, cite this library as:</p>
@@ -500,12 +322,16 @@ rebuilds the Classes to the current version of the API.</li>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="kn">from</span> <span class="nn">.compiler</span> <span class="kn">import</span> <span class="n">BaseNetCompiler</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="kn">from</span> <span class="nn">.database</span> <span class="kn">import</span> <span class="n">BaseNetDatabase</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">BaseNetModel</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="kn">from</span> <span class="nn">._loss_functions</span> <span class="kn">import</span> <span class="n">window_diff</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="n">BaseNetCompiler</span><span class="o">.</span><span class="n">set_up_devices</span><span class="p">()</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="c1">#                        END OF FILE                        #</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="kn">from</span> <span class="nn">.feeder</span> <span class="kn">import</span> <span class="n">BaseNetFeeder</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="kn">from</span> <span class="nn">._loss_functions</span> <span class="kn">import</span> <span class="n">window_diff</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="kn">from</span> <span class="nn">.__special__</span> <span class="kn">import</span> <span class="n">__version__</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="kn">from</span> <span class="nn">.metaheuristic</span> <span class="kn">import</span> <span class="n">BaseNetHeuristic</span><span class="p">,</span> <span class="n">BaseNetRandomSearch</span><span class="p">,</span> <span class="n">BaseNetGenetic</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="n">BaseNetCompiler</span><span class="o">.</span><span class="n">set_up_devices</span><span class="p">()</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="c1">#                        END OF FILE                        #</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
 </span></pre></div>
 
 
