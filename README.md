@@ -26,7 +26,7 @@
         <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.7.0
+# Basenet API Package - 1.9.0:  2.0 Is coming!!
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
