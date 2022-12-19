@@ -19,6 +19,8 @@ src/basenet/_utils/__init__.py
 src/basenet/_utils/_logger.py
 src/basenet/cluster/__init__.py
 src/basenet/cluster/ray_clustering.py
+src/basenet/deployment/__init__.py
+src/basenet/deployment/deployed.py
 src/basenet/include/config/compilers/base_compiler.yaml
 src/basenet/include/temp/bypass/bypass.h5
 src/basenet/include/temp/checkpoints/model.base_model.h5

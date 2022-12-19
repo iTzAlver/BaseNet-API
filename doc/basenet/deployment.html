@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 12.2.0"/>
-    <title>basenet API documentation</title>
+    <title>basenet.deployment API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
     <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
@@ -16,34 +16,21 @@
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
         <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
-        <div>
+        <div>            <a class="pdoc-button module-list-button" href="../basenet.html">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>                &nbsp;basenet</a>
+
             <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png" class="logo" alt="project logo"/>
 
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
-        <h2>Contents</h2>
-        <ul>
-  <li><a href="#basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</a></li>
-  <li><a href="#basenet-api-package-191-200-is-coming">Basenet API Package - 1.9.1:  (2.0.0 Is coming!!)</a>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#whats-new">What's new?</a></li>
-    <li><a href="#basic-and-fast-usage">Basic and fast usage</a></li>
-  </ul></li>
-</ul>
-
 
         <h2>Submodules</h2>
         <ul>
-                <li><a href="basenet/cluster.html">cluster</a></li>
-                <li><a href="basenet/compiler.html">compiler</a></li>
-                <li><a href="basenet/database.html">database</a></li>
-                <li><a href="basenet/deployment.html">deployment</a></li>
-                <li><a href="basenet/feeder.html">feeder</a></li>
-                <li><a href="basenet/metaheuristic.html">metaheuristic</a></li>
-                <li><a href="basenet/model.html">model</a></li>
+                <li><a href="deployment/deployed.html">deployed</a></li>
         </ul>
 
 
@@ -58,320 +45,12 @@
     <main class="pdoc">
             <section class="module-info">
                     <h1 class="modulename">
-basenet    </h1>
+<a href="./../basenet.html">basenet</a><wbr>.deployment    </h1>
 
-                        <div class="docstring"><h1 id="basenet-a-simpler-way-to-build-ai-models">BaseNet: A simpler way to build AI models.</h1>
+                
+                        <input id="mod-deployment-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
-<p align="center">
-    <img src="https://raw.githubusercontent.com/iTzAlver/basenet_api/main/doc/multimedia/basenet_logo.png" width="400px">
-</p>
-
-<p align="center">
-    <a href="https://github.com/iTzAlver/basenet_api/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/iTzAlver/basenet_api?color=purple&style=plastic" /></a>
-    <a href="https://github.com/iTzAlver/basenet_api/tree/main/test">
-        <img src="https://img.shields.io/badge/tests-passed-green?color=green&style=plastic" /></a>
-    <a href="https://github.com/iTzAlver/basenet_api/blob/main/requirements.txt">
-        <img src="https://img.shields.io/badge/requirements-pypi-red?color=red&style=plastic" /></a>
-    <a href="https://htmlpreview.github.io/?https://github.com/iTzAlver/basenet_api/blob/main/doc/basenet.html">
-        <img src="https://img.shields.io/badge/doc-available-green?color=yellow&style=plastic" /></a>
-    <a href="https://github.com/iTzAlver/BaseNet-API/releases/tag/1.5.0-release">
-        <img src="https://img.shields.io/badge/release-1.5.0-white?color=white&style=plastic" /></a>
-</p>
-
-<p align="center">
-    <a href="https://www.tensorflow.org/">
-        <img src="https://img.shields.io/badge/dependencies-tensorflow-red?color=orange&style=for-the-badge" /></a>
-    <a href="https://keras.io/">
-        <img src="https://img.shields.io/badge/dependencies-keras-red?color=red&style=for-the-badge" /></a>
-    <a href="https://www.ray.io/">
-        <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
-</p>
-
-<h1 id="basenet-api-package-191-200-is-coming">Basenet API Package - 1.9.1:  (2.0.0 Is coming!!)</h1>
-
-<p>This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
-framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.</p>
-
-<blockquote>
-  <p><strong>Disclaimer</strong>: This API is under development. This means that there isn't a stable release yet.
-  However, some features are stable and can be used. Check the tutorials for more info. 
-  Please, check the roadmap below to see the future updates.</p>
-</blockquote>
-
-<blockquote>
-  <p>Any feature request is wellcome and appreciated; and has a high probability to be implemented.</p>
-</blockquote>
-
-<blockquote>
-  <p>Any issue is wellcome and appreciated; and it will often be inspected.</p>
-</blockquote>
-
-<h2 id="about">About</h2>
-
-<pre><code>Author: A.Palomo-Alonso (a.palomo@uah.es)
-Universidad de Alcalá.
-Escuela Politécnica Superior.
-Departamento de Teoría De la Señal y Comunicaciones (TDSC).
-ISDEFE Chair of Research.
-</code></pre>
-
-<h2 id="features">Features</h2>
-
-<h4 id="machine-learning"><strong>MACHINE LEARNING</strong></h4>
-
-<ul>
-<li><strong>Feature 01:</strong> Database train, validation and test automatic and random segmentation for DeepLearning.</li>
-<li><strong>Feature 02:</strong> Solving optimization problems for MetaHeuristic models.</li>
-</ul>
-
-<h4 id="efficiency"><strong>EFFICIENCY</strong></h4>
-
-<ul>
-<li><strong>Feature 03:</strong> Real multiprocessing training process (CPU usage optimization).</li>
-<li><strong>Feature 04:</strong> Automatic and custom GPU usage and assignment.</li>
-</ul>
-
-<h4 id="simplicity"><strong>SIMPLICITY</strong></h4>
-
-<ul>
-<li><strong>Feature 05:</strong> Easy-to-use API.</li>
-<li><strong>Feature 06:</strong> API documentation.</li>
-<li><strong>Feature 07:</strong> JuPyter Notebooks tutorials included.</li>
-<li><strong>Feature 08:</strong> Python Packaging and PyPi indexing.</li>
-</ul>
-
-<h4 id="monitorization"><strong>MONITORIZATION</strong></h4>
-
-<ul>
-<li><strong>Feature 09:</strong> Real-time logging.</li>
-<li><strong>Feature 10:</strong> Dashboards included.</li>
-<li><strong>Feature 11:</strong> Model printing and easy debugging.</li>
-</ul>
-
-<h4 id="connectivity"><strong>CONNECTIVITY</strong></h4>
-
-<ul>
-<li><strong>Feature 12:</strong> Model merging and multiple model inputs.</li>
-<li><strong>Feature 13:</strong> Computational cluster linking.</li>
-<li><strong>Feature 14:</strong> The different parts of the API are designed to interact.</li>
-<li><strong>Feature 15:</strong> It allows to create dynamic databases for data ingestion and math problems that require synthetic data.</li>
-</ul>
-
-<h4 id="reliability"><strong>RELIABILITY</strong></h4>
-
-<ul>
-<li><strong>Feature 16:</strong> Depends on huge and reliable frameworks: KERAS, TENSORFLOW, RAY.</li>
-<li><strong>Feature 17:</strong> Code updating and active support.</li>
-</ul>
-
-<h3 id="cons">Cons:</h3>
-
-<h4 id="flexibility"><strong>FLEXIBILITY</strong></h4>
-
-<ul>
-<li>An API must look for a balance between simplicity and flexibility. In this case, we bet on simplicity; but the API
-is still highly flexible.</li>
-<li>The API is designed for high level research and design. But it is not optimal for low-level research.</li>
-</ul>
-
-<h4 id="dependence"><strong>DEPENDENCE</strong></h4>
-
-<ul>
-<li>This API is built over highly reliable frameworks, however, the API depends on those frameworks to run the models.</li>
-</ul>
-
-<h4 id="deployment"><strong>DEPLOYMENT</strong></h4>
-
-<ul>
-<li>The API can not deploy models by itself yet in this current version. But I am planning!</li>
-</ul>
-
-<h3 id="roadmap">Roadmap:</h3>
-
-<h4 id="discipline-coverage">Discipline coverage:</h4>
-
-<ul>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> Database building.</li>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> Supervised learning.</li>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> MetaHeuristic optimization.</li>
-<li><input type="checkbox" class="task-list-item-checkbox" disabled> Unsupervised learning. (Planning in 3.0 release)</li>
-<li><input type="checkbox" class="task-list-item-checkbox" disabled> Reinforcement learning. (Planning in 4.0 release)</li>
-<li><input type="checkbox" class="task-list-item-checkbox" disabled> Computer Vision. (Planning in 5.0 release)</li>
-<li><input type="checkbox" class="task-list-item-checkbox" disabled> Natural Language Processing. (Will be in development from 3.0 to 6.0)</li>
-</ul>
-
-<h4 id="feature-roadmap">Feature roadmap:</h4>
-
-<ul>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> Feeder databases.</li>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> Computational clustering.</li>
-<li><p><input type="checkbox" class="task-list-item-checkbox" checked disabled> Monitoring.</p></li>
-<li><p><input type="checkbox" class="task-list-item-checkbox" disabled> BaseNetDeployment: </p>
-
-<ul>
-<li>Deploy your model in your infrastructure with high connectivity and scalability. </li>
-<li>With preprocess, model, postprocess and front-end sector.</li>
-<li>Automatic workload balance (probably with <code>Ray</code> or <code>Spark</code> clusters).</li>
-<li>Dynamic training after deployment. The model will still be learning from input data if desired.</li>
-</ul></li>
-<li><p><input type="checkbox" class="task-list-item-checkbox" disabled> Reinforcement learning:</p>
-
-<ul>
-<li>This will be hard to add in deployment.</li>
-<li>Custom environments.</li>
-<li>Connectivity with BaseNetCompiler: It will work with RL policy and DL!</li>
-<li>State-of-the-art RL.</li>
-</ul></li>
-<li><p><input type="checkbox" class="task-list-item-checkbox" disabled> Computer Vision:</p>
-
-<ul>
-<li>It is already possible to be implemented in DeepLearning API; but can be improved.</li>
-<li>Database visualization.</li>
-<li>Database size optimization.</li>
-<li>Computer vision utils.</li>
-</ul></li>
-<li><p><input type="checkbox" class="task-list-item-checkbox" disabled> Natural Language Processing:</p>
-
-<ul>
-<li>Hard to tell here, this discipline is very ad-hoc, and it is hard to pack it in an API.</li>
-<li>Transformers, LSTM and Word Vectorization will be included.</li>
-<li>Preprocessing will be a must.</li>
-<li>Probably will use <code>HuggingFace</code> package.</li>
-<li>Will be in constant development.</li>
-</ul></li>
-</ul>
-
-<h2 id="whats-new">What's new?</h2>
-
-<h3 id="010">&lt; 0.1.0</h3>
-
-<ol>
-<li>BaseNetModel included.</li>
-<li>BaseNetDatabase included.</li>
-<li>BaseNetCompiler included.</li>
-<li>Inheritance from CorNetAPI project.</li>
-<li>Multi-processing fitting.</li>
-<li>Tensorboard launching.</li>
-</ol>
-
-<h3 id="020">0.2.0</h3>
-
-<ol>
-<li>BaseNetResults included (working).</li>
-<li>Now the model is callable.</li>
-<li>Switched print to logging.</li>
-<li>Project documentation.</li>
-</ol>
-
-<h3 id="100-103">1.0.0 - 1.0.3</h3>
-
-<ol>
-<li>Python packaging</li>
-<li>1.0.x: Upload bug solving.</li>
-</ol>
-
-<h3 id="110">1.1.0</h3>
-
-<ol>
-<li>Functional package.</li>
-<li>PyPi indexing.</li>
-</ol>
-
-<h3 id="120">1.2.0:</h3>
-
-<ol>
-<li>Loss results included in the BaseNetResults while multiprocessing.</li>
-<li>GPU auto set up to avoid TensorFlow memory errors.</li>
-<li>Method <code>BaseNetCompiler.set_up_devices()</code> configures the GPUs according to the free RAM to be used in the API.</li>
-</ol>
-
-<h3 id="130">1.3.0</h3>
-
-<ol>
-<li>Included WindowDiff to the project scope.</li>
-</ol>
-
-<h3 id="140">1.4.0</h3>
-
-<ol>
-<li>Solved python packaging problems.</li>
-<li>Included force stop callback in the <code>BaseNetModel.fit_stop()</code> method.</li>
-</ol>
-
-<h3 id="150">1.5.0</h3>
-
-<ol>
-<li>BaseNetDatabase now has the attributes <code>BaseNetDatabase.size</code> and <code>BaseNetDatabase.distribution</code>.</li>
-<li>Solved forced stopping bugs with multiprocessing in the method <code>BaseNetDatabase.fit_stop()</code>.</li>
-<li><code>BaseNetModel._threshold()</code> private method now takes a set of outputs instead only one. 
-This was only for optimization.</li>
-<li>Solved wrong <code>BaseNetModel.recover()</code>.</li>
-<li><strong>Auto recover implemented</strong>, now <code>BaseNetModel.recover()</code> is a private method: <code>BaseNetModel._recover()</code>.
-Now the used does not need to recover it. <em>The model recovers by itself. -- Hans Niemann 2022.</em> 
-<strong>NOTE</strong>: RECOVER IS NECESARY WHEN THE MODEL IS EARLY STOPPED; CONSIDER RECOVERING ALWAYS THE MODEL.</li>
-</ol>
-
-<h3 id="151-153">1.5.1 - 1.5.3</h3>
-
-<ol>
-<li>Solved a bug where <code>BaseNetDatabase</code> modified the incoming list of instances in the database; avoiding checkpoints
-for large database generators.</li>
-<li>Exception handler for <code>nvml</code> library if NVIDIA Drivers are not installed`in the machine.</li>
-</ol>
-
-<h3 id="154">1.5.4</h3>
-
-<ol>
-<li>Added some <code>BaseNetDatabase</code> utils: merge and split databases.</li>
-<li>Added <code>BaseNetDatabase</code> equality check.</li>
-<li>Added a <code>BaseNetDatabase._reversion()</code>, <code>BaseNetCompiler._reversion()</code> and <code>BaseNetModel.__version__</code>. Which
-rebuilds the Classes to the current version of the API.</li>
-</ol>
-
-<h3 id="160">1.6.0</h3>
-
-<ol>
-<li>Start to develop the second branch of the API: <code>BaseNetHeuristic</code></li>
-<li>Start to create JuPyter Notebook tutorials of the API.</li>
-<li>Included <code>BaseNetDatabase</code> binarization and normalization of databases.</li>
-<li>Included in <code>BaseNetDatabase</code> to read <code>TensorFlow</code> and <code>Pandas</code> databases.</li>
-<li>Some rework was done for bug-fixing and providing more logging information.</li>
-</ol>
-
-<h3 id="170-191">1.7.0 - 1.9.1</h3>
-
-<ol>
-<li>Reworked <code>BaseNetDatabase</code> for minor bug fixing. (1.7.0)</li>
-<li>Added the <code>BaseNetFeeder</code> Class to generate dynamic <code>BaseNetDatabase</code>s. (1.7.0)</li>
-<li>Jupyter tutorials. (1.8.0)</li>
-<li>Added the <code>BaseNetDeployment</code> Class to deploy scalable Machine Learning models (in alpha, do not use until 3.0).
-(1.9.0)</li>
-<li>Added <code>BaseNetHeuristic</code> algorithms that implements MetaHeuristic methods such as PSO. (1.8.0)</li>
-</ol>
-
-<h2 id="basic-and-fast-usage">Basic and fast usage</h2>
-
-<p>There are Jupyter Notebooks with usage tutorials! Refer to them 
-<a href="https://github.com/iTzAlver/BaseNet-API/tree/main/jupyter">HERE</a>. You should run your notebook creating a 
-virtual environment in this README path.</p>
-
-<h3 id="cite-as">Cite as</h3>
-
-<p>Please, cite this library as:</p>
-
-<pre><code>@misc{basenetapi,
-  title={BaseNet: A simpler way to build AI models.},
-  author={A. Palomo-Alonso},
-  booktitle={PhD in TIC: Machine Learning and NLP.},
-  year={2022}
-}
-</code></pre>
-</div>
-
-                        <input id="mod-basenet-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-
-                        <label class="view-source-button" for="mod-basenet-view-source"><span>View Source</span></label>
+                        <label class="view-source-button" for="mod-deployment-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="c1">#                                                           #</span>
@@ -380,31 +59,10 @@ virtual environment in this README path.</p>
 </span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="c1">#                                                           #</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="c1"># Import statements:</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="sd">.. include:: ../../README.md</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="c1"># import json</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="c1"># import os</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="c1"># from .__special__ import __config_path__</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="c1"># with open(__config_path__, &#39;r&#39;, encoding=&#39;utf-8&#39;) as file:</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="c1">#     cfg = json.load(file)</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="c1">#     os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = cfg[&#39;gpu_devices&#39;]</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="kn">from</span> <span class="nn">._names</span> <span class="kn">import</span> <span class="n">PREBUILT_LOSSES</span><span class="p">,</span> <span class="n">KERAS_LIST_LAYERS</span><span class="p">,</span> <span class="n">PREBUILT_LAYERS</span><span class="p">,</span> <span class="n">KERAS_LOSSES</span><span class="p">,</span> \
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="n">KERAS_OPTIMIZERS</span><span class="p">,</span> <span class="n">PREBUILT_OPTIMIZERS</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="kn">from</span> <span class="nn">.compiler</span> <span class="kn">import</span> <span class="n">BaseNetCompiler</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="kn">from</span> <span class="nn">.database</span> <span class="kn">import</span> <span class="n">BaseNetDatabase</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">BaseNetModel</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="kn">from</span> <span class="nn">.feeder</span> <span class="kn">import</span> <span class="n">BaseNetFeeder</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="kn">from</span> <span class="nn">._loss_functions</span> <span class="kn">import</span> <span class="n">window_diff</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="kn">from</span> <span class="nn">.__special__</span> <span class="kn">import</span> <span class="n">__version__</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="kn">from</span> <span class="nn">.metaheuristic</span> <span class="kn">import</span> <span class="n">BaseNetHeuristic</span><span class="p">,</span> <span class="n">BaseNetRandomSearch</span><span class="p">,</span> <span class="n">BaseNetGenetic</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="n">BaseNetCompiler</span><span class="o">.</span><span class="n">set_up_devices</span><span class="p">()</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="c1">#                        END OF FILE                        #</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">.deployed</span> <span class="kn">import</span> <span class="n">BaseNetDeployment</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="c1">#                        END OF FILE                        #</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="c1"># - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #</span>
 </span></pre></div>
 
 
@@ -462,7 +120,7 @@ virtual environment in this README path.</p>
                 script.async = true;
                 script.onload = () => resolve(window.pdocSearch);
                 script.onerror = (e) => reject(e);
-                script.src = "search.js";
+                script.src = "../search.js";
                 document.getElementsByTagName("head")[0].appendChild(script);
             });
         } catch (e) {
@@ -504,7 +162,7 @@ virtual environment in this README path.</p>
             }
             for (let result of results.slice(0, 10)) {
                 let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
+                let url = `../${doc.modulename.replaceAll(".", "/")}.html`;
                 if (doc.qualname) {
                     url += `#${doc.qualname}`;
                 }

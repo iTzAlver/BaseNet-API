@@ -10,7 +10,6 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 REQUIREMENTS = ['tensorflow>=2.10.0',
-                # 'tensorflow-gpu==2.10.*',
                 'graphviz >= 0.20.1',
                 'matplotlib>=3.6.1',
                 'future>=0.18.2',
@@ -24,14 +23,14 @@ REQUIREMENTS = ['tensorflow>=2.10.0',
                 'tensorboard>=2.9.1',
                 'psutil>=5.9.3',
                 'pynvml>=11.4.1',
-                'pandas',
-                'alive-progress',
-                'hvplot']
+                'pandas>=1.5.2',
+                'alive-progress>=2.4.1',
+                'hvplot>=0.8.2']
 
 
 setuptools.setup(
     name='basenet_api',
-    version='1.9.0',
+    version='1.9.1',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',
