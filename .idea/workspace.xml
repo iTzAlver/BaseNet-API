@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Heuristic are ready for 1.9.0">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Readme updated.">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -316,7 +315,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671441010881</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Readme updated.">
+      <created>1671441517873</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1671441517873</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Readme updated.">
+      <created>1671442113609</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1671442113609</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -345,7 +358,8 @@
     <MESSAGE value="Heuristic ready for 1.9.0" />
     <MESSAGE value="Heuristic not ready for 1.9.0" />
     <MESSAGE value="Heuristic are ready for 1.9.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Heuristic are ready for 1.9.0" />
+    <MESSAGE value="Readme updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="Readme updated." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -81,7 +81,7 @@ is still highly flexible.
 * This API is built over highly reliable frameworks, however, the API depends on those frameworks to run the models.
 
 #### **DEPLOYMENT**
-* The API can not deploy models by itself yet in this current verion. But I am planning!
+* The API can not deploy models by itself yet in this current version. But I am planning!
 
 
 ### Discipline coverage:
