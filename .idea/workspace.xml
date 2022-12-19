@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Heuristic ready for 1.9.0">
-      <change beforePath="$PROJECT_DIR$/.idea/basenet_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/basenet_api.iml" afterDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Heuristic not ready for 1.9.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/cro.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/__cro.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/metaheuristic/algorithms/pso.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +294,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671204924481</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Heuristic not ready for 1.9.0">
+      <created>1671206619476</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1671206619476</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -326,7 +328,8 @@
     <MESSAGE value="Testing mp" />
     <MESSAGE value="Fixing crossover uniprocessing." />
     <MESSAGE value="Heuristic ready for 1.9.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Heuristic ready for 1.9.0" />
+    <MESSAGE value="Heuristic not ready for 1.9.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Heuristic not ready for 1.9.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -160,7 +160,8 @@ rebuilds the Classes to the current version of the API.
 ## Basic and fast usage
 
 There are Jupyter Notebooks with usage tutorials! Refer to them 
-[HERE](https://github.com/iTzAlver/BaseNet-API/tree/main/jupyter).
+[HERE](https://github.com/iTzAlver/BaseNet-API/tree/main/jupyter). You should run your notebook creating a 
+virtual environment in this README path.
 
 [//]: # ()
 [//]: # (### BaseNetDataset)
