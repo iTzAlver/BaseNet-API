@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Jupyter update.">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_12_2022_13_15_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_12_2022_13_15__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_12_2022_18_55_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_12_2022_18_55__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2022_0_43_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2022_0_43__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetCompiler.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetCompiler.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetDatabase.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetDatabase.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetModel.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/jupyter/deeplearning/BaseNetModel.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/model.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,18 +53,20 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ialve/Desktop/BaseNet-API&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/fract/Desktop/BaseNet-API/jupyter/deeplearning/compilers&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.gutterIcons&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\fract\Desktop\BaseNet-API\jupyter\deeplearning\compilers" />
+      <recent name="C:\Users\fract\Desktop\BaseNet-API\jupyter\deeplearning" />
       <recent name="C:\Users\ialve\Desktop\BaseNet-API" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\jupyter" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\test\jupyter" />
-      <recent name="C:\Users\fract\Desktop\BaseNet-API" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\fract\Desktop\BaseNet-API" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\doc\multimedia" />
     </key>
   </component>
@@ -348,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671494271429</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Jupyter update.">
+      <created>1671494335751</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1671494335751</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -380,7 +401,8 @@
     <MESSAGE value="Readme updated." />
     <MESSAGE value="Roadmap updated." />
     <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="Jupyter update." />
+    <option name="LAST_COMMIT_MESSAGE" value="Jupyter update." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

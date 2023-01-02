@@ -81,6 +81,8 @@ class BaseNetModel:
         :param compiler: BaseNetCompiler object to build the model.
         :param model: If a keras.model is already compiled, you can import it in the model parameter, so the compiler
         won't be used during the construction.
+        :param name: The name of the model.
+        :param verbose: Shows relevant information for debugging pruposes.
         """
         self.__version__ = __version__
         self._verbose = verbose
@@ -276,8 +278,13 @@ class BaseNetModel:
         :return: True if the saving was successful. False if not.
         """
         try:
+            if '.h5' not in model_path:
+                end_model_path = f'{model_path}.h5'
+            else:
+                end_model_path = model_path
             if self.model is not None:
-                self.model.save(model_path)
+                if '.h5' not in model_path:
+                    self.model.save(end_model_path)
             else:
                 if self._verbose:
                     logging.warning('BaseNetModel: Cannot save the model because it is not compiled yet.')
@@ -285,7 +292,7 @@ class BaseNetModel:
 
             if self.compiler:
                 if not compiler_path:
-                    _compiler_path = model_path.replace('.h5', '.cpl')
+                    _compiler_path = end_model_path.replace('.h5', '.cpl')
                 elif '.cpl' in compiler_path:
                     _compiler_path = compiler_path
                 else:
