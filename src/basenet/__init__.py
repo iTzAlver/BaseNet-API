@@ -16,7 +16,7 @@
 #     os.environ["CUDA_VISIBLE_DEVICES"] = cfg['gpu_devices']
 from ._names import PREBUILT_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LAYERS, KERAS_LOSSES, \
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
-from ._loss_functions import window_diff
+from basenet.__special._loss_functions import window_diff
 from .__special__ import __version__
 
 from .deeplearning import BaseNetCompiler, BaseNetDatabase, BaseNetResults, BaseNetModel, BaseNetFeeder

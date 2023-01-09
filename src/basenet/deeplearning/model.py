@@ -10,6 +10,7 @@ The model.py file includes the BaseNetModel class and the BaseNetResults class.
 # Import statements:
 import pickle
 import os
+import sys
 import copy
 import shutil
 import webbrowser
@@ -22,12 +23,9 @@ from tensorboard import program
 from tensorflow import keras
 from keras.utils.vis_utils import plot_model
 
-from ._utils import StdoutLogger
-from ._algorithms import Subkeras
-from ._loss_functions import Sublosses
-
-from ._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
-from .__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__, __version__
+from ..__special import Subkeras, Sublosses
+from .._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
+from ..__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__, __version__
 
 from .database import BaseNetDatabase
 
@@ -465,7 +463,7 @@ class BaseNetModel:
 
     # Private methods:
     def _get_summary(self):
-        log = StdoutLogger()
+        log = _StdoutLogger()
         log.start()
         self.model.summary()
         __msg = log.messages
@@ -730,6 +728,28 @@ class BaseNetResults:
         else:
             self.is_training = False
         return {'loss': self._loss, 'val_loss': self._val_loss}
+
+
+# Special class.
+class _StdoutLogger:
+    stdout = sys.stdout
+    messages = []
+
+    def start(self):
+        sys.stdout = self
+
+    def stop(self):
+        sys.stdout = self.stdout
+
+    def write(self, text):
+        self.messages.append(text)
+
+    @staticmethod
+    def flush():
+        if 'win' in sys.platform:
+            os.system('cls')
+        else:
+            os.system("clear")
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

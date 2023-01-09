@@ -5,7 +5,8 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from ._logger import Logger as StdoutLogger
+from ._algorithms import Pbmm, Subkeras
+from ._loss_functions import window_diff, Sublosses
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
