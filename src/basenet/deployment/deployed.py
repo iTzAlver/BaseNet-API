@@ -7,7 +7,7 @@
 # Import statements:
 import tensorflow as tf
 from tensorflow.python.client import device_lib
-from ..model import BaseNetModel
+from ..deeplearning import BaseNetModel
 
 
 # -----------------------------------------------------------
