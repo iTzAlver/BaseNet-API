@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="1.9.1">
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Logged replaced.">
+      <change afterPath="$PROJECT_DIR$/src/basenet/classic/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/basenet/classic/lmse.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/__test_lmse__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/feeder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,27 +48,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ialve/Desktop/NsImplement&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/ialve/Desktop/BaseNet-API/src/basenet",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet" />
+      <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet\deeplearning" />
       <recent name="C:\Users\ialve\Desktop\BaseNet-API" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\jupyter" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\test\jupyter" />
-      <recent name="C:\Users\fract\Desktop\BaseNet-API" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet\deeplearning" />
+      <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet\__special" />
       <recent name="C:\Users\ialve\Desktop\BaseNet-API\dist" />
       <recent name="C:\Users\fract\Desktop\BaseNet-API\doc\multimedia" />
     </key>
   </component>
-  <component name="RunManager" selected="Python._test_heuristic_">
+  <component name="RunManager" selected="Python.__test_lmse__">
     <configuration name="__debug__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="basenet_api" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -94,6 +106,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/__test_feeder__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="__test_lmse__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="basenet_api" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/__test_lmse__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -146,6 +179,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.__test_lmse__" />
         <item itemvalue="Python._test_heuristic_" />
         <item itemvalue="Python._test_pool" />
         <item itemvalue="Python.__test_feeder__" />
@@ -365,7 +399,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671462493375</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Deeplearning API is now spearate.">
+      <created>1673257051815</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1673257051815</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Logged replaced.">
+      <created>1673257389061</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1673257389061</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -397,7 +445,9 @@
     <MESSAGE value="Readme updated." />
     <MESSAGE value="Roadmap updated." />
     <MESSAGE value="1.9.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.9.1" />
+    <MESSAGE value="Deeplearning API is now spearate." />
+    <MESSAGE value="Logged replaced." />
+    <option name="LAST_COMMIT_MESSAGE" value="Logged replaced." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -417,14 +467,12 @@
           <line>133</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/basenet/classic/lmse.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self.population" language="Python" />
-        <watch expression="new_individuals" language="Python" />
-        <watch expression="self.score" language="Python" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

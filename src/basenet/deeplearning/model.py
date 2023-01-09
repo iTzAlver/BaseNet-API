@@ -27,7 +27,7 @@ from ..__special import Subkeras, Sublosses
 from .._names import KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS
 from ..__special__ import __keras_checkpoint__, __tensorboard_logs__, __print_model_path__, __bypass_path__, __version__
 
-from .database import BaseNetDatabase
+from ..database import BaseNetDatabase
 
 
 # -----------------------------------------------------------

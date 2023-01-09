@@ -29,12 +29,12 @@ import os
 import logging
 import pickle
 import yaml
-from ._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS, \
+from .._names import KERAS_LOSSES, KERAS_LIST_LAYERS, PREBUILT_LOSSES, PREBUILT_LAYERS, \
     KERAS_OPTIMIZERS, PREBUILT_OPTIMIZERS
 from .model import BaseNetModel
 from tensorflow.python.client import device_lib
 from pynvml.smi import nvidia_smi
-from .__special__ import __base_compiler__, __version__
+from ..__special__ import __base_compiler__, __version__
 
 
 # -----------------------------------------------------------

@@ -5,9 +5,7 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
-from .compiler import BaseNetCompiler
-from .feeder import BaseNetFeeder
-from .model import BaseNetModel, BaseNetResults
+from .lmse import BaseNetLMSE
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

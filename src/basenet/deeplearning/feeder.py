@@ -6,7 +6,7 @@
 #    Email:     ialver.p@gmail.com                                   #
 #                                                                    #
 # -------------------------------------------------------------------#
-from .database import BaseNetDatabase
+from ..database import BaseNetDatabase
 from types import FunctionType
 # -------------------------------------------------------------------#
 #   x   x   x   x   x   x   x   x   x   x   x   x   x   x   x   x    #
