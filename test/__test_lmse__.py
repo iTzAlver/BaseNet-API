@@ -5,9 +5,11 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
+import matplotlib.pyplot as plt
+import numpy as np
 from basenet import BaseNetLMSE, BaseNetDatabase, window_diff
 
-WORKBENCH = 64
+WORKBENCH = 16
 NOISE = 0
 
 NOISES = ['0', '01', '02', '03', '04', '05', '06']
@@ -22,6 +24,14 @@ if __name__ == '__main__':
     _test_ = f'Results:\n\tMSE:\t{lmse.results["mse"]}\n\tMAE:\t{lmse.results["mae"]}\n\tError:\t' \
              f'{lmse.results["error"]}\n\tWD:\t\t{results}'
     print(_test_)
+    trans = lmse.transformation()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    x, y, z = np.meshgrid(range(trans.shape[0]), range(trans.shape[1]), range(trans.shape[2]))
+    sc = ax.scatter(x, y, z, c=trans.flat, cmap='inferno')
+    plt.colorbar(sc)
+    plt.show()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

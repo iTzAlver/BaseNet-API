@@ -6,7 +6,6 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
 import numpy as np
-import tensorflow as tf
 from ..database import BaseNetDatabase
 
 
@@ -23,16 +22,17 @@ class BaseNetLMSE:
         self.linked_database = None
         self.name = name
         self.th = th
-        if input_database is None:
-            self.results = {'mse': None,
-                            'mae': None,
-                            'error': None}
-            self.weights = None
-            self.is_trained = False
-        else:
+        self.__shape = tuple()
+        self.weights = None
+        self.is_trained = False
+        self.results = {'mse': None,
+                        'mae': None,
+                        'error': None}
+
+        if input_database is not None:
             self.link_database(input_database)
-            self.is_trained = True
             self.fit()
+            self.is_trained = True
             self.validate(th)
 
     def link_database(self, input_database: (BaseNetDatabase, str)):
@@ -65,7 +65,12 @@ class BaseNetLMSE:
         ytrain = database.ytrain
         # Train the matrix.
         v = self.__train_matrix(xtrain, ytrain)
-        # Validation.
+        # Weights and shape.
+        _shape = [shape for shape in database.xtrain.shape[1:]]
+        if _shape[-1] == 1:
+            _shape.pop()
+        _shape.append(ytrain.shape[-1])
+        self.__shape = tuple(_shape)
         self.weights = v
         return v
 
@@ -99,9 +104,9 @@ class BaseNetLMSE:
     def predict(self, x: (list, tuple, np.ndarray), th: (None, float) = None):
         """
         This method predicts the outputs using the current model weights.
-        :param x: A list, tuple, structured array, or tf.Tensor of inputs.
+        :param x: A list, tuple, structured array of inputs.
         :param th: The threshold in the output, if provided.
-        :return: A list, tuple, structured array or tf.Tensor with the predicted values.
+        :return: A list, tuple, structured array with the predicted values.
         """
         main_type = type(x)
         y = list()
@@ -121,7 +126,7 @@ class BaseNetLMSE:
         elif main_type is np.ndarray:
             return np.array(y)
         else:
-            return tf.convert_to_tensor(y)
+            return None
 
     def evaluate(self, metric, th: (None, float) = None):
         """
@@ -187,6 +192,17 @@ class BaseNetLMSE:
         lmse.is_trained = True
         return lmse
 
+    def transformation(self, original: bool = True):
+        """
+        This method returns the weights in their original shape.
+        :param original: If true, returns the weights in the original shape, else, with the computational shape.
+        :return: The reshaped weights.
+        """
+        if original:
+            return np.reshape(self.weights[1:], self.__shape)
+        else:
+            return self.weights
+
     # Model functions.
     @staticmethod
     def __add_bias(matrix: np.ndarray):
@@ -196,7 +212,10 @@ class BaseNetLMSE:
 
     def __utility_conversion(self, matrix: np.ndarray):
         train = np.squeeze(matrix, -1)
-        train = np.reshape(train, (matrix.shape[0], matrix.shape[1] ** 2))
+        flatten_sape = 1
+        for dimension in matrix.shape[1:]:
+            flatten_sape *= dimension
+        train = np.reshape(train, (matrix.shape[0], flatten_sape))
         return self.__add_bias(train)
 
     @staticmethod

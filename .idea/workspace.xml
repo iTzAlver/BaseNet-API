@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Logged replaced.">
-      <change afterPath="$PROJECT_DIR$/src/basenet/classic/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/basenet/classic/lmse.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/__test_lmse__.py" afterDir="false" />
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Logged replaced - added classic algorithms.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/deeplearning/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/deeplearning/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/classic/lmse.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/classic/lmse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_lmse__.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/__test_lmse__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,14 +41,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/ialve/Desktop/BaseNet-API/src/basenet",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ialve/Desktop/BaseNet-API/src/basenet&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet" />
@@ -413,7 +406,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673257389061</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Logged replaced - added classic algorithms.">
+      <created>1673277384011</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1673277384011</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -447,7 +447,8 @@
     <MESSAGE value="1.9.1" />
     <MESSAGE value="Deeplearning API is now spearate." />
     <MESSAGE value="Logged replaced." />
-    <option name="LAST_COMMIT_MESSAGE" value="Logged replaced." />
+    <MESSAGE value="Logged replaced - added classic algorithms." />
+    <option name="LAST_COMMIT_MESSAGE" value="Logged replaced - added classic algorithms." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -466,11 +467,6 @@
           <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py</url>
           <line>133</line>
           <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/basenet/classic/lmse.py</url>
-          <line>109</line>
-          <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
