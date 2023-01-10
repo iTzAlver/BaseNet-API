@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="Logged replaced - added classic algorithms.">
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="LMSE finished.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basenet/classic/lmse.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/classic/lmse.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/__test_lmse__.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/__test_lmse__.py" afterDir="false" />
@@ -413,7 +413,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673277384011</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="LMSE finished.">
+      <created>1673348188609</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1673348188609</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -448,7 +455,8 @@
     <MESSAGE value="Deeplearning API is now spearate." />
     <MESSAGE value="Logged replaced." />
     <MESSAGE value="Logged replaced - added classic algorithms." />
-    <option name="LAST_COMMIT_MESSAGE" value="Logged replaced - added classic algorithms." />
+    <MESSAGE value="LMSE finished." />
+    <option name="LAST_COMMIT_MESSAGE" value="LMSE finished." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -467,6 +475,11 @@
           <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py</url>
           <line>133</line>
           <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/basenet/classic/lmse.py</url>
+          <line>96</line>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

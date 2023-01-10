@@ -89,14 +89,14 @@ class BaseNetLMSE:
             RuntimeError('BaseNetLMSE: Tried a validation without a trained model. Link a database with the'
                          '"link_database()" method and train it with the "fit()" method.')
         # Data extraction.
-        xtest = self.__utility_conversion(database.xval)
+        xtest = database.xval
         ytest = database.yval
         # Validation.
         ytest_hat = self.predict(xtest, th)
         diff = ytest_hat - ytest
         mse = np.mean(diff**2)
         mae = np.mean(abs(diff))
-        error = np.sum(abs(diff))
+        error = np.sum(abs(diff)) / len(ytest)
         self.results = {'mse': mse,
                         'mae': mae,
                         'error': error}
@@ -109,18 +109,18 @@ class BaseNetLMSE:
         :return: A list, tuple, structured array with the predicted values.
         """
         main_type = type(x)
-        y = list()
-        for _x_ in x:
-            ytest_hat_float = np.matmul(_x_, self.weights)
-            if th is not None:
-                ytest_hat = self.__threshold(ytest_hat_float, th)
-            elif self.th is not None:
-                ytest_hat = self.__threshold(ytest_hat_float, self.th)
-            else:
-                ytest_hat = ytest_hat_float
-            y.append(ytest_hat)
+        x_ = self.__utility_conversion(np.array(x))
+        ytest_hat_float = np.matmul(x_, self.weights)
+        if th is not None:
+            y = self.__threshold(ytest_hat_float, th)
+        elif self.th is not None:
+            y = self.__threshold(ytest_hat_float, self.th)
+        else:
+            y = ytest_hat_float
+
+        # Return the main type of x...
         if main_type is list:
-            return y
+            return list(y)
         elif main_type is tuple:
             return tuple(y)
         elif main_type is np.ndarray:
@@ -144,7 +144,7 @@ class BaseNetLMSE:
             RuntimeError('BaseNetLMSE: Tried a test without a trained model. Link a database with the'
                          '"link_database()" method and train it with the "fit()" method.')
         # Data extraction.
-        xtest = self.__utility_conversion(database.xtest)
+        xtest = database.xtest
         ytest = database.ytest
         # Validation.
         ytest_hat = self.predict(xtest, th)
@@ -192,16 +192,21 @@ class BaseNetLMSE:
         lmse.is_trained = True
         return lmse
 
-    def transformation(self, original: bool = True):
+    def transformation(self, original: bool = True, bias: bool = False):
         """
         This method returns the weights in their original shape.
         :param original: If true, returns the weights in the original shape, else, with the computational shape.
+        :param bias: If bias is true, the bias is added to the weights.
         :return: The reshaped weights.
         """
-        if original:
-            return np.reshape(self.weights[1:], self.__shape)
+        if bias:
+            w = self.weights[1:]
         else:
-            return self.weights
+            w = self.weights
+        if original:
+            return np.reshape(w, self.__shape)
+        else:
+            return w
 
     # Model functions.
     @staticmethod
@@ -211,7 +216,10 @@ class BaseNetLMSE:
         return np.concatenate([biasing, matrix], axis=1)
 
     def __utility_conversion(self, matrix: np.ndarray):
-        train = np.squeeze(matrix, -1)
+        if matrix.shape[-1] == 1:
+            train = np.squeeze(matrix, -1)
+        else:
+            train = matrix
         flatten_sape = 1
         for dimension in matrix.shape[1:]:
             flatten_sape *= dimension
