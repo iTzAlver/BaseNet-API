@@ -13,10 +13,42 @@ class BaseNetLMSE:
     def __init__(self, input_database: (BaseNetDatabase, str, None) = None, name: str = 'unnamed_lmse',
                  th: (None, float) = None):
         """
+        BaseNetLMSE
+        -----------
+
         This is the BaseNetLMSE model. Implements a classic machine-learning LMSE.
+
         :param input_database: The BaseNetDatabase to train, validate and test the LMSE model.
         :param name: The name of the model.
         :param th: Validation threshold. Set up a threshold if you are working in a classification problem.
+
+        Attributes
+        ----------
+        The BaseNetLMSE has the following attributes:
+
+        * linked_database: A BaseNetDatabase with train, validation and test datasets.
+        * name: A string with the model's name.
+        * th: A float telling the model threshold, if the output is binary, the threshold will be applied to non-binary
+          outputs of the LMSE.
+        * weights: A numpy.ndarray (2D) with the current trained weights of the model in its computational shape (2D).
+        * is_trained: A boolean telling if the model is trained.
+        * results: The MeanSquaredError, MeanAverageError and TotalErrorPerSample in a dictionary with the 'mse', 'mae'
+          and 'error' keywords.
+
+        Methods
+        -------
+        The BaseNetLMSE has the following methods:
+
+        * link_database: Use this method to link a BaseNetDatabase to the model.
+        * fit: Use this method to train the model. If a BaseNetDatabase is provided to the constructor, the fitting
+          process and validation are automatic.
+        * validate: Computes the 'mse', 'mae' and 'error' of the validation dataset. If a BaseNetDatabase is provided to
+          the constructor, the fitting process and validation are automatic.
+        * predict: Takes a sample as input and predicts the output with the trained values.
+        * evaluate: Uses the test samples of the linked BaseNetDatabase to compute a provided metric as a function.
+        * transformation: Returns the weights of the model as a linear transformation with or without the bias.
+        * save_weights: Saves the weights and bias in the given path.
+        * load: Builds a BaseNetLMSE from the given weights and bias (as a tuple or path).
         """
         # Database import.
         self.linked_database = None
@@ -175,6 +207,7 @@ class BaseNetLMSE:
         This function loads the weights of the LMSE model.
         :param path: Path where the weights are saved, or you can just import the weights.
         :param name: The name of the model.
+        :param th: The model threshold if it is a classification problem (binary output).
         :return: The BaseNetLMSE with the given model path, without a linked database or results.
         """
         if isinstance(path, str):
@@ -248,6 +281,25 @@ class BaseNetLMSE:
         hat[hat >= th] = 1
         hat[hat < th] = 0
         return hat
+
+    def __repr__(self):
+        if self.__shape:
+            __shape = self.__shape
+        else:
+            __shape = 'unknown shape'
+        _text = f'\n=================================\n' \
+                f'<BaseNetLMSE model: {self.name}>:\n' \
+                f'\tTrained:\t{self.is_trained}\n' \
+                f'\tShape:\t\t{__shape}\n' \
+                f'\tBinary:\t\t{self.th is not None}\n' \
+                f'=================================\n'
+        return _text
+
+    def __call__(self, *args, **kwargs):
+        return self.predict(*args, **kwargs)
+
+    def __matmul__(self, other):
+        return self.predict([other])
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

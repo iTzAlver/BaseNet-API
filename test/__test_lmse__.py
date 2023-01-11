@@ -28,6 +28,8 @@ if __name__ == '__main__':
     true_trans, true_bias = lmse.transformation(original=False, bias=True)
     x, y = database.xtest[200], database.ytest[200]
     out = lmse.predict([x])
+    out_matmul = lmse @ x
+    out_call = lmse([x])
 
     noisy_lmse = BaseNetLMSE.load((true_trans, true_bias), name='noisy_model', th=0.5).link_database(noisy_database)
     noisy_lmse.validate()
@@ -40,6 +42,9 @@ if __name__ == '__main__':
     _test_ = f'\nResults (noisy):\n\tMSE:\t{noisy_lmse.results["mse"]}\n\tMAE:\t{noisy_lmse.results["mae"]}' \
              f'\n\tError:\t{noisy_lmse.results["error"]}\n\tWD:\t\t{noisy_results}'
     print(_test_)
+
+    print(noisy_lmse)
+    print(lmse)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
