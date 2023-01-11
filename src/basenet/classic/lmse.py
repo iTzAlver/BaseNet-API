@@ -160,14 +160,17 @@ class BaseNetLMSE:
         if not isinstance(path, str):
             raise TypeError('BaseNetLMSE: Error while saving the model weights, the path must be a string.')
         if '.npy' not in path:
-            true_path = f'{path}.npy'
+            path_weights = f'{path}_weights.npy'
+            path_bias = f'{path}_bias.npy'
         else:
-            true_path = path
-        np.save(true_path, self.weights)
-        return true_path
+            path_weights = f"{path.replace('.npy', '')}_weights.npy"
+            path_bias = f"{path.replace('.npy', '')}_bias.npy"
+        np.save(path_weights, self.weights)
+        np.save(path_bias, self.weights[0, :])
+        return path_weights, path_bias
 
     @staticmethod
-    def load(path: str, name: str = 'unnamed_lmse'):
+    def load(path: (str, tuple[np.ndarray]), name: str = 'unnamed_lmse', th: (None, float) = None):
         """
         This function loads the weights of the LMSE model.
         :param path: Path where the weights are saved, or you can just import the weights.
@@ -177,19 +180,24 @@ class BaseNetLMSE:
         if isinstance(path, str):
             try:
                 if '.npy' not in path:
-                    true_path = f'{path}.npy'
+                    path_weights = f'{path}_weights.npy'
+                    path_bias = f'{path}_bias.npy'
                 else:
-                    true_path = path
-                w = np.load(true_path)
+                    path_weights = f"{path.replace('.npy', '')}_weights.npy"
+                    path_bias = f"{path.replace('.npy', '')}_bias.npy"
+                w = np.load(path_weights)
+                b = np.load(path_bias)
             except Exception as ex:
                 raise ValueError(f'BaseNetLMSE: The given path gave the following error while loading: {ex}.')
-        elif isinstance(path, np.ndarray):
-            w = path
+        elif isinstance(path, tuple):
+            w = path[0]
+            b = path[1]
         else:
-            raise TypeError('BaseNetLMSE: Error while loading the model weights, it is not a path.')
+            raise TypeError('BaseNetLMSE: Error while loading the model weights and bias, it is not a path or tuple.')
         lmse = BaseNetLMSE(name=name)
-        lmse.weights = w
+        lmse.weights = np.concatenate([np.array([b]), w])
         lmse.is_trained = True
+        lmse.th = th
         return lmse
 
     def transformation(self, original: bool = True, bias: bool = False):
@@ -197,16 +205,18 @@ class BaseNetLMSE:
         This method returns the weights in their original shape.
         :param original: If true, returns the weights in the original shape, else, with the computational shape.
         :param bias: If bias is true, the bias is added to the weights.
-        :return: The reshaped weights.
+        :return: The reshaped weights and the bias if requested.
         """
-        if bias:
-            w = self.weights[1:]
-        else:
-            w = self.weights
-        if original:
+        w = self.weights[1:]
+        b = self.weights[0]
+        if original and not bias:
             return np.reshape(w, self.__shape)
-        else:
+        elif original and bias:
+            return np.reshape(w, self.__shape), b
+        elif not original and not bias:
             return w
+        else:
+            return w, b
 
     # Model functions.
     @staticmethod
@@ -223,8 +233,8 @@ class BaseNetLMSE:
         flatten_sape = 1
         for dimension in matrix.shape[1:]:
             flatten_sape *= dimension
-        train = np.reshape(train, (matrix.shape[0], flatten_sape))
-        return self.__add_bias(train)
+        flat_train = np.reshape(train, (matrix.shape[0], flatten_sape))
+        return self.__add_bias(flat_train)
 
     @staticmethod
     def __train_matrix(x: np.ndarray, y: np.ndarray):
