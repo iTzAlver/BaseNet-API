@@ -75,7 +75,7 @@ def check_requirements(logger) -> bool:
 
 def run_tests(*args):
     # Set up logging.
-    errors = 0
+    errors: (int, str) = 0
     logger = set_up_logging()
     logger.info(f'Logging initialization with framework version: {__version__}')
     logger.info(TopLevelMessages.connected)
@@ -87,6 +87,8 @@ def run_tests(*args):
         else:
             logger.warning(f'\tSome of the requirements are not installed or not correctly installed, '
                            f'please check the requirements.txt file, some are missing.')
+            args = ()
+            errors = 'INSTALLATION'
 
     if '--deeplearning' in args or '--all' in args:
         # DeepLearningTest.
@@ -104,10 +106,8 @@ def run_tests(*args):
     if '--metaheuristic' in args or '--all' in args:
         # MetaHeuristic
         logger.info(TopLevelMessages.metaheuristic_start)
-        # basenet_test(logger, preamble=TopLevelMessages.mh_inner, test=basenet_database_test, timeout=0, timer=0)
-        # basenet_test(logger, preamble=TopLevelMessages.mh_inner, test=basenet_compiler_test, timeout=0, timer=0)
-        # basenet_test(logger, preamble=TopLevelMessages.mh_inner, test=basenet_model_test, timeout=0, timer=0)
-        # basenet_test(logger, preamble=TopLevelMessages.mh_inner, test=basenet_feeder_test, timeout=0, timer=0)
+        # errors += 0 if basenet_test(logger, preamble=TopLevelMessages.dl_inner, test=basenet_database_test,
+        #                             timeout=3, timer=5) else 1
         logger.info(TopLevelMessages.metaheuristic_finish)
 
     logger.info(f'{TopLevelMessages.error_report}{errors}{TopLevelMessages.error_report_end}')

@@ -67,7 +67,7 @@ class ErrorMessages:
 @dataclasses.dataclass
 class TopLevelMessages:
     connected: str = '[+] Connected to the BaseNetTest module'
-    disconnected: str = '[-] Disconnected to the BaseNetTest module'
+    disconnected: str = '[-] Disconnected from the BaseNetTest module'
     imports: str = '\tChecking Python requirements'
     # Deep Learning
     dl_inner: str = '\t\tDeepLearningAPI'
