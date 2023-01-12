@@ -63,7 +63,6 @@ class ErrorMessages:
     in_watchdog: str = _ERRORS['E007']
 
 
-
 @dataclasses.dataclass
 class TopLevelMessages:
     connected: str = '[+] Connected to the BaseNetTest module'
