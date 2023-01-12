@@ -17,7 +17,7 @@ class Database:
         self.name: str = generator['name']
         self.distribution: dict = {'train': generator['distribution'][0],
                                    'validation': generator['distribution'][1],
-                                   'test': generator['distribution'][2]}
+                                   'debug': generator['distribution'][2]}
 
         (xtrain, ytrain), (xtest, ytest), (xval, yval) = self._splitdb(setz, generator['distribution'])
         self.dataset: Dataset = Dataset(xtrain, ytrain, xtest, ytest, xval, yval)
@@ -31,7 +31,7 @@ class Database:
 
     @staticmethod
     def _splitdb(setz: tuple[list, list], split: tuple):
-        # This function splits the database into test, train and validation from a single distribution.
+        # This function splits the database into debug, train and validation from a single distribution.
         total = len(setz[0])
         xtrain = []
         ytrain = []

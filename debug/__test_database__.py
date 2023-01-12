@@ -27,8 +27,8 @@ def test0():
     x = np.ones((10, 10), dtype=np.int32) * 255
     y = np.ones((10, 1), dtype=np.float32) * 0.5
     db0 = BaseNetDatabase(x, y)
-    db1 = BaseNetDatabase(x, y, distribution={'train': 30, 'test': 30, 'val': 40}, batch_size=64)
-    db2 = BaseNetDatabase(x, y, distribution={'train': 30, 'test': 30, 'val': 40}, batch_size=64, rescale=255,
+    db1 = BaseNetDatabase(x, y, distribution={'train': 30, 'debug': 30, 'val': 40}, batch_size=64)
+    db2 = BaseNetDatabase(x, y, distribution={'train': 30, 'debug': 30, 'val': 40}, batch_size=64, rescale=255,
                           dtype=('int', 'float'))
     assert db0
     assert db1
@@ -50,7 +50,7 @@ def test1():
 def test2():
     x = np.ones((10, 10), dtype=np.int32) * 255
     y = np.ones((10, 1), dtype=np.float32) * 0.5
-    db = BaseNetDatabase(x, y, distribution={'train': 30, 'test': 30, 'val': 40}, batch_size=64, rescale=255,
+    db = BaseNetDatabase(x, y, distribution={'train': 30, 'debug': 30, 'val': 40}, batch_size=64, rescale=255,
                          dtype=('int', 'float'))
     db.save('./testdir/testmodel_0.db')
     assert os.path.exists('testdir/testmodel_0.db')
@@ -60,7 +60,7 @@ def test2():
 def test3():
     x = np.ones((10, 10), dtype=np.int32) * 255
     y = np.ones((10, 1), dtype=np.float32) * 0.5
-    db0 = BaseNetDatabase(x, y, distribution={'train': 30, 'test': 30, 'val': 40}, batch_size=64, rescale=255,
+    db0 = BaseNetDatabase(x, y, distribution={'train': 30, 'debug': 30, 'val': 40}, batch_size=64, rescale=255,
                           dtype=('int', 'float'))
     db1 = BaseNetDatabase.load('./testdir/testmodel_0.db')
     for attribute in ['xtrain', 'ytrain', 'xval', 'yval', 'xtest', 'ytest']:

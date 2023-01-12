@@ -30,7 +30,7 @@ REQUIREMENTS = ['tensorflow>=2.10.0',
 
 setuptools.setup(
     name='basenet_api',
-    version='1.9.1',
+    version='1.9.2',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',

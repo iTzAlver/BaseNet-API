@@ -4,10 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="LMSE finished.">
+    <list default="true" id="865ee9ce-40ef-4630-9e30-fa12b9717e08" name="Changes" comment="LMSE bug fix.">
+      <change afterPath="$PROJECT_DIR$/test/deeplearning/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/deeplearning/compiler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/deeplearning/database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/deeplearning/feeder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/deeplearning/model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/messages.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/run_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test_wrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/basenet_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/basenet_api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/basenet/classic/lmse.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/classic/lmse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/__test_lmse__.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/__test_lmse__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basenet/__special__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/basenet/__special__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__readme_test__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__readme_test__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_compiler__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_compiler__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_database__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_database__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_deployment__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_deployment__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_feeder__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_feeder__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_lmse__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_lmse__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_merge_split__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_merge_split__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/__test_model__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/__test_model__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/_test_pool.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/_test_pool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/db/mydb.db" beforeDir="false" afterPath="$PROJECT_DIR$/debug/db/mydb.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/db/testdb.ht" beforeDir="false" afterPath="$PROJECT_DIR$/debug/db/testdb.ht" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/merged_model.png" beforeDir="false" afterPath="$PROJECT_DIR$/debug/merged_model.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/my_first_model.png" beforeDir="false" afterPath="$PROJECT_DIR$/debug/my_first_model.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/my_model.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/debug/my_model.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/my_model_2.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/debug/my_model_2.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/mydb.db" beforeDir="false" afterPath="$PROJECT_DIR$/debug/mydb.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/src/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/database_structures/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/src/database_structures/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/database_structures/_database_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/src/database_structures/_database_structure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/database_structures/_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/src/database_structures/_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/database_structures/_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/src/database_structures/_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_heuristic/__test_heuristics__.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/test_heuristic/__test_heuristics__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_heuristic/_blackbox_example_.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/test_heuristic/_blackbox_example_.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_heuristic/_test_heuristic_.py" beforeDir="false" afterPath="$PROJECT_DIR$/debug/test_heuristic/_test_heuristic_.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testdir/testmodel_0.db" beforeDir="false" afterPath="$PROJECT_DIR$/debug/testdir/testmodel_0.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,14 +80,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/ialve/Desktop/BaseNet-API/src/basenet",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Debugger"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ialve/Desktop/BaseNet-API/src/basenet&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Debugger&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ialve\Desktop\BaseNet-API\src\basenet" />
@@ -67,8 +103,8 @@
       <recent name="C:\Users\fract\Desktop\BaseNet-API\doc\multimedia" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.__test_lmse__">
-    <configuration name="__debug__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.run_test">
+    <configuration name="__test_lmse__ (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="basenet_api" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -76,32 +112,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/jupyter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/debug" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/jupyter/__debug__.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="__test_feeder__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="basenet_api" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/__test_feeder__.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/debug/__test_lmse__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -173,13 +188,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="basenet_api" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/run_test.py" />
+      <option name="PARAMETERS" value="--all" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run_test" />
+        <item itemvalue="Python.__test_lmse__ (1)" />
         <item itemvalue="Python.__test_lmse__" />
         <item itemvalue="Python._test_heuristic_" />
         <item itemvalue="Python._test_pool" />
-        <item itemvalue="Python.__test_feeder__" />
-        <item itemvalue="Python.__debug__" />
       </list>
     </recent_temporary>
   </component>
@@ -430,7 +466,21 @@
       <option name="project" value="LOCAL" />
       <updated>1673352986363</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="LMSE bug fix.">
+      <created>1673440546337</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1673440546337</updated>
+    </task>
+    <task id="LOCAL-00036" summary="LMSE bug fix.">
+      <created>1673449041993</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1673449041993</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -466,18 +516,19 @@
     <MESSAGE value="Logged replaced." />
     <MESSAGE value="Logged replaced - added classic algorithms." />
     <MESSAGE value="LMSE finished." />
-    <option name="LAST_COMMIT_MESSAGE" value="LMSE finished." />
+    <MESSAGE value="LMSE bug fix." />
+    <option name="LAST_COMMIT_MESSAGE" value="LMSE bug fix." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/jupyter/__debug__.py</url>
+          <url>file://$PROJECT_DIR$/debug/jupyter/__debug__.py</url>
           <line>18</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/__test_feeder__.py</url>
+          <url>file://$PROJECT_DIR$/debug/__test_feeder__.py</url>
           <line>27</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
@@ -485,6 +536,26 @@
           <url>file://$PROJECT_DIR$/src/basenet/metaheuristic/basis/heuristic.py</url>
           <line>133</line>
           <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/debug/__test_lmse__.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/debug/__test_lmse__.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/test_wrapper.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/messages.py</url>
+          <line>32</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

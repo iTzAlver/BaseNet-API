@@ -1,6 +1,6 @@
 tensorflow>=2.10.0
 # tensorflow-gpu==2.10.*
-graphviz >= 0.20.1
+graphviz>=0.20.1
 matplotlib>=3.6.1
 future~=0.18.2
 Pillow~=9.3.0
