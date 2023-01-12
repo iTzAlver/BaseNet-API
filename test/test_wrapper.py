@@ -61,7 +61,6 @@ def basenet_test(logger, preamble, test, timeout: int = 0, timer: int = 0) -> bo
 
 def watchdog(timer, finished, parent):
     try:
-
         if timer > 0:
             init = time.time()
             while time.time() - init < timer:
@@ -72,13 +71,13 @@ def watchdog(timer, finished, parent):
         return
 
 
-# https://gist.github.com/liuw/2407154
+# Inspired in https://gist.github.com/liuw/2407154
 def reraise(thread_obj, exception):
     # Thread search...
     target_tid = 0
-    for tid, tobj in threading._active.items():
-        if tobj is thread_obj:
-            target_tid = tid
+    for thread in threading.enumerate():
+        if thread is thread_obj:
+            target_tid = thread.ident
             break
     ret = ctypes.pythonapi.PyThreadState_SetAsyncExc(target_tid, ctypes.py_object(exception))
     if ret == 0:

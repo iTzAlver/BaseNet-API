@@ -27,7 +27,7 @@ def set_up_logging():
     if os.path.exists(LOG_PATH):
         os.remove(LOG_PATH)
     logging.basicConfig(level=logging.DEBUG, filename=LOG_PATH, filemode='w', format=LOG_FORMAT, datefmt=DAY_FORMAT)
-    root_logger = logging.getLogger(name=None)
+    root_logger = logging.getLogger()
     log_formatter = logging.Formatter(LOG_FORMAT)
     file_handler = logging.FileHandler(LOG_PATH)
     file_handler.setFormatter(log_formatter)
