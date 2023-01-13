@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from basenet import BaseNetLMSE, BaseNetDatabase, window_diff
 
-WORKBENCH = 32
-TRAIN_NOISE = 0
+WORKBENCH = 16
+TRAIN_NOISE = 3
 NOISE = 0
 
 NOISES = ['0', '01', '02', '03', '04', '05', '06']
 DATABASE_PATH = f'C:/Users/ialve/CorNet/db/ht/sym/32k_{WORKBENCH}t_{NOISES[NOISE]}w.db'
 NOISELESS_PATH = f'C:/Users/ialve/CorNet/db/ht/sym/32k_{WORKBENCH}t_{NOISES[TRAIN_NOISE]}w.db'
-NOISELESS_PATH = r'C:\Users\ialve\CorNet\db\wk\wikipedia_dataset_032.db'
+# NOISELESS_PATH = r'C:\Users\ialve\CorNet\db\wk\wikipedia_dataset_032.db'
 
 # -----------------------------------------------------------
 if __name__ == '__main__':

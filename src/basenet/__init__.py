@@ -21,7 +21,7 @@ from .__special__ import __version__
 
 from .deeplearning import BaseNetCompiler, BaseNetResults, BaseNetModel, BaseNetFeeder
 from .metaheuristic import BaseNetHeuristic, BaseNetRandomSearch, BaseNetGenetic
-from .classic import BaseNetLMSE
+from .supervised import BaseNetLMSE
 from .database import BaseNetDatabase
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

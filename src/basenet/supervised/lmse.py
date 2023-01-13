@@ -16,7 +16,7 @@ class BaseNetLMSE:
         BaseNetLMSE
         -----------
 
-        This is the BaseNetLMSE model. Implements a classic machine-learning LMSE.
+        This is the BaseNetLMSE model. Implements a supervised machine-learning LMSE.
 
         :param input_database: The BaseNetDatabase to train, validate and test the LMSE model.
         :param name: The name of the model.
