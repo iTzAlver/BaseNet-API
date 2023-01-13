@@ -21,9 +21,20 @@ _ERRORS = \
         'E006': 'Error while trying to import a requirement module (E006)',  # Import error.
         'E007': 'Error in the test watchdog (E007)',  # Watchdog error.
 
-        # DeepLearning errors:
-        'E010': 'Error in the BaseNetDatabase, representation (E010)',
-        'E011': 'Error in the BaseNetDatabase, add and divide operations (E011)',
+        # BaseNetDatabase:
+        'E010': 'Error in the BaseNetDatabase, construction (E010)',
+        'E011': 'Error in the BaseNetDatabase, construction in raw data (E011)',
+        'E012': 'Error in the BaseNetDatabase, construction in pandas (E012)',
+        'E013': 'Error in the BaseNetDatabase, construction in tensorflow (E013)',
+        'E014': 'Error in the BaseNetDatabase, construction in numpy (E014)',
+        'E015': 'Error in the BaseNetDatabase, exporting database (E015)',
+        'E016': 'Error in the BaseNetDatabase, importing database (E016)',
+        'E017': 'Error in the BaseNetDatabase, database operations: split (E017)',
+        'E018': 'Error in the BaseNetDatabase, database operations: merge (E018)',
+        'E019': 'Error in the BaseNetDatabase, specified construction (E019)',
+        'E020': 'Error in the BaseNetDatabase, automatic batch size (E020)',
+
+        # BaseNetCompiler:
     }
 
 
@@ -36,7 +47,7 @@ def assertion_to_message(ex):
 
 
 def do_assert(a, b, n_error):
-    assert a == b, (n_error, a, b)
+    assert a == b, (n_error, b, a)
 
 
 @dataclasses.dataclass
@@ -83,8 +94,22 @@ class TopLevelMessages:
 
 @dataclasses.dataclass
 class LowLevelError:
-    # Deep Learning
-    some_error: str = _ERRORS['E010']
+    # BaseNetDatabase
+    construction: int = 10
+    construction_raw: int = 11
+    construction_pandas: int = 12
+    construction_tf: int = 13
+    construction_numpy: int = 14
+    exporting: int = 15
+    importing: int = 16
+    split: int = 17
+    merge: int = 18
+    explicit: int = 19
+    auto_batch: int = 20
+    # BaseNetCompiler:
+
+
+
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
