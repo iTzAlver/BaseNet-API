@@ -80,6 +80,7 @@ class BaseNetLMSE:
         else:
             raise TypeError('BaseNetLMSE:The input database to the LSTM is not a path or BaseNetDatabase.')
         self.linked_database = database
+        self.__shape = database.xtrain.shape[1:]
         return self
 
     def fit(self):
@@ -197,7 +198,7 @@ class BaseNetLMSE:
         else:
             path_weights = f"{path.replace('.npy', '')}_weights.npy"
             path_bias = f"{path.replace('.npy', '')}_bias.npy"
-        np.save(path_weights, self.weights)
+        np.save(path_weights, self.weights[1:, :])
         np.save(path_bias, self.weights[0, :])
         return path_weights, path_bias
 
