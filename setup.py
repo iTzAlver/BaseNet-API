@@ -10,7 +10,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 REQUIREMENTS = ['tensorflow>=2.10.0',
-                'graphviz >= 0.20.1',
+                'graphviz>=0.20.1',
                 'matplotlib>=3.6.1',
                 'future>=0.18.2',
                 'Pillow>=9.2.0',
@@ -25,7 +25,10 @@ REQUIREMENTS = ['tensorflow>=2.10.0',
                 'pynvml>=11.4.1',
                 'pandas>=1.5.2',
                 'alive-progress>=2.4.1',
-                'hvplot>=0.8.2']
+                'hvplot>=0.8.2',
+                'ray>=2.2.0',
+                'cassandra-driver>=3.25.0',
+                'panel~=0.14.1']
 
 
 setuptools.setup(

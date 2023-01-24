@@ -23,6 +23,7 @@ from .deeplearning import BaseNetCompiler, BaseNetResults, BaseNetModel, BaseNet
 from .metaheuristic import BaseNetHeuristic, BaseNetRandomSearch, BaseNetGenetic
 from .supervised import BaseNetLMSE
 from .database import BaseNetDatabase
+from .cluster import CassandraCluster
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #

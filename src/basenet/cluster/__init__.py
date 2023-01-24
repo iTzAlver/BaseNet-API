@@ -6,6 +6,7 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
 from .ray_clustering import RayScope
+from .cassandra_clustering import CassandraCluster
 # -----------------------------------------------------------
 
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
