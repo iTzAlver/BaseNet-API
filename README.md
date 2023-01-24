@@ -26,7 +26,7 @@
         <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.9.2:  (2.0.0 Is coming!!)
+# Basenet API Package - 1.9.3:  (2.0.0 Is coming!!)
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -212,8 +212,10 @@ rebuilds the Classes to the current version of the API.
 5. Added ``BaseNetHeuristic`` algorithms that implements MetaHeuristic methods such as PSO. (1.8.0)
 
 ### 1.9.2
-1. Added BaseNetLMSE, solving linear problems with matrix multiplication.
+1. Added ``BaseNetLMSE``, solving linear problems with matrix multiplication.
 
+### 1.9.3
+1. Added ``CassandraDatabase``.
 
 
 ## Basic and fast usage

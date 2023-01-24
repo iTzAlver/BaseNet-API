@@ -26,14 +26,14 @@ REQUIREMENTS = ['tensorflow>=2.10.0',
                 'pandas>=1.5.2',
                 'alive-progress>=2.4.1',
                 'hvplot>=0.8.2',
-                'ray>=2.2.0',
+                'ray>=2.1.0',
                 'cassandra-driver>=3.25.0',
                 'panel~=0.14.1']
 
 
 setuptools.setup(
     name='basenet_api',
-    version='1.9.2',
+    version='1.9.3',
     author='Palomo-Alonso, Alberto',
     author_email='a.palomo@edu.uah',
     description='Basenet API: A simpler way to build ML models.',
