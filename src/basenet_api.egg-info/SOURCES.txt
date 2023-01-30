@@ -16,6 +16,8 @@ src/basenet/__special/_loss_functions/windowdiff.py
 src/basenet/cluster/__init__.py
 src/basenet/cluster/cassandra_clustering.py
 src/basenet/cluster/ray_clustering.py
+src/basenet/computervision/__init__.py
+src/basenet/computervision/interface.py
 src/basenet/deeplearning/__init__.py
 src/basenet/deeplearning/compiler.py
 src/basenet/deeplearning/feeder.py
@@ -39,6 +41,7 @@ src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666
 src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666794923.DESKTOP-TUNV74K.6196.1.v2
 src/basenet/include/temp/logs/my_first_model/validation/events.out.tfevents.1666799299.DESKTOP-TUNV74K.1052.1.v2
 src/basenet/include/temp/render/base_model.png
+src/basenet/include/temp/render/test_model.png
 src/basenet/metaheuristic/__init__.py
 src/basenet/metaheuristic/_utils/__init__.py
 src/basenet/metaheuristic/_utils/utils.py
