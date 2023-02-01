@@ -521,7 +521,10 @@ class BaseNetModel:
             if inputs is not None:
                 return _lastlay
             # Add the output of the model.
-            out = keras.layers.Dense(self.compiler.io_shape[1], activation="sigmoid", name='output')(_lastlay)
+            if self.compiler.compile_options.get('categorical'):
+                out = keras.layers.Dense(self.compiler.io_shape[1], activation="softmax", name='output')(_lastlay)
+            else:
+                out = keras.layers.Dense(self.compiler.io_shape[1], activation="sigmoid", name='output')(_lastlay)
             _compile = copy.copy(self.compiler.compile_options)
 
             if _compile['loss'] in PREBUILT_LOSSES:

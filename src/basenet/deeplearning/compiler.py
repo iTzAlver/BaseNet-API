@@ -59,6 +59,7 @@ class BaseNetCompiler:
             metrics:
               - <tf.keras loss function name provided as a loss function>
               - <'accuracy' is always a good metric to analyze>
+            categorical: True
 
           devices:
             - <your device type>:
@@ -377,7 +378,7 @@ class BaseNetCompiler:
         This function automatically sets the available devices for use in the models.
         Note that if your free VRAM > free RAM the TF framework will report OUT_OF_MEMORY errors.
         This function disables some GPUs from the Python scope.
-        :param let_free_ram: The percentage of RAM not to be used.
+        :param let_free_ram: The percentage of RAM to be used by the modules.
         :return: Nothing, this function just sets up an internal API config file.
         """
         try:
@@ -416,7 +417,10 @@ class BaseNetCompiler:
             # with open(__config_path__, 'w', encoding='utf-8') as file:
             #     cfg = json.load(file)
             #     cfg['gpu_devices'] = _visible_config_
-            os.environ["CUDA_VISIBLE_DEVICES"] = _visible_config_
+            if _visible_config_:
+                os.environ["CUDA_VISIBLE_DEVICES"] = _visible_config_
+            else:
+                os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         except Exception as ex:
             logging.error(f'NVML: Nvidia drivers are not detected: {ex}')
             logging.warning('Configured 0 GPUs for the session, NVIDIA Drivers are not detected.')

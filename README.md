@@ -26,7 +26,7 @@
         <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.9.3:  (2.0.0 Is coming!!)
+# Basenet API Package - 1.9.4:  (2.0.0 Is coming!!)
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -214,9 +214,11 @@ rebuilds the Classes to the current version of the API.
 ### 1.9.2
 1. Added ``BaseNetLMSE``, solving linear problems with matrix multiplication.
 
-### 1.9.3
+### 1.9.3 - 1.9.4
 1. Added ``CassandraDatabase``.
-
+2. Added ``categorical`` entry to ``compile_options`` in the ``BaseNetCompiler``. 
+This allows the user to build a classifier in the DeepLearning module. By default, it is a regression model.
+3. Added a minimum of 1 GPU in ``BaseNetCompiler.set_up_devices()``
 
 ## Basic and fast usage
 
