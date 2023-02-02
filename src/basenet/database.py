@@ -306,7 +306,7 @@ class BaseNetDatabase:
         :return: Self object.
         :rtype: BaseNetDatabase
         """
-        if len(self.shape[0]) == len(mapping):
+        if self.shape[1] == len(mapping):
             self.mapping = (mapping, True)
         else:
             ranges = np.linspace(0, 1, len(mapping) + 1)[1:]
@@ -384,6 +384,10 @@ class BaseNetDatabase:
         reversioned.name = input_db.name
         reversioned.dtype = input_db.dtype
         reversioned.distribution = input_db.distribution
+        if hasattr(input_db, 'shape'):
+            reversioned.shape = input_db.shape
+        if hasattr(input_db, 'mapping'):
+            reversioned.mapping = input_db.mapping
         reversioned._check_validation()
         return reversioned
 

@@ -73,10 +73,11 @@ class BaseNetCVVisualizer:
                             f'dimension of the dataset. Database has {shape_y} shape and the model has {io_shape[1]}.')
             return False
 
-        if 2 <= len(shape_x) <= 3:
+        if not (2 <= len(shape_x) <= 3):
             logging.error(f'BaseNetCVVisualizer: The input database are not images or image-like data. Its shape is '
                           f'{shape_x}, it should have 2 (for black and white images) or 3 (for RGB-like images) fields, '
                           f'not {len(shape_x)}. How is that supposed to be an image? Re-format your database...')
+            return False
         return True
 
     def set_access(self, access_type: str):
@@ -95,14 +96,16 @@ class BaseNetCVVisualizer:
         self.preprocess = function_like
         return self
 
-    def get(self) -> Image:
+    def get(self, scale: float = 255) -> Image:
         if self.check_compatibility():
             arrays = getattr(self.database, f'x{self.current_access}')
-            array = arrays[np.random.randint(arrays.shape[0])]
+            index = np.random.randint(arrays.shape[0])
+            array = arrays[index]
+            label = getattr(self.database, f'y{self.current_access}')[index]
             if len(array.shape) == 3:
-                return Image.fromarray(array).convert('RGB'), array
+                return Image.fromarray((array * scale).astype(np.uint8)).convert('RGB'), label, array
             else:
-                return Image.fromarray(array), array
+                return Image.fromarray(array * scale), label, array
         else:
             return None
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
