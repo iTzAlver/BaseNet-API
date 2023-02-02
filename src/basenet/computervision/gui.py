@@ -6,15 +6,20 @@
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 # Import statements:
 import logging
+import copy
 import multiprocessing as mp
 import tkinter as tk
 from tkinter import filedialog
 import matplotlib.pyplot as plt
+import numpy as np
+
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from PIL import Image
+
 from ..database import BaseNetDatabase
 from ..deeplearning import BaseNetModel
 from .visualizer import BaseNetCVVisualizer
+from ..__special import categorical_hitrate, hitrate, confusion_matrix
 from ..__special__ import __cviz_ico_location__, __version__
 
 COLOR_STYLES = {'blue': '#8685cb', 'pink': '#c539b7', 'yellow': '#c8c963', 'gray': '#BBBBBB',
@@ -35,8 +40,7 @@ def __gui() -> None:
     try:
         root_node.iconbitmap(__cviz_ico_location__)
     except tk.TclError:
-        alternative_bitmap = tk.PhotoImage(f'{__cviz_ico_location__.split(".")[0]}.xbm')
-        root_node.call('wm', 'iconphoto', root_node._w, alternative_bitmap)
+        pass
     root_node.configure()
     root_node.mainloop()
     logging.info('[-] BaseNetCVGUI: Finished BaseNetCVGUI in other process.')
@@ -46,9 +50,9 @@ class MainWindow:
     def __init__(self, master):
         self.master = master
         self.master.title("BaseNetCVGUI")
-        self.master.geometry('620x870')
-        self.master.minsize(620, 870)
-        self.master.maxsize(620, 870)
+        self.master.geometry('620x925')
+        self.master.minsize(620, 925)
+        # self.master.maxsize(620, 920)
         self.master.configure(bg='white')
         self.color_styles = COLOR_STYLES
 
@@ -62,7 +66,8 @@ class MainWindow:
         self.in_canvas = None
         self.in_toolbar = None
         self.out_canvas = None
-        self.out_toolbar = None
+        self.confusion = None
+        self.performance = ['???', '???']
         # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
         #                        FRAMES                             #
         # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
@@ -70,24 +75,24 @@ class MainWindow:
                                     font='Fixedsys 31 bold')
         self.title_label.place(x=50, y=5)
         self.insert_database_button = tk.Button(self.master, text='SELECT DATABASE',
-                                                command=self.b_select_database, font='Bahnschrift 8 bold', fg='black',
+                                                command=self.b_select_database, font='Bahnschrift 11 bold', fg='black',
                                                 width=15, bg=self.color_styles['green'])
         self.insert_database_button.place(x=25, y=70)
         self.insert_basenetm_button = tk.Button(self.master, text='SELECT MODEL',
-                                                command=self.b_select_model, font='Bahnschrift 8 bold', fg='black',
+                                                command=self.b_select_model, font='Bahnschrift 11 bold', fg='black',
                                                 width=15, bg=self.color_styles['orange'])
         self.insert_basenetm_button.place(x=225, y=70)
         self.insert_basenetm_button = tk.Button(self.master, text='MAP OUTPUT',
-                                                command=self.b_map_output, font='Bahnschrift 8 bold', fg='black',
+                                                command=self.b_map_output, font='Bahnschrift 11 bold', fg='black',
                                                 width=15, bg=self.color_styles['red'])
         self.insert_basenetm_button.place(x=425, y=70)
 
         self.insert_nextings_button = tk.Button(self.master, text='>',
-                                                command=self.b_next, font='Bahnschrift 8 bold', fg='black',
+                                                command=self.b_next, font='Bahnschrift 11 bold', fg='black',
                                                 width=5, bg=self.color_styles['blue'])
         self.insert_nextings_button.place(x=535, y=120)
         self.insert_beforing_button = tk.Button(self.master, text='<',
-                                                command=self.b_before, font='Bahnschrift 8 bold', fg='black',
+                                                command=self.b_before, font='Bahnschrift 11 bold', fg='black',
                                                 width=5, bg=self.color_styles['blue'])
         self.insert_beforing_button.place(x=25, y=120)
 
@@ -106,7 +111,7 @@ class MainWindow:
         # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
         self.__label_frame_0 = tk.LabelFrame(self.master, width=610, height=600)
         self.__label_frame_0.place(x=5, y=180)
-        self.__label_frame_1 = tk.LabelFrame(self.master, width=610, height=80)
+        self.__label_frame_1 = tk.LabelFrame(self.master, width=610, height=130)
         self.__label_frame_1.place(x=5, y=785)
 
     def b_select_database(self):
@@ -134,11 +139,29 @@ class MainWindow:
             else:
                 self.visualizer = BaseNetCVVisualizer(self.model.breech[0], model=self.model)
             self.visualizer.set_access(self.access)
+        if self.database is not None:
+            db = copy.copy(self.database)
+            db.xtest = db.xval
+            db.ytest = db.yval
+            self.model.add_database(db)
+            self.performance[0] = np.round(self.model.evaluate(0, metric=hitrate).numpy(), decimals=3)
+            self.performance[1] = np.round(self.model.evaluate(0, metric=categorical_hitrate).numpy(), decimals=3)
+            if self.database.mapping[1]:
+                self.confusion = self.model.evaluate(0, metric=confusion_matrix)
+                print(self.confusion)
+                print(self.database.mapping)
 
     def b_map_output(self):
         output = self.model.predict([self.images[self.index][-1]])[0]
-        img_output = Image.fromarray((output * 255).T)
-        self.draw_out(img_output)
+        _output = np.zeros((1, len(output), 3))
+        _output[0, :, 0] = output * 255
+        _output[0, :, 1] = output * 255
+        _output[0, :, 2] = output * 255
+        argmax = np.argmax(output)
+        _output[0, argmax, 1] = 0
+        _output[0, argmax, 2] = 0
+        img_output = Image.fromarray(_output.astype(np.uint8)).convert('RGB')
+        self.draw_out(img_output, self.database.mapping[0])
 
     def b_next(self):
         if self.index is not None:
@@ -165,7 +188,7 @@ class MainWindow:
         self.draw_in(self.images[self.index][0], label=self.images[self.index][1])
 
     def draw_in(self, in_fig, label):
-        _in_fig = plt.figure(figsize=(7.20, 7.4), dpi=75)
+        _in_fig = plt.figure(figsize=(8.00, 7.4), dpi=75)
         plt.imshow(in_fig)
         plt.tick_params(left=False, right=False, labelleft=False, labelbottom=False, bottom=False)
         plt.title(f'Output from image number {self.index} with label: {label}')
@@ -178,17 +201,16 @@ class MainWindow:
         self.in_toolbar.update()
         self.in_canvas.get_tk_widget().pack()
 
-    def draw_out(self, out_fig):
-        _out_fig = plt.figure(figsize=(1.3, 1.3), dpi=75)
+    def draw_out(self, out_fig, labels):
+        _out_fig = plt.figure(figsize=(8.00, 1.8), dpi=75)
         plt.imshow(out_fig)
-        plt.title(f'Output from image number {self.index}')
+        plt.xticks(range(len(labels)), labels)
+        plt.title(f'Output from image number {self.index}. '
+                  f'([{self.performance[0] * 100:.1f} / {self.performance[1] * 100:.1f}]% [hit rate / categorical])')
         if self.out_canvas is not None:
             self.out_canvas.get_tk_widget().pack_forget()
-            self.out_canvas.destroy()
         self.out_canvas = FigureCanvasTkAgg(_out_fig, master=self.__label_frame_1)
         self.out_canvas.draw()
-        self.out_toolbar = NavigationToolbar2Tk(self.out_canvas, self.__label_frame_1)
-        self.out_toolbar.update()
         self.out_canvas.get_tk_widget().pack()
 
     def c_select_train(self):

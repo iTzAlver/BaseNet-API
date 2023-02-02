@@ -345,7 +345,7 @@ class BaseNetDatabase:
         if self.mapping is None:
             logging.warning('BaseNetDatabase: There is not map defined. Use the method .define_map() '
                             'to define an output map first.')
-            return None
+            return output_data
         else:
             mappings: (tuple, list) = self.mapping[0]
             is_categorical: bool = self.mapping[1]

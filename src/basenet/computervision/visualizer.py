@@ -103,9 +103,9 @@ class BaseNetCVVisualizer:
             array = arrays[index]
             label = getattr(self.database, f'y{self.current_access}')[index]
             if len(array.shape) == 3:
-                return Image.fromarray((array * scale).astype(np.uint8)).convert('RGB'), label, array
+                return Image.fromarray((array * scale).astype(np.uint8)).convert('RGB'), self.database.map([label]), array
             else:
-                return Image.fromarray(array * scale), label, array
+                return Image.fromarray(array * scale), self.database.map([label]), array
         else:
             return None
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #

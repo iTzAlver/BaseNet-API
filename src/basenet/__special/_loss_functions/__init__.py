@@ -5,7 +5,9 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 from .windowdiff import window_diff
-
+from .hitrate import hitrate
+from .categorical_hitrate import categorical_hitrate
+from .confussion_matrix import confusion_matrix
 
 class Sublosses:
     window_diff = window_diff
