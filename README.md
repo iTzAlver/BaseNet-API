@@ -223,6 +223,7 @@ This allows the user to build a classifier in the DeepLearning module. By defaul
 5. Added the attribute ``shape`` to the ``BaseNetDatabase`` telling the input-output data shapes.
 6. Added Fuzzy-Logic feature in ``BaseNetDatabase`` for Fuzzy-Logic mapping.
 7. Added `BaseNetCVVisualizer` and ``basenet_cv_gui`` for computer vision dataset and results visualization.
+8. Added `BaseNetStackRoom`, which is a Database manager for big databases.
 
 ## Basic and fast usage
 
