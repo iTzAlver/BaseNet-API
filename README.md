@@ -214,7 +214,7 @@ rebuilds the Classes to the current version of the API.
 ### 1.9.2
 1. Added ``BaseNetLMSE``, solving linear problems with matrix multiplication.
 
-### 1.9.3 - 1.9.4
+### 1.9.3 - 1.9.5
 1. Added ``CassandraDatabase``.
 2. Added ``categorical`` entry to ``compile_options`` in the ``BaseNetCompiler``. 
 This allows the user to build a classifier in the DeepLearning module. By default, it is a regression model.
