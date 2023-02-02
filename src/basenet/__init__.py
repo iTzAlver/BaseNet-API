@@ -24,6 +24,7 @@ from .metaheuristic import BaseNetHeuristic, BaseNetRandomSearch, BaseNetGenetic
 from .supervised import BaseNetLMSE
 from .database import BaseNetDatabase
 from .cluster import CassandraCluster
+from .computervision import basenet_cv_gui, BaseNetCVVisualizer
 BaseNetCompiler.set_up_devices()
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 #                        END OF FILE                        #

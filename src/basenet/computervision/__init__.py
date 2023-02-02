@@ -6,7 +6,8 @@
 #    Email:     ialver.p@gmail.com                                   #
 #                                                                    #
 # -------------------------------------------------------------------#
-from .interface import BaseNetCViz
+from .gui import basenet_cv_gui
+from .visualizer import BaseNetCVVisualizer
 # -------------------------------------------------------------------#
 #           E   N   D          O   F           F   I   L   E         #
 # -------------------------------------------------------------------#
