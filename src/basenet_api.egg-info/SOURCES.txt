@@ -31,6 +31,9 @@ src/basenet/__special/__init__.py
 src/basenet/__special/_algorithms/__init__.py
 src/basenet/__special/_algorithms/_pbmm.py
 src/basenet/__special/_loss_functions/__init__.py
+src/basenet/__special/_loss_functions/categorical_hitrate.py
+src/basenet/__special/_loss_functions/confussion_matrix.py
+src/basenet/__special/_loss_functions/hitrate.py
 src/basenet/__special/_loss_functions/windowdiff.py
 src/basenet/cluster/__init__.py
 src/basenet/cluster/cassandra_clustering.py

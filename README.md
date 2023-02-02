@@ -26,7 +26,7 @@
         <img src="https://img.shields.io/badge/dependencies-ray-red?color=blue&style=for-the-badge" /></a>
 </p>
 
-# Basenet API Package - 1.9.4:  (2.0.0 Is coming!!)
+# Basenet API Package - 1.9.5:  (2.0.0 Is coming!!)
 
 This package implements an API over Keras and Tensorflow to build Deep Learning models easily without losing the
 framework flexibility. BaseNet API tries to implement almost everything from a few lines of code.
@@ -222,6 +222,7 @@ This allows the user to build a classifier in the DeepLearning module. By defaul
 4. Added the output mapping function to the ``BaseNetDatabase`` as ``.define_map()`` and the mapping method ``map()``.
 5. Added the attribute ``shape`` to the ``BaseNetDatabase`` telling the input-output data shapes.
 6. Added Fuzzy-Logic feature in ``BaseNetDatabase`` for Fuzzy-Logic mapping.
+7. Added `BaseNetCVVisualizer` and ``basenet_cv_gui`` for computer vision dataset and results visualization.
 
 ## Basic and fast usage
 
