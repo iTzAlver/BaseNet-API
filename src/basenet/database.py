@@ -306,7 +306,7 @@ class BaseNetDatabase:
         :return: Self object.
         :rtype: BaseNetDatabase
         """
-        if self.shape[1] == len(mapping):
+        if self.shape[1][0] == len(mapping):
             self.mapping = (mapping, True)
         else:
             ranges = np.linspace(0, 1, len(mapping) + 1)[1:]
