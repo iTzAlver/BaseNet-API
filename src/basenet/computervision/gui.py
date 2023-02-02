@@ -200,6 +200,7 @@ class MainWindow:
         self.in_toolbar = NavigationToolbar2Tk(self.in_canvas, self.__label_frame_0)
         self.in_toolbar.update()
         self.in_canvas.get_tk_widget().pack()
+        plt.close()
 
     def draw_out(self, out_fig, labels):
         _out_fig = plt.figure(figsize=(8.00, 1.8), dpi=75)
@@ -212,6 +213,7 @@ class MainWindow:
         self.out_canvas = FigureCanvasTkAgg(_out_fig, master=self.__label_frame_1)
         self.out_canvas.draw()
         self.out_canvas.get_tk_widget().pack()
+        plt.close()
 
     def c_select_train(self):
         self.access = 'train'
