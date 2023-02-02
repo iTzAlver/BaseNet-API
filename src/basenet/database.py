@@ -96,6 +96,8 @@ class BaseNetDatabase:
             self.ytest = np.array(ytest, dtype=self.dtype[1])
 
             self.size = (len(self.xtrain), len(self.xval), len(self.xtest))
+            self.shape = (self.xtrain.shape[1:], self.ytrain.shape[1:])
+            self.mapping: tuple[(None, tuple, list), bool] = (None, False)
 
             if batch_size is None:
                 self.batch_size = 1
@@ -272,6 +274,101 @@ class BaseNetDatabase:
             logging.error(f'BaseNetDatabase: Error while building the database, raised the following exception: {ex}')
         finally:
             return reversioned
+
+    def define_map(self, mapping: list):
+        """
+        The method define_map defines an output map from the given mapping list.
+
+        I.E.
+        Categorical case, outputs:
+        [0, 0, 0, 1] -> Type IV
+        [0, 0, 1, 0] -> Type III
+        ...
+
+            my_basenet_database.define_map(['Type I', 'Type II', 'Type III', 'Type IV'])
+            my_model = BaseNetModel.load([...])
+            my_model.predict(some_data)
+            my_basenet_database.map(some_data)
+
+        Regression case, outputs:
+        When the outputs are regression-type outputs (not categorical) you can map the output with Fuzzy-Logic.
+        [0.8, 0.9, 0.1, 0.3, 0.7] -> ['True', 'True', 'False', 'Fuzzy False', 'Fuzzy True']
+        [0.0, 0.9, 0.5, 0.6, 0.9] -> ['False', 'True', 'Undecidable', 'Undecidable', 'Fuzzy True']
+        ...
+
+            my_basenet_database.define_map(['False', 'Fuzzy False', 'Undecidable' ,'Fuzzy True', 'True'])
+            my_model = BaseNetModel.load([...])
+            my_model.predict(some_data)
+            my_basenet_database.map(some_data)
+
+        :param mapping: A list of names for the mapping.
+        :type mapping: list of strings.
+        :return: Self object.
+        :rtype: BaseNetDatabase
+        """
+        if len(self.shape[0]) == len(mapping):
+            self.mapping = (mapping, True)
+        else:
+            ranges = np.linspace(0, 1, len(mapping) + 1)[1:]
+            self.mapping = ((ranges, mapping), False)
+        return self
+
+    def map(self, output_data: np.ndarray) -> (np.ndarray, None):
+        """
+        The map() method maps the output data from some model depending on if it is categorical or fuzzy logic.
+
+        I.E. Categorical.
+        db.mapping[0] -> ['Dog', 'Cat', 'Fox', 'Dragon']
+        [ [0.8, 0.1, 0.1, 0.0]   -> max in 0
+          [0.0, 1.0, 0.0, 0.0]   -> max in 1
+          [0.5, 0.2, 0.1, 0.2]   -> max in 0
+          [0.0, 0.0, 0.6, 0.4] ] -> max in 2
+        -> ['Dog', 'Cat', 'Dog', 'Fox']
+
+        I.E. Fuzzy-Logic.
+        db.mapping[0] -> ['Dog', 'Probably a dog', 'Probably a fox', 'Fox']
+        [ [0.8, 0.9, 0.2, 0.0]   -> ['Fox', 'Fox', 'Dog', 'Dog']
+          [0.0, 1.0, 0.9, 0.0]   -> ['Dog', 'Fox', 'Fox', 'Dog']
+          [0.5, 0.4, 0.6, 0.2]   -> ['Probably a dog', 'Probably a dog', 'Probably a fox', 'Dog']
+          [0.0, 0.0, 0.6, 0.4] ] -> ['Dog', 'Dog', 'Probably a fox', 'Probably a dog']
+        ->
+        [   ['Fox', 'Fox', 'Dog', 'Dog']
+            ['Dog', 'Fox', 'Fox', 'Dog']
+            ['Probably a dog', 'Probably a dog', 'Probably a fox', 'Dog']
+            ['Dog', 'Dog', 'Probably a fox', 'Probably a dog'] ]
+
+        :param output_data: The output data from a BaseNetModel.
+        :type output_data: np.ndarray
+        :return: The mapped data.
+        :rtype: np.ndarray (strings)
+        """
+        if self.mapping is None:
+            logging.warning('BaseNetDatabase: There is not map defined. Use the method .define_map() '
+                            'to define an output map first.')
+            return None
+        else:
+            mappings: (tuple, list) = self.mapping[0]
+            is_categorical: bool = self.mapping[1]
+            mapped_output = list()
+            if is_categorical:
+                names = mappings
+                for data in output_data:
+                    _max_cat = np.argmax(data)
+                    mapped_output.append(names[_max_cat])
+            else:
+                ranges = mappings[0]
+                names = mappings[1]
+                for data in output_data:
+                    values = list()
+                    for value in data:
+                        for index, top_fuzzy in enumerate(ranges):
+                            if value <= top_fuzzy:
+                                values.append(names[index])
+                                break
+                        else:
+                            continue
+                    mapped_output.append(data)
+            return np.array(mapped_output)
 
     # Private methods:
     @staticmethod

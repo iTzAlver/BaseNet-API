@@ -219,6 +219,8 @@ rebuilds the Classes to the current version of the API.
 2. Added ``categorical`` entry to ``compile_options`` in the ``BaseNetCompiler``. 
 This allows the user to build a classifier in the DeepLearning module. By default, it is a regression model.
 3. Added a minimum of 1 GPU in ``BaseNetCompiler.set_up_devices()``
+4. Added the output mapping function to the ``BaseNetDatabase`` as ``.define_map()``.
+5. Added the attribute ``shape`` to the ``BaseNetDatabase`` telling the input-output data shapes.
 
 ## Basic and fast usage
 
