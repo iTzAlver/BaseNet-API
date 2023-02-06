@@ -210,6 +210,11 @@ class BaseNetCompiler:
                     devices[dev['name']] = dev['state']
 
         layers = list()
+
+        if 'top_level' in compiler:
+            for scope_model in compiler['top_level']:
+                layers.append(BaseNetCompiler.build_from_yaml(scope_model).layers)
+
         for __layer in compiler['layers']:
             for typ, layer in __layer.items():
                 if typ == 'layer':

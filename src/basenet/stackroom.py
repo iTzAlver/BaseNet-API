@@ -45,6 +45,7 @@ class BaseNetStackRoom:
         if os.path.exists(self.__info_path):
             with open(self.__info_path, 'r', encoding='utf-8') as file:
                 self.config = yaml.load(file, yaml.Loader)
+                self.__is_built = True
         else:
             if categorical:
                 self.database_info = INITIALIZE_CATEGORICAL
@@ -85,6 +86,32 @@ class BaseNetStackRoom:
             else:
                 self.current_index_test += 1
         return db
+
+    def report(self, all_info: bool = True) -> str:
+        __text__ = f'<BaseNetStackRoom Report>\n\n' \
+                   f'\t[!] Database attributes:\n' \
+                   f'\t\tname: {self.config["name"]}\n' \
+                   f'\t\tbatch_size: {self.config["batch_size"]:5d} [samples]\n' \
+                   f'\t\tpatch_size: {self.config["patch_size"]} [MB / set]\n' \
+                   f'\t\tdata_type / shape: {self.config["database_data_type"]} / {self.config["database_shape"]}\n'
+
+        _info_ = ''
+        if self.config["database_information"]["is_categorical"] and all_info:
+            __info__ = f'\t[!] Database attributes:\n' \
+            f'\t\tClass balance:' \
+            f'\n\t\t\tTrain:      {self.config["database_information"]["class_balance"]["train"]:.2f} [%]' \
+            f'\n\t\t\tValidation: {self.config["database_information"]["class_balance"]["val"]:.2f} [%]' \
+            f'\n\t\t\tTest:       {self.config["database_information"]["class_balance"]["test"]:.2f} [%]' \
+
+
+        elif not self.config["database_information"]["is_categorical"] and all_info:
+            __info__ = f'\t[!] Database attributes:\n' \
+            f'\t\tStats balance:' \
+            f'\n\t\t\tTrain:      {self.config["database_information"]["statistical_balance"]["train"]:.2f} [%]' \
+            f'\n\t\t\tValidation: {self.config["database_information"]["statistical_balance"]["val"]:.2f} [%]' \
+            f'\n\t\t\tTest:       {self.config["database_information"]["statistical_balance"]["test"]:.2f} [%]' \
+
+        return f'{__text__}{_info_}'
 
     def update_info(self):
         with open(self.__info_path, 'w', encoding='utf-8') as file:

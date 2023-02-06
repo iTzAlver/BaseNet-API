@@ -523,7 +523,10 @@ class BaseNetModel:
             # Add the output of the model.
             if self.compiler.compile_options.get('categorical'):
                 out = keras.layers.Dense(self.compiler.io_shape[1], activation="softmax", name='output')(_lastlay)
+                self.compiler.compile_options.pop('categorical')
             else:
+                if 'categorical' in self.compiler.compile_options:
+                    self.compiler.compile_options.pop('categorical')
                 out = keras.layers.Dense(self.compiler.io_shape[1], activation="sigmoid", name='output')(_lastlay)
             _compile = copy.copy(self.compiler.compile_options)
 

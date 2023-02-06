@@ -27,6 +27,7 @@ src/basenet/__init__.py
 src/basenet/__special__.py
 src/basenet/_names.py
 src/basenet/database.py
+src/basenet/stackroom.py
 src/basenet/__special/__init__.py
 src/basenet/__special/_algorithms/__init__.py
 src/basenet/__special/_algorithms/_pbmm.py
