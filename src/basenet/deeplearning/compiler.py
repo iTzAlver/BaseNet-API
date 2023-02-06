@@ -38,6 +38,12 @@ from ..__special__ import __base_compiler__, __version__
 
 
 # -----------------------------------------------------------
+def _get_layers(compiler_layers):
+
+    return layers
+# -----------------------------------------------------------
+
+
 class BaseNetCompiler:
     """
     The BaseNetCompiler is a custom compiler that takes the information about the network and compiles it with the given
@@ -198,44 +204,66 @@ class BaseNetCompiler:
         :return: The compiler object of the class BaseNetCompiler.
         """
         with open(path, 'r', encoding='utf-8') as file:
-            compiler = yaml.load(file, yaml.FullLoader)['compiler']
-        name = compiler['name']
-        io_shape = (tuple(compiler['input_shape']), compiler['output_shape'])
-        options = compiler['compile_options']
+            yaml_data = yaml.load(file, yaml.FullLoader)
 
-        devices = {}
-        for _dev in compiler['devices']:
-            for typ, dev in _dev.items():
-                if typ == 'cpu' or typ == 'gpu':
-                    devices[dev['name']] = dev['state']
+        if 'compiler' in yaml_data:
+            compiler = yaml_data['compiler']
+            name = compiler['name']
+            io_shape = (tuple(compiler['input_shape']), compiler['output_shape'])
+            options = compiler['compile_options']
 
-        layers = list()
+            devices = {}
+            for _dev in compiler['devices']:
+                for typ, dev in _dev.items():
+                    if typ == 'cpu' or typ == 'gpu':
+                        devices[dev['name']] = dev['state']
 
-        if 'top_level' in compiler:
-            for scope_model in compiler['top_level']:
-                layers.append(BaseNetCompiler.build_from_yaml(scope_model).layers)
+            layers = list()
+            for __layer in compiler['layers']:
+                for typ, layer in __layer.items():
+                    if typ == 'layer':
+                        _layer = layer
+                        if layer['shape'] is not None:
+                            _layer['shape'] = tuple(layer['shape'])
+                        else:
+                            _layer['shape'] = ()  # Add None in previous versions.
+                        _options = {}
+                        if layer['options'] is not None:
+                            for _option_ in layer['options']:
+                                for key, option in _option_.items():
+                                    if key == 'option':
+                                        _options[option['name']] = option['value']
+                        _layer['options'] = _options
+                        layers.append({_layer['name']: (_layer['shape'], _layer['options'])})
+                    elif typ == 'block':
+                        layers.extend(BaseNetCompiler.build_from_yaml(layer, verbose))
 
-        for __layer in compiler['layers']:
-            for typ, layer in __layer.items():
-                if typ == 'layer':
-                    _layer = layer
-                    if layer['shape'] is not None:
-                        _layer['shape'] = tuple(layer['shape'])
-                    else:
-                        _layer['shape'] = ()  # Add None in previous versions.
-                    _options = {}
-                    if layer['options'] is not None:
-                        for _option_ in layer['options']:
-                            for key, option in _option_.items():
-                                if key == 'option':
-                                    _options[option['name']] = option['value']
-                    _layer['options'] = _options
-
-                    layers.append({_layer['name']: (_layer['shape'], _layer['options'])})
-
-        self = BaseNetCompiler(io_shape=io_shape, compile_options=options, devices=devices, layers=layers, name=name,
-                               verbose=verbose)
-        return self
+            self = BaseNetCompiler(io_shape=io_shape, compile_options=options, devices=devices, layers=layers,
+                                   name=name, verbose=verbose)
+            return self
+        elif 'layers' in yaml_data:
+            layers = list()
+            for __layer in yaml_data['layers']:
+                for typ, layer in __layer.items():
+                    if typ == 'layer':
+                        _layer = layer
+                        if layer['shape'] is not None:
+                            _layer['shape'] = tuple(layer['shape'])
+                        else:
+                            _layer['shape'] = ()  # Add None in previous versions.
+                        _options = {}
+                        if layer['options'] is not None:
+                            for _option_ in layer['options']:
+                                for key, option in _option_.items():
+                                    if key == 'option':
+                                        _options[option['name']] = option['value']
+                        _layer['options'] = _options
+                        layers.append({_layer['name']: (_layer['shape'], _layer['options'])})
+                    elif typ == 'block':
+                        layers.extend(BaseNetCompiler.build_from_yaml(layer, verbose))
+            return layers
+        else:
+            raise ValueError('BaseNetCompiler: The given compiler has no "compiler" or "layers" attribute.')
 
     def compile(self, name: str = None):
         """

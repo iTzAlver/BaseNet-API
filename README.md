@@ -225,6 +225,10 @@ This allows the user to build a classifier in the DeepLearning module. By defaul
 7. Added `BaseNetCVVisualizer` and ``basenet_cv_gui`` for computer vision dataset and results visualization.
 8. Added `BaseNetStackRoom`, which is a Database manager for big databases.
 
+### 1.9.6
+1. Added multi-block to ``BaseNetCompiler`` so it can be built from several YAML files.
+
+
 ## Basic and fast usage
 
 There are Jupyter Notebooks with usage tutorials! Refer to them 

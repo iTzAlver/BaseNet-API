@@ -5,7 +5,7 @@
 #                                                           #
 # - x - x - x - x - x - x - x - x - x - x - x - x - x - x - #
 import os
-__version__ = '1.9.5'
+__version__ = '1.9.6'
 __config_path__ = os.path.abspath(f'{__file__.replace(f"__special__.py", "")}/include/config/config.json')
 __base_compiler__ = os.path.abspath(f'{__file__.replace(f"__special__.py", "")}/include/config/'
                                     f'compilers/base_compiler.yaml')

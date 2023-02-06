@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: basenet-api
-Version: 1.9.5
+Version: 1.9.6
 Summary: Basenet API: A simpler way to build ML models.
 Home-page: https://github.com/iTzAlver/basenet_api.git
 Author: Palomo-Alonso, Alberto
@@ -245,6 +245,10 @@ This allows the user to build a classifier in the DeepLearning module. By defaul
 6. Added Fuzzy-Logic feature in ``BaseNetDatabase`` for Fuzzy-Logic mapping.
 7. Added `BaseNetCVVisualizer` and ``basenet_cv_gui`` for computer vision dataset and results visualization.
 8. Added `BaseNetStackRoom`, which is a Database manager for big databases.
+
+### 1.9.6
+1. Added multi-block to ``BaseNetCompiler`` so it can be built from several YAML files.
+
 
 ## Basic and fast usage
 
